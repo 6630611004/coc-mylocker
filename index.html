@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>CoC - MyLocker</title>
+    
+    <link rel="icon" type="image/png" href="https://computing.psu.ac.th/th/wp-content/uploads/2025/06/College-of-Computing-300x240.png">
+    
+    <style>
+        /* รีเซ็ตค่าเริ่มต้นและทำให้ Iframe เต็มจอ 100% โดยไม่มี Scrollbar ส่วนเกิน */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #ffffff;
+            /* ป้องกันการแตะค้างแล้วคลุมดำแบบไม่ตั้งใจบนมือถือ */
+            -webkit-touch-callout: none; 
+        }
+
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe 
+        src="{ใส่_URL_ของ_GAS_WEB_APP_ที่นี่}" 
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
+        allow="clipboard-read; clipboard-write"
+        title="CoC MyLocker System">
+    </iframe>
+
+</body>
+</html>
