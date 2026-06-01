@@ -794,7 +794,7 @@
             if (loggedInUser && !document.getElementById('view-admin-dash').classList.contains('hidden')) {
                 loadAdminData(true);
             }
-        }, 10000);
+        }, 30000);
     }
     function stopDashboardPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
