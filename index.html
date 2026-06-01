@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CoC - MyLocker</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+  
+  <link rel="icon" type="image/png"
+    href="https://computing.psu.ac.th/th/wp-content/uploads/2025/06/College-of-Computing-300x240.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --color-primary: #33c0ca;
+      --color-primary-light: #81cece;
+      --color-danger: #d46c6c;
+      --color-bg-input: #f2f2f2;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #ffffff;
+      color: #4a4a4a;
+      font-size: 14px;
+    }
+
+    .text-primary { color: var(--color-primary); }
+    .bg-primary { background-color: var(--color-primary); }
+    .border-primary { border-color: var(--color-primary); }
+    .text-danger { color: var(--color-danger); }
+    .bg-danger { background-color: var(--color-danger); }
+
+    .app-card {
+      border-radius: 40px;
+      background-color: #ffffff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--color-primary);
+      width: 100%;
+      max-width: 92%;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card.no-border { border: none; }
+
+    .input-field {
+      width: 100%;
+      background-color: var(--color-bg-input);
+      border-radius: 9999px;
+      padding: 0.6rem 1.2rem;
+      outline: none;
+      border: 1px solid transparent;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .input-field:focus { border-color: var(--color-primary); }
+    .input-field-box { border-radius: 12px; }
+
+    .btn-main, .btn-danger {
+      color: white;
+      border-radius: 9999px;
+      padding: 0.7rem 2rem;
+      font-weight: 500;
+      width: 100%;
+      font-size: 1rem;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .btn-main { background-color: var(--color-primary); }
+    .btn-main:hover { opacity: 0.85; }
+    .btn-danger { background-color: var(--color-danger); }
+
+    .icon-pixel-check {
+      width: 48px; height: 48px;
+      background-color: var(--color-primary);
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10v2h2v2h2v8h-2v2h-2v2H7v-2H5v-2H3V6h2V4h2V2zm10 2H7v2H5v8h2v2h10v-2h2V6h-2V4zm-7.5 11L6 11.5l1.4-1.4 2.1 2.1 4.6-4.6L15.5 9l-6 6z" fill="black"/></svg>');
+      mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10v2h2v2h2v8h-2v2h-2v2H7v-2H5v-2H3V6h2V4h2V2zm10 2H7v2H5v8h2v2h10v-2h2V6h-2V4zm-7.5 11L6 11.5l1.4-1.4 2.1 2.1 4.6-4.6L15.5 9l-6 6z" fill="black"/></svg>');
+    }
+
+    .icon-pixel-cross {
+      width: 48px; height: 48px;
+      background-color: var(--color-danger);
+      -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10v2h2v2h2v8h-2v2h-2v2H7v-2H5v-2H3V6h2V4h2V2zm10 2H7v2H5v8h2v2h10v-2h2V6h-2V4zm-1.5 6.1L12 8.6l3.5 3.5 1.4-1.4L13.4 7.2l3.5-3.5-1.4-1.4L12 5.8 8.5 2.3 7.1 3.7l3.5 3.5-3.5 3.5 1.4 1.4z" transform="translate(0, 4.5)" fill="black"/></svg>');
+      mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10v2h2v2h2v8h-2v2h-2v2H7v-2H5v-2H3V6h2V4h2V2zm10 2H7v2H5v8h2v2h10v-2h2V6h-2V4zm-1.5 6.1L12 8.6l3.5 3.5 1.4-1.4L13.4 7.2l3.5-3.5-1.4-1.4L12 5.8 8.5 2.3 7.1 3.7l3.5 3.5-3.5 3.5 1.4 1.4z" transform="translate(0, 4.5)" fill="black"/></svg>');
+    }
+
+    .admin-tab-active { border-bottom: 2px solid var(--color-primary); color: var(--color-primary); font-weight: bold; }
+
+    .slot-box { border: 2px solid #e5e7eb; border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; font-weight: bold; transition: 0.2s; position: relative; }
+    .slot-available { border-color: var(--color-primary); color: var(--color-primary); }
+    .slot-available:hover { background: var(--color-primary); color: white; }
+    .slot-pending { border-color: #f59e0b; color: #f59e0b; background: #fef3c7; cursor: pointer; }
+    .slot-booked { border-color: #3b82f6; color: #3b82f6; background: #eff6ff; cursor: pointer; }
+    .slot-return { border-color: #ef4444; color: #ef4444; background: #fef2f2; cursor: pointer; animation: pulse 2s infinite; }
+    .slot-maintenance { border-color: #6b7280; color: #6b7280; background: #f3f4f6; cursor: not-allowed; opacity: 0.7; }
+    .slot-unavailable { border-color: #111827; color: white; background: #374151; cursor: not-allowed; }
+
+    @media (min-width: 768px) {
+      body { font-size: 16px; }
+      .app-card { max-width: 480px; }
+      .input-field { font-size: 1rem; }
+    }
+    body.lang-th .en-text { display: none !important; }
+    body.lang-en .th-text { display: none !important; }
+  </style>
+</head>
+
+<body class="flex flex-col items-center min-h-screen pt-8 pb-10 px-4 lang-th">
+
+  <div class="absolute top-4 right-4 z-[100] flex bg-gray-100 rounded-lg p-1 shadow border border-gray-200">
+    <button onclick="switchGlobalLang('th')" id="g-btn-th" class="px-3 py-1 text-xs font-bold rounded-md bg-white shadow text-primary transition">TH</button>
+    <button onclick="switchGlobalLang('en')" id="g-btn-en" class="px-3 py-1 text-xs font-bold rounded-md text-gray-500 hover:text-primary transition">EN</button>
+  </div>
+
+  <h1 class="text-3xl font-bold text-primary mt-14 md:mt-2 mb-10 tracking-widest text-center">CoC - MyLocker</h1>
+
+  <div id="view-home" class="view-section app-card no-border p-8 pt-10">
+    <h2 class="text-xl font-bold text-primary text-center mb-6">
+      <span class="th-text">เงื่อนไขการใช้งาน</span><span class="en-text">Terms of Service</span>
+    </h2>
+    <div class="text-[13px] text-gray-600 mb-6 space-y-4">
+      <p class="th-text">1. นักศึกษาสามารถจองใช้บริการได้คราวละไม่เกิน 1 สัปดาห์ ตู้ล็อกเกอร์ปัจจุบัน วางอยู่ที่ตึก 6 ชั้น 1 ใกล้กับสำนักงานวิทยาลัยการคอมพิวเตอร์</p>
+      <p class="en-text">1. Students may reserve a locker for a maximum of 1 week at a time. Lockers are located at Building 6, Floor 1, near the CoC Office.</p>
+      <p class="th-text">2. เมื่อนักศึกษาแจ้งข้อมูลการจองแล้วหากได้รับ การจัดสรร นักศึกษาจะได้รับการนัดหมายให้นำแม่กุญแจมาแสดงเพื่อให้เจ้าหน้าที่ปลดล็อคตู้เก็บของ</p>
+      <p class="en-text">2. Once reserved and allocated, students will receive an appointment to bring their own padlock for the staff to unlock the unit.</p>
+    </div>
+    <div class="border border-danger rounded-xl p-4 mb-8 text-center bg-red-50">
+      <p class="text-danger font-semibold text-[11px] mb-2">
+        <span class="th-text">ตู้เก็บของนี้สำหรับนักศึกษาวิทยาลัยการคอมพิวเตอร์<br>เพื่อใช้สำหรับเก็บสิ่งของสัมภาระ</span>
+        <span class="en-text">These lockers are exclusively for CoC students<br>for storing personal belongings.</span>
+      </p>
+    </div>
+    <button onclick="navigate('view-action')" class="btn-main font-bold">SIGN IN</button>
+  </div>
+
+  <div id="view-action" class="view-section app-card no-border p-10 hidden flex flex-col justify-center min-h-[400px]">
+    <div class="flex flex-col space-y-6">
+      <button onclick="loadLockersForBooking()" class="btn-main font-bold py-3 text-lg">
+        <span class="th-text">จอง LOCKER</span><span class="en-text">BOOK A LOCKER</span>
+      </button>
+      <button onclick="navigate('view-mylocker-login')" class="btn-main font-bold py-3 text-lg">
+        MY LOCKER
+      </button>
+    </div>
+  </div>
+
+  <div id="view-grid" class="view-section hidden w-full max-w-sm">
+    <h2 class="text-xl font-bold text-primary text-center mb-4">
+      <span class="th-text">เลือกตู้ Locker</span><span class="en-text">Select a Locker</span>
+    </h2>
+    <div class="grid grid-cols-3 w-full text-white text-3xl font-bold gap-1" id="grid-container"></div>
+    <div class="mt-6 text-center">
+      <button onclick="navigate('view-action')" class="text-danger font-medium">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-slots" class="view-section app-card p-8 pt-10 hidden">
+    <h2 class="text-xl font-bold text-primary text-center mb-2">
+      <span class="th-text">เลือกช่อง (Slot)</span><span class="en-text">Select a Slot</span>
+    </h2>
+    <p id="selected-locker-name" class="text-center text-gray-500 mb-4 text-xs font-bold"></p>
+    <div class="flex flex-wrap justify-center gap-2 mb-6 text-[10px] text-gray-500">
+      <span class="flex items-center"><div class="w-3 h-3 border border-primary rounded-sm mr-1"></div> <span class="th-text">ว่าง</span><span class="en-text">Available</span></span>
+      <span class="flex items-center"><div class="w-3 h-3 bg-gray-200 border border-gray-400 rounded-sm mr-1"></div> <span class="th-text">ไม่ว่าง</span><span class="en-text">Unavailable</span></span>
+      <span class="flex items-center"><div class="w-3 h-3 bg-yellow-100 border border-yellow-500 rounded-sm mr-1"></div> <span class="th-text">รอ/ซ่อม</span><span class="en-text">Maintenance</span></span>
+    </div>
+    <div id="slot-grid" class="grid grid-cols-2 gap-3 mb-6"></div>
+    <div class="mt-4 text-center">
+      <button onclick="navigate('view-grid')" class="text-danger font-medium text-sm">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-tc" class="view-section app-card p-8 pt-10 hidden">
+    <h2 class="text-xl font-bold text-primary text-center mb-6">
+      <span class="th-text">เงื่อนไขและข้อกำหนด</span><span class="en-text">Terms & Conditions</span>
+    </h2>
+    <div class="h-64 overflow-y-auto text-[11px] text-gray-500 space-y-2 mb-6 pr-2 border p-2 rounded-xl">
+      <p class="th-text">1. ตู้เก็บของทั้งหมดเป็นทรัพย์สินของ CoC</p><p class="en-text">1. All lockers are the property of CoC.</p>
+      <p class="th-text">2. นักศึกษาต้องดูแลรักษากุญแจและแม่กุญแจ</p><p class="en-text">2. Students must take care of their own padlock and keys.</p>
+      <p class="th-text">3. ห้ามเก็บสิ่งของอันตรายหรือผิดกฎหมายไว้ในตู้</p><p class="en-text">3. Storing dangerous or illegal items is strictly prohibited.</p>
+      <p class="th-text">4. ผู้ยืมจำเป็นต้องนำแม่กุญแจมาล็อกเอง</p><p class="en-text">4. The borrower must provide their own padlock.</p>
+    </div>
+    <div class="space-y-4">
+      <button onclick="navigate('view-form')" class="btn-main text-sm">
+        <span class="th-text">ฉันยอมรับและดำเนินการต่อ</span><span class="en-text">I Accept & Proceed</span>
+      </button>
+      <button onclick="navigate('view-slots')" class="text-danger font-medium block w-full text-center text-sm">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-form" class="view-section app-card p-8 pt-10 hidden">
+    <h2 class="text-xl font-bold text-primary text-center mb-6">BOOKING FORM</h2>
+    <div class="bg-yellow-50 border border-yellow-200 p-3 rounded-lg mb-6 text-center">
+      <p class="text-[10px] text-yellow-700 font-bold">
+        <span class="th-text">⚠️ จองได้สูงสุดไม่เกิน 1 สัปดาห์ (7 วัน)</span>
+        <span class="en-text">⚠️ Maximum booking period is 1 week (7 days)</span>
+      </p>
+    </div>
+    <div class="space-y-3 text-xs">
+      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">รหัสนักศึกษา</span><span class="en-text">Student ID</span></label><input type="text" id="b-stuId" class="input-field"></div>
+      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">ชื่อ - สกุล</span><span class="en-text">Full Name</span></label><input type="text" id="b-name" class="input-field"></div>
+      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">เบอร์มือถือ</span><span class="en-text">Phone</span></label><input type="text" id="b-phone" class="input-field"></div>
+      <div><label class="block text-gray-500 mb-1 ml-2">Email</label><input type="email" id="b-email" class="input-field"></div>
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">เริ่มวันที่</span><span class="en-text">Start Date</span></label><input type="date" id="b-start" class="input-field px-3"></div>
+        <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">ถึงวันที่</span><span class="en-text">End Date</span></label><input type="date" id="b-end" class="input-field px-3"></div>
+      </div>
+      <div>
+        <label class="block text-gray-500 mb-1 ml-2"><span class="th-text">วัตถุประสงค์</span><span class="en-text">Purpose</span></label><input type="text" id="b-purpose" class="input-field">
+      </div>
+    </div>
+    <div class="mt-6 bg-gray-50 p-3 rounded-xl border border-gray-200">
+      <label class="flex items-start space-x-2 cursor-pointer">
+        <input type="checkbox" id="b-pdpa" class="mt-1 w-4 h-4 text-primary bg-white border-gray-300 rounded focus:ring-primary shrink-0">
+        <span class="text-[10px] text-gray-600 leading-relaxed">
+          <span class="th-text">ข้าพเจ้าได้อ่านและยอมรับ<button type="button" onclick="showCustomModal('modal-pdpa')" class="text-primary font-bold underline px-1">นโยบายคุ้มครองข้อมูลส่วนบุคคล</button>และยินยอมให้ระบบประมวลผลข้อมูลเพื่อการจอง Locker</span>
+          <span class="en-text">I have read and accept the <button type="button" onclick="showCustomModal('modal-pdpa')" class="text-primary font-bold underline px-1">Privacy Notice</button> and consent to data processing for locker booking.</span>
+        </span>
+      </label>
+    </div>
+    <div class="mt-6 space-y-4">
+      <button onclick="prepareOTP('book')" class="btn-main text-sm">
+        <span class="th-text">รับรหัสยืนยัน (OTP)</span><span class="en-text">Get Verification Code (OTP)</span>
+      </button>
+      <button onclick="navigate('view-tc')" class="text-danger font-medium block w-full text-center text-sm">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-mylocker-login" class="view-section app-card p-8 pt-12 hidden h-[400px]">
+    <h2 class="text-xl font-bold text-primary text-center mb-8">My Locker</h2>
+    <div class="space-y-4 text-xs">
+      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">รหัสนักศึกษา</span><span class="en-text">Student ID</span></label><input type="text" id="ml-stuId" class="input-field"></div>
+      <div><label class="block text-gray-500 mb-1 ml-2">Email</label><input type="email" id="ml-email" class="input-field"></div>
+    </div>
+    <div class="mt-10 space-y-4">
+      <button onclick="checkMyLocker()" class="btn-main">
+        <span class="th-text">ตรวจสอบ</span><span class="en-text">Check</span>
+      </button>
+      <button onclick="navigate('view-action')" class="text-danger font-medium block w-full text-center">
+        <span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-otp" class="view-section app-card p-8 pt-12 hidden h-[400px]">
+    <h2 id="otp-title" class="text-xl font-bold text-primary text-center mb-8">
+      <span class="th-text">ยืนยันการจอง</span><span class="en-text">Confirm Booking</span>
+    </h2>
+    <p class="text-[11px] text-gray-500 mb-2 ml-2"><span class="th-text">กรุณาใส่ OTP (ส่งไปที่ Email:</span><span class="en-text">Enter OTP (Sent to Email:</span> <span id="otp-email-display"></span>)</p>
+    <div class="relative mb-8">
+      <input type="text" id="otp-input" value="" placeholder="------" class="input-field text-center tracking-[0.5em] font-bold">
+    </div>
+    <div class="space-y-4">
+      <button id="btn-otp-confirm" class="btn-main">
+        <span class="th-text">ยืนยัน</span><span class="en-text">Verify</span>
+      </button>
+      <button id="btn-otp-back" class="text-danger font-medium block w-full text-center">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-mylocker-detail" class="view-section app-card p-6 pt-10 hidden min-h-[450px]">
+    <div class="flex justify-between items-center mb-6 px-2">
+      <h2 class="text-xl font-bold text-primary">My Locker</h2>
+      <button id="btn-return-all" onclick="prepareReturn('all')" class="bg-red-50 text-red-500 text-[10px] px-3 py-1 rounded-lg font-bold border border-red-200 hover:bg-red-100 hidden">
+        <span class="th-text">คืนตู้ทั้งหมด</span><span class="en-text">Return All</span>
+      </button>
+    </div>
+    <div id="mylocker-list-container" class="space-y-4 max-h-[320px] overflow-y-auto px-2 pb-6"></div>
+    <button onclick="navigate('view-home')" class="text-gray-400 font-medium block w-full text-center mt-4">
+      <span class="th-text">ปิดหน้าต่าง</span><span class="en-text">Close</span>
+    </button>
+  </div>
+
+  <div id="view-cancel-confirm" class="view-section app-card p-8 pt-12 hidden h-[400px]">
+    <h2 class="text-xl font-bold text-primary text-center mb-8">
+      <span class="th-text">ยกเลิกคำขอ ?</span><span class="en-text">Cancel Request?</span>
+    </h2>
+    <div class="text-xs text-gray-500 space-y-3 mb-8 text-center bg-gray-50 p-4 rounded-xl">
+      <p><span class="th-text">ยกเลิกคำขอตู้:</span><span class="en-text">Cancel locker request:</span> <span id="c-locker" class="font-bold text-gray-800 text-sm"></span></p>
+    </div>
+    <div class="space-y-4">
+      <button onclick="processAction('cancelled')" class="btn-main">
+        <span class="th-text">ดำเนินการต่อ</span><span class="en-text">Proceed</span>
+      </button>
+      <button onclick="navigate('view-mylocker-detail')" class="text-danger font-medium block w-full text-center">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-return-confirm" class="view-section app-card p-8 pt-12 hidden h-[400px]">
+    <h2 class="text-xl font-bold text-primary text-center mb-6">
+      <span class="th-text">คืน Locker ?</span><span class="en-text">Return Locker?</span>
+    </h2>
+    <div class="text-xs text-gray-500 mb-8 text-center bg-gray-50 p-4 rounded-xl border border-gray-200">
+      <p class="mb-2"><span class="th-text">ท่านยืนยันที่จะคืนล็อกเกอร์</span><span class="en-text">Are you sure you want to return</span></p>
+      <p id="r-locker" class="font-bold text-primary text-lg"></p>
+    </div>
+    <div class="space-y-4">
+      <button onclick="prepareOTP('return')" class="btn-main">
+        <span class="th-text">ดำเนินการต่อ</span><span class="en-text">Proceed</span>
+      </button>
+      <button onclick="navigate('view-mylocker-detail')" class="text-danger font-medium block w-full text-center">
+        <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-status" class="view-section app-card p-10 pt-16 hidden h-[400px]">
+    <div class="flex flex-col items-center text-center">
+      <div id="status-icon" class="icon-pixel-check mb-6"></div>
+      <h2 id="status-title" class="text-[22px] font-bold text-primary mb-3">TITLE</h2>
+      <p id="status-desc" class="text-[11px] text-gray-500 whitespace-pre-line leading-relaxed">DESC</p>
+      <button onclick="navigate('view-home')" class="mt-8 text-gray-400 underline text-sm">
+        <span class="th-text">กลับหน้าหลัก</span><span class="en-text">Back to Home</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="view-admin-login" class="view-section app-card p-8 pt-12 hidden h-[450px]">
+    <h2 class="text-[22px] font-bold text-primary text-center mb-10">Admin Panel</h2>
+    <div class="space-y-5">
+      <div><label class="block text-xs text-gray-500 mb-1 ml-2">Username</label><input type="text" id="adminUser" class="input-field"></div>
+      <div><label class="block text-xs text-gray-500 mb-1 ml-2">Password</label><input type="password" id="adminPass" class="input-field"></div>
+    </div>
+    <div class="mt-10 space-y-4">
+      <button onclick="processAdminLogin()" class="btn-main"><span class="th-text">เข้าสู่ระบบ</span><span class="en-text">Login</span></button>
+      <button onclick="navigate('view-home')" class="text-danger font-medium block w-full text-center"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+    </div>
+  </div>
+
+  <div id="view-admin-dash" class="view-section hidden w-full max-w-5xl">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden min-h-[500px]">
+      <div class="flex border-b border-gray-200 bg-gray-50 overflow-x-auto text-sm">
+        <button onclick="switchAdminTab('dash-overview', this)" class="admin-tab active admin-tab-active p-4 whitespace-nowrap"><span class="th-text">ภาพรวม</span><span class="en-text">Overview</span></button>
+        <button onclick="switchAdminTab('dash-manage', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">จัดการตู้ (Lockers)</span><span class="en-text">Lockers Setup</span></button>
+        <button onclick="switchAdminTab('dash-calendar', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">ปฏิทินตู้ (Timeline)</span><span class="en-text">Timeline</span></button>
+        <button onclick="switchAdminTab('dash-requests', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">คำขอ & อนุมัติ</span><span class="en-text">Requests</span></button>
+        <button id="tab-ai-menu" onclick="switchAdminTab('dash-ai', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500">AI Assistant</button>
+        <button id="tab-staff-menu" onclick="switchAdminTab('dash-staff', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 hidden"><span class="th-text">จัดการเจ้าหน้าที่</span><span class="en-text">Staff Management</span></button>
+        <button onclick="adminLogout()" class="p-4 ml-auto text-danger whitespace-nowrap font-bold">Log out</button>
+      </div>
+
+      <div class="p-6">
+        <div id="admin-filter-bar" class="mb-6 bg-white p-4 rounded-xl border border-gray-200 flex flex-wrap gap-3 items-end shadow-sm">
+          <div><label class="block text-[10px] text-gray-500 mb-1"><span class="th-text">ตั้งแต่วันที่</span><span class="en-text">From</span></label><input type="date" id="filter-start" class="border rounded p-1 text-xs text-gray-700 outline-none focus:border-primary"></div>
+          <div><label class="block text-[10px] text-gray-500 mb-1"><span class="th-text">ถึงวันที่</span><span class="en-text">To</span></label><input type="date" id="filter-end" class="border rounded p-1 text-xs text-gray-700 outline-none focus:border-primary"></div>
+          <div class="flex space-x-2">
+            <button onclick="applyFilter('week')" class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded text-xs hover:bg-gray-200 font-bold"><span class="th-text">สัปดาห์นี้</span><span class="en-text">This Wk</span></button>
+            <button onclick="applyFilter('month')" class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded text-xs hover:bg-gray-200 font-bold"><span class="th-text">เดือนนี้</span><span class="en-text">This Mo</span></button>
+            <button onclick="applyFilter('custom')" class="bg-primary text-white px-4 py-1.5 rounded text-xs hover:bg-teal-600 font-bold">🔍 <span class="th-text">กรองข้อมูล</span><span class="en-text">Filter</span></button>
+            <button onclick="applyFilter('all')" class="bg-red-50 text-red-500 px-3 py-1.5 rounded text-xs hover:bg-red-100 font-bold"><span class="th-text">ล้าง</span><span class="en-text">Clear</span></button>
+          </div>
+          <div class="flex space-x-2 ml-auto">
+            <button onclick="exportData('excel')" class="bg-green-600 text-white px-4 py-1.5 rounded text-xs hover:bg-green-700 font-bold shadow-sm">📊 Export Excel</button>
+            <button onclick="exportData('pdf')" class="bg-red-600 text-white px-4 py-1.5 rounded text-xs hover:bg-red-700 font-bold shadow-sm">📄 Export PDF</button>
+          </div>
+        </div>
+
+        <div id="dash-overview" class="admin-sec block">
+          <h2 class="text-md font-bold text-gray-700 mb-4 text-center"><span class="th-text">ภาพรวมระบบ (สถิติ)</span><span class="en-text">System Overview</span></h2>
+          <div class="grid grid-cols-3 gap-4 text-center mb-6">
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+              <p class="text-3xl font-bold text-blue-600" id="stat-total">0</p>
+              <p class="text-xs text-gray-500 mt-1"><span class="th-text">คำขอทั้งหมด</span><span class="en-text">Total Requests</span></p>
+            </div>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+              <p class="text-3xl font-bold text-green-600" id="stat-active">0</p>
+              <p class="text-xs text-gray-500 mt-1"><span class="th-text">กำลังใช้งาน</span><span class="en-text">In Use</span></p>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-100">
+              <p class="text-3xl font-bold text-yellow-600" id="stat-pending">0</p>
+              <p class="text-xs text-gray-500 mt-1"><span class="th-text">รออนุมัติ/รอคืน</span><span class="en-text">Pending Action</span></p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white border rounded-xl p-4 shadow-sm">
+              <h3 class="text-xs font-bold text-gray-600 mb-2 text-center"><span class="th-text">สัดส่วนสถานะคำขอ</span><span class="en-text">Status Proportion</span></h3>
+              <div class="h-48 relative"><canvas id="statusPieChart"></canvas></div>
+            </div>
+            <div class="bg-white border rounded-xl p-4 shadow-sm relative">
+              <h3 class="text-xs font-bold text-gray-600 mb-2 text-center" id="lineChartTitle"><span class="th-text">ไทม์ไลน์การจองแยกตามตู้</span><span class="en-text">Booking Timeline</span></h3>
+              <button id="btn-chart-back" onclick="resetChartLine()" class="hidden absolute top-3 right-3 text-[9px] bg-gray-200 text-gray-700 px-2 py-1 rounded hover:bg-gray-300 font-bold"><span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span></button>
+              <div class="h-48 relative"><canvas id="timelineChart"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="dash-manage" class="admin-sec hidden">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-md font-bold text-gray-700"><span class="th-text">การจัดการตู้และช่อง</span><span class="en-text">Locker Management</span></h2>
+            <div class="flex space-x-2 text-[10px] text-gray-500 bg-gray-50 p-2 rounded-lg border">
+              <span class="flex items-center"><div class="w-3 h-3 bg-white border border-primary mr-1"></div> <span class="th-text">ว่าง</span><span class="en-text">Avail</span></span>
+              <span class="flex items-center"><div class="w-3 h-3 bg-blue-50 border border-blue-500 mr-1"></div> <span class="th-text">มีผู้ใช้งาน</span><span class="en-text">In Use</span></span>
+              <span class="flex items-center"><div class="w-3 h-3 bg-yellow-50 border border-yellow-500 mr-1"></div> <span class="th-text">รออนุมัติ</span><span class="en-text">Pend</span></span>
+              <span class="flex items-center"><div class="w-3 h-3 bg-gray-100 border border-gray-400 mr-1"></div> <span class="th-text">ปรับปรุง</span><span class="en-text">Maint</span></span>
+              <span class="flex items-center"><div class="w-3 h-3 bg-gray-700 mr-1"></div> <span class="th-text">ไม่ว่าง</span><span class="en-text">Unavail</span></span>
+            </div>
+            <button onclick="openConfigLocker(null)" class="bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-teal-600">+ <span class="th-text">เพิ่มตู้ใหม่</span><span class="en-text">Add Locker</span></button>
+          </div>
+          <div id="admin-visual-lockers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[400px] overflow-y-auto pr-2 pb-10"></div>
+        </div>
+
+        <div id="dash-requests" class="admin-sec hidden">
+          <h2 class="text-md font-bold text-gray-700 mb-4"><span class="th-text">รายการคำขอและสถานะ</span><span class="en-text">Requests List</span></h2>
+          <div class="overflow-x-auto h-[400px]">
+            <table class="w-full text-left text-sm whitespace-nowrap">
+              <thead class="bg-gray-100 text-gray-600">
+                <tr>
+                  <th class="p-3"><span class="th-text">รหัสคำขอ</span><span class="en-text">Req ID</span></th>
+                  <th class="p-3"><span class="th-text">นักศึกษา</span><span class="en-text">Student</span></th>
+                  <th class="p-3"><span class="th-text">ตู้-ช่อง</span><span class="en-text">Locker-Slot</span></th>
+                  <th class="p-3"><span class="th-text">เริ่ม-สิ้นสุด</span><span class="en-text">Period</span></th>
+                  <th class="p-3"><span class="th-text">สถานะ</span><span class="en-text">Status</span></th>
+                  <th class="p-3 text-center"><span class="th-text">จัดการ</span><span class="en-text">Action</span></th>
+                </tr>
+              </thead>
+              <tbody id="admin-req-table" class="divide-y divide-gray-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="dash-calendar" class="admin-sec hidden">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-md font-bold text-gray-700"><span class="th-text">ไทม์ไลน์การใช้ตู้รายเดือน</span><span class="en-text">Monthly Timeline</span></h2>
+            <div class="flex items-center space-x-3">
+              <div class="flex space-x-2 text-[9px] text-gray-500 bg-gray-50 p-1.5 rounded border">
+                <span class="flex items-center"><div class="w-2 h-2 bg-yellow-400 mr-1"></div> <span class="th-text">รออนุมัติ</span><span class="en-text">Pend</span></span>
+                <span class="flex items-center"><div class="w-2 h-2 bg-blue-500 mr-1"></div> <span class="th-text">กำลังใช้</span><span class="en-text">In Use</span></span>
+                <span class="flex items-center"><div class="w-2 h-2 bg-red-400 mr-1"></div> <span class="th-text">รอคืน</span><span class="en-text">Returning</span></span>
+              </div>
+              <input type="month" id="cal-month-picker" class="input-field border p-1.5 text-xs bg-white w-36" onchange="renderCalendar()">
+            </div>
+          </div>
+          <div class="overflow-x-auto border border-gray-200 rounded-xl max-h-[450px] shadow-sm relative" id="calendar-container"></div>
+        </div>
+
+        <div id="dash-staff" class="admin-sec hidden">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-md font-bold text-gray-700"><span class="th-text">จัดการข้อมูลเจ้าหน้าที่ (Staff)</span><span class="en-text">Staff Management</span></h2>
+            <button onclick="openStaffModal()" class="bg-primary text-white px-3 py-1.5 rounded-lg text-xs font-bold">+ <span class="th-text">เพิ่มเจ้าหน้าที่</span><span class="en-text">Add Staff</span></button>
+          </div>
+          <div class="overflow-x-auto h-[400px]">
+            <table class="w-full text-left text-sm whitespace-nowrap">
+              <thead class="bg-gray-100 text-gray-600">
+                <tr>
+                  <th class="p-3">Username</th>
+                  <th class="p-3"><span class="th-text">ชื่อ-สกุล</span><span class="en-text">Name</span></th>
+                  <th class="p-3"><span class="th-text">ตำแหน่ง (สังกัด)</span><span class="en-text">Position</span></th>
+                  <th class="p-3">Role</th>
+                  <th class="p-3 text-center"><span class="th-text">จัดการ</span><span class="en-text">Action</span></th>
+                </tr>
+              </thead>
+              <tbody id="admin-staff-table" class="divide-y divide-gray-100"></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div id="dash-ai" class="admin-sec hidden">
+          <h2 class="text-md font-bold text-gray-700 mb-4">AI Agent System Assist</h2>
+          <div class="flex flex-col bg-white border border-gray-200 rounded-xl h-[450px] shadow-sm overflow-hidden">
+            <div id="ai-chat-history" class="flex-grow p-4 overflow-y-auto space-y-4 bg-gray-50">
+              <div class="flex flex-col items-start">
+                <div class="bg-blue-100 text-blue-800 p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] shadow-sm">
+                  <span class="th-text">สวัสดีครับ ผมคือ AI ผู้ช่วยประจำระบบ คุณสามารถสั่งให้ผมสรุปข้อมูล หรือสั่ง Export ข้อมูลแบบระบุเงื่อนไขได้เลยครับ เช่น "ปริ้น excel รายชื่อคนที่ยังไม่คืนตู้ให้หน่อย"</span>
+                  <span class="en-text">Hello! I am your AI Assistant. You can ask me to summarize data or export specific reports. E.g., "Export excel of users who haven't returned lockers."</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-3 bg-white border-t border-gray-200 flex space-x-2">
+              <input type="text" id="ai-input" class="input-field border bg-gray-50 flex-grow text-xs" placeholder="Type command..." onkeypress="if(event.key === 'Enter') sendAiMessage()">
+              <button onclick="sendAiMessage()" class="bg-primary text-white font-bold px-4 rounded-full text-xs hover:bg-teal-600 shadow-sm"><span class="th-text">ส่ง</span><span class="en-text">Send</span></button>
+            </div>
+          </div>
+        </div>  
+        
+        <div id="floating-bell-container" class="fixed bottom-6 right-6 z-[90]">
+          <button onclick="toggleNotiPanel()" class="relative bg-white border-2 border-primary w-14 h-14 rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:bg-teal-50 transition flex items-center justify-center text-2xl">
+            🔔<span id="bell-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-6 h-6 flex items-center justify-center rounded-full animate-bounce hidden shadow-md">0</span>
+          </button>
+          <div id="noti-panel" class="absolute bottom-16 right-0 w-80 bg-white border border-gray-200 rounded-2xl shadow-2xl flex flex-col hidden overflow-hidden origin-bottom-right transition-all">
+            <div class="bg-primary text-white p-3 flex justify-between items-center shadow-sm z-10">
+              <span class="font-bold text-sm tracking-wide"><span class="th-text">เสียงแจ้งเตือน</span><span class="en-text">Noti Sound</span></span>
+              <label class="flex items-center space-x-1.5 cursor-pointer bg-white/20 px-2 py-1 rounded text-xs hover:bg-white/30 transition">
+                <input type="checkbox" id="noti-sound-toggle" onchange="saveSoundPref()" class="accent-white w-3 h-3">
+                <span class="font-bold"><span class="th-text">เปิดเสียง</span><span class="en-text">Sound ON</span></span>
+              </label>
+            </div>
+            <div id="noti-list" class="max-h-[350px] overflow-y-auto p-2 space-y-2 bg-gray-50 flex-grow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-quick-status" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[70]">
+    <div class="bg-white p-6 rounded-2xl w-72 text-center shadow-2xl">
+      <h3 class="text-primary font-bold mb-4 text-lg"><span class="th-text">ปรับสถานะช่อง</span><span class="en-text">Change Status:</span> <span id="qs-slot-name" class="text-gray-800"></span></h3>
+      <div class="flex flex-col space-y-2 mb-6 text-sm font-bold">
+        <button onclick="saveQuickStatus('available')" class="border border-primary text-primary py-2 rounded-lg hover:bg-teal-50 transition"><span class="th-text">ว่าง (Available)</span><span class="en-text">Available</span></button>
+        <button onclick="saveQuickStatus('maintenance')" class="border border-yellow-500 text-yellow-600 py-2 rounded-lg hover:bg-yellow-50 transition"><span class="th-text">ปรับปรุง (Maintenance)</span><span class="en-text">Maintenance</span></button>
+        <button onclick="saveQuickStatus('unavailable')" class="border border-gray-700 text-gray-700 py-2 rounded-lg hover:bg-gray-100 transition"><span class="th-text">ไม่ว่าง (Unavailable)</span><span class="en-text">Unavailable</span></button>
+      </div>
+      <button onclick="hideCustomModal('modal-quick-status')" class="text-gray-400 font-bold text-xs w-full underline"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+    </div>
+  </div>
+
+  <div id="modal-config-locker" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-2xl w-[90%] max-w-lg max-h-[90vh] flex flex-col shadow-2xl">
+      <div class="flex justify-between items-center mb-4 flex-shrink-0">
+        <h3 class="text-primary font-bold text-lg" id="cfg-title">Locker Setup</h3>
+        <button id="btn-delete-locker" onclick="deleteLockerConfig()" class="bg-red-50 text-red-500 text-xs px-3 py-1 rounded-lg hover:bg-red-100 hidden">🗑️ <span class="th-text">ลบตู้นี้</span><span class="en-text">Delete</span></button>
+      </div>
+      <div class="space-y-3 text-xs mb-4 flex-shrink-0">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">รหัสตู้ (เช่น L1)</span><span class="en-text">Locker ID (e.g. L1)</span> <span class="text-red-500">*</span></label><input type="text" id="cfg-l-id" class="input-field input-field-box border bg-white font-bold"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">ชื่ออ้างอิง</span><span class="en-text">Name</span></label><input type="text" id="cfg-l-name" class="input-field input-field-box border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">รหัสครุภัณฑ์</span><span class="en-text">Asset No.</span></label><input type="text" id="cfg-l-asset" class="input-field input-field-box border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">สถานที่ตั้ง</span><span class="en-text">Location</span></label><input type="text" id="cfg-l-location" class="input-field input-field-box border bg-white"></div>
+          <div class="col-span-2"><label class="block text-gray-500 mb-1">Google Maps Link</label><input type="text" id="cfg-l-map" class="input-field input-field-box border bg-white" placeholder="http://maps.google.com/..."></div>
+        </div>
+        <div class="col-span-2 bg-gray-50 p-3 rounded-lg border border-gray-200 mt-2">
+          <label class="block text-gray-700 font-bold mb-2 text-xs"><span class="th-text">ตั้งค่าการแสดงผล Grid</span><span class="en-text">Grid Layout Setup</span></label>
+          <div class="grid grid-cols-3 gap-2">
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">จำนวนคอลัมน์</span><span class="en-text">Columns</span></label><input type="number" id="cfg-l-cols" class="input-field input-field-box border bg-white py-1" value="3"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">จำนวนแถว</span><span class="en-text">Rows</span></label><input type="number" id="cfg-l-rows" class="input-field input-field-box border bg-white py-1" value="4"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ทิศทาง</span><span class="en-text">Direction</span></label>
+              <select id="cfg-l-dir" class="input-field input-field-box border bg-white py-1 text-[10px]">
+                <option value="row">ซ้าย->ขวา (Row)</option><option value="col">บน->ล่าง (Column)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between bg-gray-100 p-2 rounded-lg mb-2 flex-shrink-0">
+        <span class="text-[10px] font-bold text-gray-600"><span class="th-text">เปลี่ยนสถานะทั้งตู้:</span><span class="en-text">Set All Status:</span></span>
+        <div class="flex space-x-1">
+          <button type="button" onclick="setAllSlotsCond('available')" class="text-[10px] bg-white border border-primary text-primary px-2 py-1 rounded shadow-sm hover:bg-teal-50"><span class="th-text">ว่าง</span><span class="en-text">Avail</span></button>
+          <button type="button" onclick="setAllSlotsCond('maintenance')" class="text-[10px] bg-white border border-yellow-500 text-yellow-600 px-2 py-1 rounded shadow-sm hover:bg-yellow-50"><span class="th-text">ซ่อม</span><span class="en-text">Maint</span></button>
+          <button type="button" onclick="setAllSlotsCond('unavailable')" class="text-[10px] bg-white border border-gray-700 text-gray-700 px-2 py-1 rounded shadow-sm hover:bg-gray-200"><span class="th-text">ไม่ว่าง</span><span class="en-text">Unavail</span></button>
+        </div>
+      </div>
+      <div class="flex-grow overflow-y-auto mb-4 border rounded-xl p-3 bg-gray-50" id="cfg-slots-container"></div>
+      <button onclick="addConfigSlotRow()" class="text-xs text-primary font-bold mb-6">+ <span class="th-text">เพิ่มช่องใหม่</span><span class="en-text">Add Slot</span></button>
+      <div class="flex space-x-2 flex-shrink-0">
+        <button onclick="saveLockerConfig()" class="btn-main py-2 flex-1"><span class="th-text">บันทึกข้อมูล</span><span class="en-text">Save</span></button>
+        <button onclick="hideCustomModal('modal-config-locker')" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full font-bold"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-booking-detail" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[55]">
+    <div class="bg-white p-6 rounded-2xl w-80 shadow-2xl">
+      <h3 class="text-primary font-bold mb-4 text-lg"><span class="th-text">ข้อมูลผู้ใช้งานช่อง</span><span class="en-text">User Info Slot</span> <span id="bd-slot"></span></h3>
+      <div class="text-xs text-gray-600 space-y-3 mb-6 bg-gray-50 p-4 rounded-xl border border-gray-200">
+        <p><b><span class="th-text">รหัส นศ.:</span><span class="en-text">Student ID:</span></b> <span id="bd-stuId" class="text-gray-800"></span></p>
+        <p><b><span class="th-text">ชื่อ-สกุล:</span><span class="en-text">Name:</span></b> <span id="bd-name" class="text-gray-800"></span></p>
+        <p><b><span class="th-text">เบอร์ติดต่อ:</span><span class="en-text">Phone:</span></b> <span id="bd-phone" class="text-gray-800"></span></p>
+        <p><b><span class="th-text">ระยะเวลา:</span><span class="en-text">Period:</span></b> <br><span id="bd-period" class="text-primary font-bold"></span></p>
+        <p><b><span class="th-text">หมายเลขกุญแจ:</span><span class="en-text">Key No.:</span></b> <span id="bd-key" class="text-danger font-bold"></span></p>
+      </div>
+      <button onclick="hideCustomModal('modal-booking-detail')" class="btn-main py-2"><span class="th-text">ปิดหน้าต่าง</span><span class="en-text">Close</span></button>
+    </div>
+  </div>
+
+  <div id="modal-admin-approve" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-2xl w-[90%] max-w-sm">
+      <h3 class="text-primary font-bold mb-4 text-lg"><span class="th-text">จัดการคำขออนุมัติ</span><span class="en-text">Manage Request</span></h3>
+      <input type="hidden" id="apv-reqId">
+      <div class="mb-4 bg-blue-50 border border-blue-200 p-3 rounded-xl text-xs">
+          <span class="font-bold text-blue-800"><span class="th-text">วัตถุประสงค์:</span><span class="en-text">Purpose:</span></span> 
+          <span id="apv-purpose" class="text-blue-600"></span>
+      </div>
+      <div class="space-y-3 text-xs mb-6">
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="block text-gray-500 mb-1">Locker</label><select id="apv-locker" onchange="apvUpdateSlots()" class="input-field input-field-box border bg-white p-2 w-full"></select></div>
+          <div><label class="block text-gray-500 mb-1">Slot</label><select id="apv-slot" onchange="apvUpdateKey()" class="input-field input-field-box border bg-white p-2 w-full"></select></div>
+        </div>
+        <p class="text-[10px] text-gray-400 mt-1"><span class="th-text">หมายเลขกุญแจ:</span><span class="en-text">Key No.:</span> <span id="apv-key" class="font-bold text-danger"></span></p>
+        <div class="mt-4 border-t pt-4">
+          <label class="block text-gray-700 font-bold mb-1"><span class="th-text">นัดหมายวัน/เวลารับตู้</span><span class="en-text">Appointment Time</span></label>
+          <input type="text" id="apv-appointment" class="input-field input-field-box border bg-white w-full">
+        </div>
+        <div>
+          <label class="block text-gray-700 font-bold mb-1"><span class="th-text">หมายเหตุเพิ่มเติม</span><span class="en-text">Remark</span></label>
+          <textarea id="apv-remark" class="input-field input-field-box border bg-white w-full h-16"></textarea>
+        </div>
+      </div>
+      <div class="flex space-x-2">
+        <button onclick="submitAdminApprove()" class="btn-main py-2"><span class="th-text">ยืนยันอนุมัติ</span><span class="en-text">Approve</span></button>
+        <button onclick="hideCustomModal('modal-admin-approve')" class="btn-danger py-2 px-4 rounded-full"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="custom-alert" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[80]">
+    <div class="bg-white p-6 rounded-2xl w-80 text-center">
+      <h3 class="text-primary font-bold mb-2 text-lg" id="alert-title">Notification</h3>
+      <p class="text-sm text-gray-500 mb-6" id="alert-desc">Details</p>
+      <button onclick="hideCustomModal('custom-alert')" class="btn-main py-2">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-pdpa" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[80] p-4">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-lg max-h-[95vh] flex flex-col shadow-2xl">
+      <div class="flex justify-between items-center mb-4 flex-shrink-0 border-b border-gray-100 pb-3">
+        <h3 class="text-primary font-bold text-lg">Privacy Notice (PDPA)</h3>
+      </div>
+      <div class="overflow-y-auto text-xs text-gray-600 space-y-3 pr-2 flex-grow">
+        <p class="font-bold text-sm text-gray-800"><span class="th-text">นโยบายคุ้มครองข้อมูลส่วนบุคคล (สำหรับระบบจอง Locker)</span><span class="en-text">Personal Data Protection Policy</span></p>
+        <p><span class="th-text">ระบบจอง Locker ของวิทยาลัยการคอมพิวเตอร์ ให้ความสำคัญกับความเป็นส่วนตัวของคุณ เพื่อให้เป็นไปตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA) เราจึงขอแจ้งรายละเอียดดังนี้:</span><span class="en-text">We respect your privacy. To comply with the PDPA, we hereby inform you of the following:</span></p>
+        <div>
+          <p class="font-bold text-gray-800"><span class="th-text">1. ข้อมูลที่เราจัดเก็บ</span><span class="en-text">1. Data We Collect</span></p>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li><span class="font-semibold"><span class="th-text">ข้อมูลระบุตัวตน:</span><span class="en-text">Identity Data:</span></span> <span class="th-text">ชื่อ-นามสกุล, รหัสนักศึกษา</span><span class="en-text">Name, Student ID</span></li>
+            <li><span class="font-semibold"><span class="th-text">ข้อมูลสังกัด:</span><span class="en-text">Affiliation Data:</span></span> <span class="th-text">คณะ, สาขาวิชา</span><span class="en-text">Faculty, Major</span></li>
+            <li><span class="font-semibold"><span class="th-text">ข้อมูลติดต่อ:</span><span class="en-text">Contact Data:</span></span> Email, Phone Number</li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-bold text-gray-800"><span class="th-text">2. วัตถุประสงค์การจัดเก็บ</span><span class="en-text">2. Purpose</span></p>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li><span class="th-text">เพื่อใช้ในการยืนยันตัวตนสมาชิกและสิทธิ์ในการใช้งาน Locker ของคณะ</span><span class="en-text">To verify identity and eligibility.</span></li>
+            <li><span class="th-text">เพื่อใช้ติดต่อสื่อสารในกรณีฉุกเฉิน หรือแจ้งเตือนการคืน Locker</span><span class="en-text">To contact in emergencies or for locker returns.</span></li>
+            <li><span class="th-text">เพื่อใช้บริหารจัดการทรัพยากรภายในคณะ</span><span class="en-text">To manage resources effectively.</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-bold text-gray-800"><span class="th-text">3. ระยะเวลาการจัดเก็บ</span><span class="en-text">3. Retention Period</span></p>
+          <p class="mt-1"><span class="th-text">เราจะเก็บข้อมูลของคุณไว้ตลอดระยะเวลาที่คุณยังคงสถานะสมาชิก และจะลบข้อมูลออกจากระบบภายใน 90 วันหลังจากสิ้นสุดการจองหรือคืน Locker เรียบร้อยแล้ว</span><span class="en-text">Data is kept during membership and deleted 90 days after locker return.</span></p>
+        </div>
+      </div>
+      <div class="mt-6 flex-shrink-0">
+        <button onclick="hideCustomModal('modal-pdpa')" class="btn-main py-2 text-sm"><span class="th-text">ฉันเข้าใจและปิดหน้าต่างนี้</span><span class="en-text">I understand and close</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-staff" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-2xl w-[90%] max-w-md shadow-2xl">
+      <h3 class="text-primary font-bold mb-4 text-lg" id="staff-modal-title">Staff Profile</h3>
+      <input type="hidden" id="sf-id">
+      <div class="space-y-3 text-xs mb-6">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-gray-500 mb-1">Username <span class="text-red-500">*</span></label><input type="text" id="sf-username" class="input-field border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1">Password <span class="text-red-500">*</span></label><input type="text" id="sf-password" class="input-field border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">ชื่อ</span><span class="en-text">First Name</span> <span class="text-red-500">*</span></label><input type="text" id="sf-name" class="input-field border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">นามสกุล</span><span class="en-text">Last Name</span> <span class="text-red-500">*</span></label><input type="text" id="sf-surname" class="input-field border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">ตำแหน่ง</span><span class="en-text">Position</span></label><input type="text" id="sf-position" class="input-field border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">สังกัด</span><span class="en-text">Dept.</span></label><input type="text" id="sf-department" class="input-field border bg-white" value="CoC"></div>
+          <div class="col-span-2">
+            <label class="block text-gray-500 mb-1">Role <span class="text-red-500">*</span></label>
+            <select id="sf-role" class="input-field border bg-white font-bold text-primary">
+                  <option value="staff">Staff</option>
+                  <option value="admin">Admin</option>
+              </select>
+          </div>
+          <div class="col-span-2"><label class="block text-gray-500 mb-1">Email</label><input type="email" id="sf-email" class="input-field border bg-white"></div>
+        </div>
+        <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <label class="flex items-center space-x-2 text-gray-700 cursor-pointer">
+            <input type="checkbox" id="sf-notify" class="w-4 h-4 text-primary bg-white border-gray-300 rounded focus:ring-primary">
+            <span class="font-bold text-[11px]"><span class="th-text">รับอีเมลแจ้งเตือนเมื่อมีคำขอใหม่</span><span class="en-text">Receive email notifications</span></span>
+          </label>
+        </div>
+      </div>
+      <div class="flex space-x-2">
+        <button onclick="saveStaff()" class="btn-main py-2 flex-1"><span class="th-text">บันทึกข้อมูล</span><span class="en-text">Save</span></button>
+        <button onclick="hideCustomModal('modal-staff')" class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-full"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-return-schedule" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-2xl w-[90%] max-w-sm">
+      <h3 class="text-primary font-bold mb-4 text-lg"><span class="th-text">แจ้งนัดหมายคืนตู้ Locker</span><span class="en-text">Schedule Return</span></h3>
+      <input type="hidden" id="rs-reqId">
+      <div class="space-y-3 text-xs mb-6">
+        <div><label class="block text-gray-500 mb-1"><span class="th-text">วัน/เวลานัดหมาย</span><span class="en-text">Appointment</span> <span class="text-red-500">*</span></label><input type="text" id="rs-appointment" class="input-field border bg-white"></div>
+        <div><label class="block text-gray-500 mb-1"><span class="th-text">แจ้งค่าปรับเบื้องต้น (บาท)</span><span class="en-text">Est. Fine (THB)</span></label><input type="number" id="rs-fine" placeholder="0" class="input-field border bg-white"></div>
+        <div><label class="block text-gray-500 mb-1"><span class="th-text">หมายเหตุ/แจ้งเตือนนักศึกษา</span><span class="en-text">Remark to student</span></label><textarea id="rs-remark" class="input-field border bg-white h-16"></textarea></div>
+      </div>
+      <div class="flex space-x-2">
+        <button onclick="submitReturnSchedule()" class="btn-main py-2 flex-1"><span class="th-text">ส่งอีเมลแจ้งเตือน</span><span class="en-text">Send Email</span></button>
+        <button onclick="hideCustomModal('modal-return-schedule')" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full font-bold"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-return-complete" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-2xl w-[90%] max-w-sm">
+      <h3 class="text-primary font-bold mb-4 text-lg"><span class="th-text">ตรวจรับคืนตู้ Locker</span><span class="en-text">Complete Return</span></h3>
+      <input type="hidden" id="rc-reqId">
+      <div class="space-y-3 text-xs mb-6">
+        <div><label class="block text-gray-500 mb-1"><span class="th-text">สภาพตู้ Locker</span><span class="en-text">Locker Condition</span></label>
+          <select id="rc-condition" class="input-field border bg-white">
+             <option value="ปกติ">ปกติ (Good)</option><option value="ชำรุด/เสียหาย">ชำรุด/เสียหาย (Damaged)</option><option value="กุญแจหาย">กุญแจหาย (Lost Key)</option>
+          </select>
+        </div>
+        <div><label class="block text-gray-500 mb-1"><span class="th-text">สรุปค่าปรับ (บาท)</span><span class="en-text">Final Fine (THB)</span></label><input type="number" id="rc-fine" placeholder="0" class="input-field border bg-white text-red-500 font-bold"></div>
+        <div><label class="block text-gray-500 mb-1"><span class="th-text">บันทึกเพิ่มเติม</span><span class="en-text">Internal Note</span></label><textarea id="rc-remark" class="input-field border bg-white h-16"></textarea></div>
+      </div>
+      <div class="flex space-x-2">
+        <button onclick="submitReturnComplete()" class="btn-main py-2 flex-1"><span class="th-text">บันทึกรับคืน (จบคำขอ)</span><span class="en-text">Complete</span></button>
+        <button onclick="hideCustomModal('modal-return-complete')" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full font-bold"><span class="th-text">ยกเลิก</span><span class="en-text">Cancel</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-request-detail" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[60]">
+    <div class="bg-white p-6 rounded-2xl w-[90%] max-w-md max-h-[90vh] overflow-y-auto">
+      <h3 class="text-primary font-bold text-lg mb-4"><span class="th-text">รายละเอียดคำขอ</span><span class="en-text">Request Details</span> <span id="vd-reqId" class="text-gray-500 text-sm"></span></h3>
+      <div id="vd-content" class="text-xs text-gray-700 space-y-2 bg-gray-50 p-4 rounded-xl border border-gray-200"></div>
+      <button onclick="hideCustomModal('modal-request-detail')" class="mt-6 bg-gray-200 text-gray-700 py-2 w-full rounded-full font-bold"><span class="th-text">ปิดหน้าต่าง</span><span class="en-text">Close</span></button>
+    </div>
+  </div>
+
+  <div id="footer" class="mt-auto pt-8 text-center text-primary text-[10px] w-full">
+    <button onclick="navigate('view-admin-login')" class="text-gray-400 underline opacity-50 hover:opacity-100">Admin Access</button>
+  </div>
+
+  <div id="loading-overlay" class="fixed inset-0 bg-white bg-opacity-80 flex flex-col items-center justify-center hidden z-[100]">
+    <div class="w-12 h-12 border-4 border-gray-200 border-t-primary rounded-full animate-spin mb-4"></div>
+    <p class="text-primary font-bold text-sm tracking-widest animate-pulse"><span class="th-text">กำลังประมวลผล...</span><span class="en-text">Processing...</span></p>
+  </div>
+
+  <script>
+    // ==========================================
+    // 🔴 1. ตั้งค่า URL ของ Google Apps Script (Web App) ที่นี่!
+    // ==========================================
+    // ต้องนำ URL ที่ได้จากการกด Deploy -> New Deployment -> Web App มาใส่ในเครื่องหมายคำพูดด้านล่าง
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzzon1fJ-xeRfoL1xHIME3mpelhOfEJb1Y5DBa12BwqZKoM-IMmBSjC5QEZITFwsi46TQ/exec"; 
+    
+    // ==========================================
+
+    let currentLang = 'th';
+    function t(thText, enText) {
+        return currentLang === 'en' ? enText : thText;
+    }
+
+    function switchGlobalLang(lang) {
+        currentLang = lang;
+        const thBtn = document.getElementById('g-btn-th');
+        const enBtn = document.getElementById('g-btn-en');
+
+        if (lang === 'th') {
+            document.body.classList.add('lang-th'); document.body.classList.remove('lang-en');
+            thBtn.classList.add('bg-white', 'shadow', 'text-primary'); thBtn.classList.remove('text-gray-500');
+            enBtn.classList.remove('bg-white', 'shadow', 'text-primary'); enBtn.classList.add('text-gray-500');
+        } else {
+            document.body.classList.add('lang-en'); document.body.classList.remove('lang-th');
+            enBtn.classList.add('bg-white', 'shadow', 'text-primary'); enBtn.classList.remove('text-gray-500');
+            thBtn.classList.remove('bg-white', 'shadow', 'text-primary'); thBtn.classList.add('text-gray-500');
+        }
+        
+        if (loggedInUser && document.getElementById('view-admin-dash') && !document.getElementById('view-admin-dash').classList.contains('hidden')) {
+            loadAdminData(true); 
+        }
+    }
+
+    let pollingInterval = null;
+    function startDashboardPolling() {
+        if (pollingInterval) clearInterval(pollingInterval);
+        pollingInterval = setInterval(() => {
+            if (loggedInUser && !document.getElementById('view-admin-dash').classList.contains('hidden')) {
+                loadAdminData(true);
+            }
+        }, 10000);
+    }
+    function stopDashboardPolling() {
+        if (pollingInterval) clearInterval(pollingInterval);
+    }
+    
+    function escapeHTML(str) {
+        if (str === null || str === undefined) return '';
+        return str.toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // ==========================================
+    // 🔴 2. เปลี่ยนแปลง: ระบบยิง API (ย้ายจาก google.script.run เป็น fetch)
+    // ==========================================
+    const originalFetch = window.fetch;
+    window.fetch = async function(url, options) {
+        const isBackground = options && options.background;
+        if (!isBackground) document.getElementById('loading-overlay').classList.remove('hidden');
+        
+        if (!options) options = {};
+        if (!options.headers) options.headers = {};
+        const token = localStorage.getItem('admin_token');
+        if (token) options.headers['Authorization'] = token;
+
+        // ดักจับการยิง API ภายใน
+        if (url.startsWith('/api/')) {
+            try {
+                // ยิงข้อมูลไปหา GAS (ใช้ text/plain เพื่อหลบเลี่ยงปัญหา CORS Preflight ใน GitHub Pages)
+                const response = await originalFetch(GAS_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8' 
+                    },
+                    body: JSON.stringify({
+                        endpoint: url,
+                        options: options
+                    })
+                });
+                
+                const resObj = await response.json();
+                
+                if (!isBackground) document.getElementById('loading-overlay').classList.add('hidden');
+                
+                if (resObj.message === 'Unauthorized (Session Invalid)') {
+                    adminLogout(); 
+                    return { json: async () => resObj };
+                }
+                if (resObj.message === 'FORBIDDEN') {
+                    showAlert(t('สิทธิ์ไม่เพียงพอ','Permission Denied'), resObj.detail);
+                    switchAdminTab('dash-overview', document.querySelector('[onclick*="dash-overview"]'));
+                    return { json: async () => resObj };
+                }
+                
+                return { json: async () => resObj };
+                
+            } catch (err) {
+                if (!isBackground) document.getElementById('loading-overlay').classList.add('hidden');
+                console.error("API Fetch Error:", err);
+                throw err;
+            }
+        }
+        
+        // สำหรับการยิงดึงข้อมูลนอกระบบ (เช่น AI Groq)
+        const res = await originalFetch(url, options);
+        if (!isBackground) document.getElementById('loading-overlay').classList.add('hidden');
+        return res;
+    };
+
+    function adminLogout() {
+        loggedInUser = null;
+        stopDashboardPolling();
+        localStorage.removeItem('admin_token'); 
+        localStorage.removeItem('admin_user');
+        
+        document.getElementById('adminUser').value = '';
+        document.getElementById('adminPass').value = '';
+        
+        navigate('view-home'); 
+    }
+
+    let currentRecord = null;
+    let currentLockers = [];
+    let bookingData = { lockerId: null, slot: null };
+    let allAdminData = null;
+    let currentFilteredBookings = [];
+    let allStaffData = []; 
+
+    function isValidCoCStudent(studentId) {
+        const regex = /^\d{2}306\d{5}$/;
+        return regex.test(studentId);
+    }
+
+    function navigate(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+        document.getElementById(viewId).classList.remove('hidden');
+        document.getElementById('footer').style.display = (viewId === 'view-home' || viewId === 'view-action') ? 'block' : 'none';
+    }
+    function showCustomModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function hideCustomModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function showAlert(title, desc) {
+        document.getElementById('alert-title').innerText = title;
+        document.getElementById('alert-desc').innerText = desc;
+        showCustomModal('custom-alert');
+    }
+
+    async function loadLockersForBooking() {
+        try {
+            if (currentLockers.length > 0) {
+                renderLockerGridUser(currentLockers);
+                navigate('view-grid');
+                fetch('/api/lockers/status', { background: true }).then(res => res.json()).then(result => {
+                    if (result.success) { currentLockers = result.data; renderLockerGridUser(currentLockers); }
+                });
+                return;
+            }
+            const res = await fetch('/api/lockers/status');
+            const result = await res.json();
+            if (result.success) {
+                currentLockers = result.data;
+                renderLockerGridUser(currentLockers);
+                navigate('view-grid');
+            } else showAlert(t('ผิดพลาด','Error'), t('ไม่สามารถโหลดข้อมูลตู้ได้','Cannot load lockers data.'));
+        } catch (e) { showAlert('Error', t('ไม่สามารถติดต่อเซิร์ฟเวอร์','Server connection failed.')); }
+    }
+
+    function renderLockerGridUser(lockers) {
+        const container = document.getElementById('grid-container');
+        container.innerHTML = lockers.map(l => {
+            const availableCount = (l.slotsData || []).filter(s => s.status === 'available').length;
+            const isFull = availableCount === 0;
+            const bgClass = isFull ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-primary cursor-pointer hover:opacity-90';
+            return `
+            <div onclick="${isFull ? '' : `selectLockerUser('${l.id}')`}" class="${bgClass} flex flex-col items-center justify-center py-6 border border-white relative text-center px-1">
+                <span class="text-2xl">${l.id.replace('L', '')}</span>
+                <span class="text-[10px] font-normal mt-1">${isFull ? t('เต็ม','Full') : t('ว่าง ','Avail ') + availableCount}</span>
+            </div>`;
+        }).join('');
+    }
+
+    function selectLockerUser(lockerId) {
+        const locker = currentLockers.find(l => l.id === lockerId);
+        bookingData.lockerId = locker.id;
+        const mapHtml = locker.mapLink ? ` <a href="${locker.mapLink}" target="_blank" class="text-primary underline font-bold ml-1">📍 ${t('ดูแผนที่','Map')}</a>` : '';
+        document.getElementById('selected-locker-name').innerHTML = `${t('กำลังเลือกช่องในตู้:','Selecting in:')} ${locker.name} (${locker.id})<br><span class="text-[10px] text-gray-500 font-normal">${t('สถานที่:','Location:')} ${locker.location || '-'}${mapHtml}</span>`;
+
+        const grid = document.getElementById('slot-grid');
+        grid.innerHTML = (locker.slotsData || []).map(s => {
+            if (s.status === 'hidden' || s.condition === 'hidden') return `<div class="invisible"></div>`;
+            let cssClass = 'slot-box text-xs ';
+            if (s.status === 'available') cssClass += 'slot-available';
+            else if (s.status === 'pending' || s.status === 'return_pending' || s.status === 'maintenance') cssClass += 'slot-pending';
+            else if (s.status === 'unavailable') cssClass += 'slot-unavailable';
+            else cssClass += 'slot-booked';
+            return `<div class="${cssClass}" ${s.status === 'available' ? `onclick="selectSlotUser('${s.name}')"` : ''}>${s.name}</div>`;
+        }).join('');
+
+        const layout = locker.layout || { cols: 3, rows: 4, direction: 'row' };
+        grid.className = "grid gap-3 mb-6";
+        grid.style.gridTemplateColumns = `repeat(${layout.cols}, minmax(0, 1fr))`;
+        grid.style.gridAutoFlow = layout.direction === 'col' ? 'column' : 'row';
+        if (layout.direction === 'col') grid.style.gridTemplateRows = `repeat(${layout.rows}, minmax(0, 1fr))`;
+
+        navigate('view-slots');
+    }
+
+    function selectSlotUser(slotName) {
+        bookingData.slot = slotName;
+        navigate('view-tc');
+    }
+
+    let otpSending = false; 
+
+    async function prepareOTP(flowType) {
+        if (otpSending) return;
+        otpSending = true;
+
+        try {
+            if (flowType === 'book') {
+                const studentId = document.getElementById('b-stuId').value;
+                const email = document.getElementById('b-email').value;
+                const start = document.getElementById('b-start').value;
+                const end = document.getElementById('b-end').value;
+
+                if (!document.getElementById('b-pdpa').checked) {
+                    showAlert(t('กรุณายอมรับนโยบาย','Please Accept Policy'), t('กรุณายอมรับนโยบาย PDPA ก่อนทำรายการ','Please accept the PDPA policy before proceeding.'));
+                    return;
+                }
+                if (!email || !start || !end) {
+                    showAlert(t('ข้อมูลไม่ครบ','Incomplete Data'), t('กรุณากรอกวันที่และอีเมลให้ครบถ้วน','Please fill out dates and email.'));
+                    return;
+                }
+                if (!isValidCoCStudent(studentId)) {
+                    showAlert(t('รหัสนักศึกษาไม่ถูกต้อง','Invalid Student ID'), t('ระบบสงวนสิทธิ์เฉพาะนักศึกษา CoC','Service reserved for CoC students only.'));
+                    return;
+                }
+
+                const diffDays = (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24);
+                if (diffDays > 7) {
+                    showAlert(t('ระยะเวลาเกินกำหนด','Exceeded Limit'), t('จองได้สูงสุดไม่เกิน 1 สัปดาห์','Max duration is 1 week.'));
+                    return;
+                }
+                if (diffDays < 0) {
+                    showAlert(t('วันที่ไม่ถูกต้อง','Invalid Date'), t('วันที่เริ่มต้นต้องไม่มากกว่าสิ้นสุด','Start date cannot be after end date.'));
+                    return;
+                }
+
+                document.getElementById('otp-title').innerText = t('ยืนยันการจอง','Confirm Booking');
+                document.getElementById('otp-email-display').innerText = email;
+
+                try {
+                    await fetch('/api/send-otp', { method: 'POST', body: JSON.stringify({ email }) });
+                } catch(e) {
+                    showAlert('Error', t('ไม่สามารถส่ง OTP ได้','Failed to send OTP.'));
+                    return;
+                }
+
+                document.getElementById('btn-otp-confirm').onclick = () => verifyAndSubmitOTP('book', email);
+                document.getElementById('btn-otp-back').onclick = () => navigate('view-form');
+
+            } else if (flowType === 'return') {
+                const emailToUse = currentRecords[0].email;
+                document.getElementById('otp-title').innerText = actionTargetIds.length > 1
+                    ? t(`ยืนยันคืนตู้ (${actionTargetIds.length} ตู้)`, `Return (${actionTargetIds.length}) Lockers`)
+                    : t('ยืนยันการคืน Locker','Confirm Return');
+                document.getElementById('otp-email-display').innerText = emailToUse;
+
+                try {
+                    await fetch('/api/send-otp', { method: 'POST', body: JSON.stringify({ email: emailToUse }) });
+                } catch(e) {
+                    showAlert('Error', t('ไม่สามารถส่ง OTP ได้','Failed to send OTP.'));
+                    return;
+                }
+
+                document.getElementById('btn-otp-confirm').onclick = () => verifyAndSubmitOTP('return', emailToUse);
+                document.getElementById('btn-otp-back').onclick = () => navigate('view-return-confirm');
+            }
+
+            document.getElementById('otp-input').value = '';
+            navigate('view-otp');
+
+        } finally {
+            otpSending = false;
+        }
+    }
+
+    async function verifyAndSubmitOTP(flowType, email) {
+        const otpVal = document.getElementById('otp-input').value.trim();
+        if (!otpVal) return showAlert(t('กรุณากรอก OTP','Please enter OTP'), t('ระบบส่งรหัส 6 หลักไปยังอีเมลของคุณแล้ว','6-digit code has been sent to your email.'));
+        
+        const btn = document.getElementById('btn-otp-confirm');
+        btn.disabled = true;
+        btn.innerHTML = t('กำลังตรวจสอบ...','Verifying...');
+
+        try {
+            const res = await fetch('/api/verify-otp', { method: 'POST', body: JSON.stringify({ email, otp: otpVal }) });
+            const result = await res.json();
+            
+            if (result.success) {
+                if (flowType === 'book') await submitBooking();
+                else await processAction('returned');
+            } else {
+                showAlert(t('รหัส OTP ไม่ถูกต้อง','Invalid OTP'), result.message || t('กรุณาตรวจสอบรหัสในอีเมลอีกครั้ง หรือรหัสอาจหมดอายุ','Please check the code again or it might be expired.'));
+            }
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = t('ยืนยัน','Verify');
+        }
+    }
+
+    async function submitBooking() {
+        const payload = {
+            lockerId: bookingData.lockerId, slot: bookingData.slot,
+            studentId: document.getElementById('b-stuId').value, name: document.getElementById('b-name').value,
+            phone: document.getElementById('b-phone').value, email: document.getElementById('b-email').value,
+            purpose: document.getElementById('b-purpose').value,
+            startDate: document.getElementById('b-start').value, endDate: document.getElementById('b-end').value
+        };
+        try {
+            const res = await fetch('/api/book', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const result = await res.json();
+            if (result.success) {
+                showStatus('booking-success', result.requestNo);
+            } else {
+                showAlert(
+                    t('ไม่สำเร็จ', 'Failed'),
+                    result.message || result.reason || t('ช่องนี้เพิ่งถูกจองไป กรุณาเลือกช่องใหม่', 'This slot was just taken. Please select another.')
+                );
+                try {
+                    const refreshRes = await fetch('/api/lockers/status', { background: true });
+                    const refreshResult = await refreshRes.json();
+                    if (refreshResult.success) {
+                        currentLockers = refreshResult.data;
+                    }
+                } catch (_) {
+                }
+                selectLockerUser(bookingData.lockerId);
+            }
+        } catch (e) {
+            showAlert('Error', t('ไม่สามารถติดต่อระบบได้', 'Cannot contact server.'));
+        }
+    }
+
+    function showStatus(type, extraData = '') {
+        navigate('view-status');
+        const icon = document.getElementById('status-icon');
+        const title = document.getElementById('status-title');
+        const desc = document.getElementById('status-desc');
+        if (type === 'booking-success') {
+            icon.className = 'icon-pixel-check'; title.innerText = t('ส่งคำขอสำเร็จ','Success');
+            desc.innerText = t(`หมายเลขคำขอ: ${extraData}\nกรุณารอการติดต่อกลับ\n\n⚠️ นศ. ต้องนำแม่กุญแจมาล็อกตู้ด้วยตนเอง`, `Req ID: ${extraData}\nPlease wait for confirmation.\n\n⚠️ Please bring your own padlock.`);
+        } else if (type === 'return-success') {
+            icon.className = 'icon-pixel-check'; title.innerText = t('ส่งคำขอเสร็จสิ้น','Submitted');
+            desc.innerText = t('กรุณาติดต่อเจ้าหน้าที่ เพื่อตรวจสอบและคืนตู้','Please contact staff to return the locker.');
+        } else if (type === 'cancel-success') {
+            icon.className = 'icon-pixel-check'; title.innerText = t('ยกเลิกคำขอสำเร็จ','Cancelled');
+            desc.innerText = t('ยกเลิกคำขอหมายเลข: ','Cancelled Req: ') + extraData;
+        }
+    }
+
+    async function checkMyLocker() {
+        const studentId = document.getElementById('ml-stuId').value;
+        const email = document.getElementById('ml-email').value;
+        if (!isValidCoCStudent(studentId)) return showAlert(t('รหัสนักศึกษาไม่ถูกต้อง','Invalid Student ID'), t('ระบบนี้สงวนสิทธิ์เฉพาะนักศึกษาวิทยาลัยการคอมพิวเตอร์เท่านั้น','Only for CoC Students.'));
+        try {
+            const res = await fetch('/api/mylocker', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ studentId, email }) });
+            const result = await res.json();
+            if (result.success) {
+                currentRecords = result.data;
+                showMyLockerDetail();
+            } else showAlert(t('ไม่พบข้อมูล','Not Found'), result.message);
+        } catch (e) { showAlert('Error', t('เชื่อมต่อผิดพลาด','Connection Error')); }
+    }
+
+    function showMyLockerDetail() {
+        navigate('view-mylocker-detail');
+        const container = document.getElementById('mylocker-list-container');
+        container.innerHTML = '';
+
+        const activeBookings = currentRecords.filter(r => r.status === 'booked' || r.status === 'return_pending');
+        document.getElementById('btn-return-all').style.display = activeBookings.length > 1 ? 'block' : 'none';
+
+        currentRecords.forEach(record => {
+            let cardHtml = '';
+            if (record.status === 'pending') {
+                cardHtml = `
+                <div class="border border-yellow-300 bg-yellow-50 rounded-xl p-4 text-xs text-gray-600 relative shadow-sm">
+                    <p class="mb-1">${t('คำขอเลขที่:','Req ID:')} <span class="font-bold text-gray-800">${record.id}</span></p>
+                    <p class="mb-2">${t('ตู้-ช่อง:','Locker-Slot:')} <span class="font-bold text-gray-800 text-sm">${record.lockerId}-${record.slot}</span></p>
+                    <p>Status: <span class="text-yellow-600 font-bold bg-yellow-100 px-2 py-0.5 rounded text-[10px]">${t('รอการอนุมัติ / รอรับตู้','Pending Approval')}</span></p>
+                    <button onclick="prepareCancel('${record.id}')" class="absolute top-4 right-4 text-danger font-bold text-[10px] underline">${t('ยกเลิกคำขอ','Cancel')}</button>
+                </div>`;
+            } else if (record.status === 'booked' || record.status === 'return_pending') {
+                const mapBtn = record.mapLink ? `<a href="${record.mapLink}" target="_blank" class="text-primary underline font-bold ml-1">📍 ${t('แผนที่','Map')}</a>` : '';
+                let returnAlertHtml = '';
+                if (record.returnAppointment) {
+                    returnAlertHtml = `
+                        <div class="bg-red-50 p-3 rounded-lg border border-red-200 mt-3 mb-2">
+                            <p class="font-bold text-red-700 text-[10px] mb-1">${t('แจ้งนัดหมายคืนตู้:','Return Appt:')} ${record.returnAppointment}</p>
+                            ${record.returnFine > 0 ? `<p class="text-[10px] text-red-500 font-bold">${t('ค่าปรับเบื้องต้น:','Est. Fine:')} ${record.returnFine} THB</p>` : ''}
+                            <p class="text-[9px] text-gray-500 italic mt-1">* ${record.returnRemark || t('กรุณานำแม่กุญแจมาด้วย','Please bring padlock')}</p>
+                        </div>
+                    `;
+                }
+                const statusBadge = record.status === 'return_pending'
+                    ? `<span class="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold animate-pulse">${t('รอส่งมอบคืน','Returning')}</span>`
+                    : `<span class="bg-blue-100 text-blue-600 px-2 py-0.5 rounded text-[10px] font-bold">${t('กำลังใช้งาน','In Use')}</span>`;
+
+                cardHtml = `
+                <div class="border border-primary bg-white rounded-xl p-4 text-xs text-gray-600 relative shadow-sm">
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-lg font-bold text-primary">${record.lockerId} <span class="text-gray-400 text-sm mx-1">|</span> <span class="text-gray-800">${record.slot}</span></p>
+                        ${statusBadge}
+                    </div>
+                    <p class="text-[10px] text-gray-500 mb-3">${t('สถานที่:','Location:')} ${record.location || '-'} ${mapBtn}</p>
+                    <div class="bg-gray-50 p-2 rounded-lg border border-gray-200 mb-2">
+                        <p class="font-bold text-gray-700 text-[10px]">${t('เวลานัดหมายรับตู้:','Appt Time:')} <span class="text-primary">${record.appointment || '-'}</span></p>
+                        ${record.remark ? `<p class="text-[9px] text-gray-500 italic mt-1">* ${record.remark}</p>` : ''}
+                    </div>
+                    ${returnAlertHtml}
+                    <button onclick="prepareReturn('${record.id}')" class="w-full bg-white border border-danger text-danger py-1.5 rounded-full font-bold text-[10px] hover:bg-red-50 transition mt-2">
+                        ${record.status === 'return_pending' ? t('กดยืนยันคืนตู้อีกครั้ง (OTP)','Confirm Return (OTP)') : t('คืน LOCKER นี้','Return Locker')}
+                    </button>
+                </div>`;
+            }
+            container.innerHTML += cardHtml;
+        });
+    }
+    function prepareCancel(id) {
+        actionTargetIds = [id]; 
+        const record = currentRecords.find(r => r.id === id);
+        if (record) {
+            document.getElementById('c-locker').innerText = `${record.lockerId}-${record.slot}`;
+            navigate('view-cancel-confirm');
+        } else {
+            showAlert('Error', t('ไม่พบข้อมูลคำขอที่ระบุ','Request not found'));
+        }
+    }
+    function prepareReturn(targetId) {
+        if (targetId === 'all') {
+            actionTargetIds = currentRecords.filter(r => r.status === 'booked' || r.status === 'return_pending').map(r => r.id);
+            document.getElementById('r-locker').innerText = t(`ทั้งหมด ${actionTargetIds.length} รายการ`,`All ${actionTargetIds.length} items`);
+        } else {
+            actionTargetIds = [targetId];
+            const rec = currentRecords.find(r => r.id === targetId);
+            document.getElementById('r-locker').innerText = `${rec.lockerId}-${rec.slot}`;
+        }
+        navigate('view-return-confirm');
+    }
+
+    async function processAction(actionType) {
+        try {
+            if (!actionTargetIds || actionTargetIds.length === 0) return showAlert("Error", t("ไม่พบรหัสคำขอ","ID not found"));
+            const res = await fetch('/api/action', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ ids: actionTargetIds, action: actionType }) 
+            });
+            const result = await res.json();
+            if (result.success) {
+                if (actionType === 'cancelled') showStatus('cancel-success', actionTargetIds.join(', '));
+                else showStatus('return-success');
+            } else showAlert("Error", result.message || t("ทำรายการไม่ได้","Action failed"));
+        } catch (e) { showAlert("Error", t("เกิดข้อผิดพลาดในการเชื่อมต่อ","Connection error")); }
+    }
+
+    // ================= ADMIN SCRIPT =================
+    let loggedInUser = JSON.parse(localStorage.getItem('admin_user')) || null;
+
+     async function processAdminLogin() {
+        const u = document.getElementById('adminUser').value;
+        const p = document.getElementById('adminPass').value;
+        
+        try {
+            const res = await fetch('/api/admin/login', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ username: u, password: p }) 
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                loggedInUser = result.user;
+                localStorage.setItem('admin_token', result.token); 
+                localStorage.setItem('admin_user', JSON.stringify(result.user)); 
+                
+                //ล้างค่าในฟอร์มทิ้งทันทีที่ระบบอนุมัติ
+                document.getElementById('adminUser').value = '';
+                document.getElementById('adminPass').value = '';
+                
+                navigate('view-admin-dash');
+                
+                const staffMenu = document.getElementById('tab-staff-menu');
+                if (staffMenu) {
+                    staffMenu.style.display = loggedInUser.role === 'admin' ? 'block' : 'none';
+                }
+                
+                loadAdminData(); 
+                startDashboardPolling();  
+                
+            } else {
+                showAlert(t('เข้าสู่ระบบไม่สำเร็จ','Login Failed'), result.message);
+                //ล็อกอินไม่ผ่าน ให้ล้างรหัสผ่านทิ้ง
+                document.getElementById('adminPass').value = '';
+            }
+        } catch (e) { 
+            console.error("Login Error:", e);
+            showAlert('Error', t('ไม่สามารถติดต่อระบบได้','Cannot contact server')); 
+        }
+     }
+    
+    async function loadStaffData(isBackground = false) {
+        const res = await fetch('/api/admin/users', { background: isBackground });
+        const result = await res.json();
+        if (result.success) {
+            allStaffData = result.data; 
+            document.getElementById('admin-staff-table').innerHTML = result.data.map(u => {
+                const isMe = u.username === loggedInUser.username; 
+                const notifyIcon = u.receiveNotifications ? ' <span title="รับการแจ้งเตือน" class="text-yellow-500">🔔</span>' : '';
+                
+                const identifier = u.id || u.username;
+
+                let actionBtns = '';
+                if (loggedInUser.role === 'admin') {
+                    if (isMe) {
+                        actionBtns = `<span class="text-gray-400 text-[10px] mr-2">${t('ตัวคุณเอง','You')}</span> <button onclick="openStaffModal('${identifier}')" class="bg-blue-500 text-white px-2 py-1 rounded text-[10px]">${t('แก้ไข','Edit')}</button>`;
+                    } else {
+                        actionBtns = `
+                            <button onclick="openStaffModal('${identifier}')" class="bg-blue-500 text-white px-2 py-1 rounded text-[10px] mr-1">${t('แก้ไข','Edit')}</button>
+                            <button onclick="deleteStaff('${identifier}')" class="bg-red-500 text-white px-2 py-1 rounded text-[10px]">${t('ลบ','Del')}</button>`;
+                    }
+                } else {
+                    actionBtns = isMe ? `<button onclick="openStaffModal('${identifier}')" class="bg-blue-500 text-white px-2 py-1 rounded text-[10px]">${t('แก้ไขส่วนตัว','Edit')}</button>` : '-';
+                }
+
+                return `<tr class="hover:bg-[#40b8b8]/10 transition-colors duration-200 cursor-default">
+                          <td class="p-3 font-bold">${u.username}${notifyIcon}</td>
+                          <td class="p-3">${u.name} ${u.surname}</td>
+                          <td class="p-3">${u.position}</td>
+                          <td class="p-3">
+                            <span class="${u.role === 'admin' ? 'text-red-500 font-bold' : 'text-blue-500'} uppercase text-xs">${u.role}</span></td><td class="p-3 text-center">${actionBtns}</td>
+                            </tr>`;
+            }).join('');
+        }
+    }
+
+    async function deleteStaff(id) {
+        if (!confirm(t('ยืนยันการลบเจ้าหน้าที่ท่านนี้?','Confirm delete staff?'))) return;
+        await fetch('/api/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', id }) });
+        loadStaffData();
+    }
+
+    function openStaffModal(identifier = null) {
+        let u = null;
+        if (identifier) {
+            u = allStaffData.find(x => x.id === identifier || x.username === identifier);
+        }
+        document.getElementById('sf-id').value = u ? (u.id || u.username) : '';
+        document.getElementById('staff-modal-title').innerText = u ? t('แก้ไขข้อมูลเจ้าหน้าที่','Edit Staff') : t('เพิ่มเจ้าหน้าที่ใหม่','Add New Staff');
+        
+        if (u) {
+            document.getElementById('sf-username').value = u.username || '';
+            document.getElementById('sf-password').value = u.password || '';
+            document.getElementById('sf-name').value = u.name || '';
+            document.getElementById('sf-surname').value = u.surname || '';
+            document.getElementById('sf-position').value = u.position || '';
+            document.getElementById('sf-department').value = u.department || 'CoC';
+            document.getElementById('sf-email').value = u.email || '';
+            document.getElementById('sf-notify').checked = u.receiveNotifications || false;
+            document.getElementById('sf-role').value = u.role || 'staff';
+        } else {
+            document.getElementById('sf-username').value = '';
+            document.getElementById('sf-password').value = '';
+            document.getElementById('sf-name').value = '';
+            document.getElementById('sf-surname').value = '';
+            document.getElementById('sf-position').value = '';
+            document.getElementById('sf-department').value = 'CoC';
+            document.getElementById('sf-email').value = '';
+            document.getElementById('sf-notify').checked = false;
+            document.getElementById('sf-role').value = 'staff';
+        }
+        showCustomModal('modal-staff');
+    }
+
+    async function saveStaff() {
+        const id = document.getElementById('sf-id').value;
+        const payload = {
+            action: id ? 'edit' : 'add', 
+            id: id,
+            username: document.getElementById('sf-username').value.trim(), 
+            password: document.getElementById('sf-password').value.trim(),
+            name: document.getElementById('sf-name').value.trim(), 
+            surname: document.getElementById('sf-surname').value.trim(),
+            position: document.getElementById('sf-position').value.trim(), 
+            department: document.getElementById('sf-department').value.trim(),
+            email: document.getElementById('sf-email').value.trim(),
+            role: document.getElementById('sf-role').value,
+            receiveNotifications: document.getElementById('sf-notify').checked
+        };
+        
+        if (!payload.username || !payload.password || !payload.name) return showAlert(t('ข้อมูลไม่ครบ','Incomplete Data'), t('กรุณากรอกข้อมูลให้ครบถ้วน','Please fill out all required fields.'));
+        
+        const res = await fetch('/api/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const result = await res.json();
+        if (result.success) { hideCustomModal('modal-staff'); loadStaffData(); } 
+        else showAlert('Error', result.message);
+    }
+
+    function switchAdminTab(tabId, el) {
+          if (tabId === 'dash-staff' && loggedInUser.role !== 'admin') {
+              showAlert(t('สิทธิ์ไม่เพียงพอ','Permission Denied'), t('คุณสามารถจัดการได้ทุกอย่าง ยกเว้นข้อมูลเจ้าหน้าที่ท่านอื่นครับ','You can manage everything except other staff data.'));
+              return; 
+          }
+          document.querySelectorAll('.admin-sec').forEach(s => s.classList.add('hidden'));
+          document.getElementById(tabId).classList.remove('hidden');
+
+          document.querySelectorAll('.admin-tab').forEach(t => { 
+              t.classList.remove('admin-tab-active', 'text-primary'); 
+              t.classList.add('text-gray-500'); 
+          });
+          el.classList.add('admin-tab-active', 'text-primary'); 
+          el.classList.remove('text-gray-500');
+
+          const filterBar = document.getElementById('admin-filter-bar');
+          if (filterBar) {
+              filterBar.style.display = (tabId === 'dash-overview' || tabId === 'dash-requests') ? 'flex' : 'none';
+          }
+
+          if (tabId === 'dash-overview' || tabId === 'dash-manage' || tabId === 'dash-requests') {
+              loadAdminData(!!allAdminData); 
+          } else if (tabId === 'dash-staff') {
+              loadStaffData(allStaffData.length > 0);
+          }
+          if (tabId === 'dash-calendar') setTimeout(renderCalendar, 100);
+      }
+
+    let lineChartState = { mode: 'lockers', lockerId: null };
+    let pieChartInst = null;
+    let barChartInst = null;
+    let barChartState = { mode: 'lockers', lockerId: null };
+
+    function resetChartLine() {
+        barChartState = { mode: 'lockers', lockerId: null };
+        const backBtn = document.getElementById('btn-chart-back');
+        if (backBtn) {
+            backBtn.classList.add('hidden');
+            backBtn.style.display = 'none';
+        }
+        document.getElementById('lineChartTitle').innerText = t('สถิติการใช้งานแยกตามตู้','Usage Stats by Locker');
+        loadAdminData();
+    }
+
+    function drawCharts(bookings) {
+        const ctxPie = document.getElementById('statusPieChart');
+        const ctxLine = document.getElementById('timelineChart');
+        if (!ctxPie || !ctxLine) return;
+
+        const statuses = { 'pending': 0, 'booked': 0, 'return_pending': 0, 'completed': 0, 'cancelled': 0, 'rejected': 0 };
+        bookings.forEach(b => { if (statuses[b.status] !== undefined) statuses[b.status]++; });
+
+        if (pieChartInst) pieChartInst.destroy();
+        pieChartInst = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: [t('รออนุมัติ','Pending'), t('ใช้งานอยู่','In Use'), t('ขอคืน','Return'), t('เสร็จสิ้น','Done'), t('ยกเลิก','Cancel'), t('ปฏิเสธ','Reject')],
+                datasets: [{ 
+                    data: [statuses.pending, statuses.booked, statuses.return_pending, statuses.completed, statuses.cancelled, statuses.rejected], 
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#9ca3af', '#dc2626'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } }, cutout: '65%' }
+        });
+
+        let labelsX = [];
+        let dataY = [];
+        let chartLabel = '';
+        let barColor = '';
+
+        if (barChartState.mode === 'lockers') {
+            const lockerCounts = {};
+            bookings.forEach(b => {
+                if (b.lockerId) lockerCounts[b.lockerId] = (lockerCounts[b.lockerId] || 0) + 1;
+            });
+            labelsX = Object.keys(lockerCounts).sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+            dataY = labelsX.map(lId => lockerCounts[lId]);
+            chartLabel = t('จำนวนครั้งที่ถูกจอง','Times Booked');
+            barColor = '#40b8b8';
+        } else {
+
+            const slotCounts = {};
+            bookings.filter(b => b.lockerId === barChartState.lockerId).forEach(b => {
+                if (b.slot) slotCounts[b.slot] = (slotCounts[b.slot] || 0) + 1;
+            });
+            labelsX = Object.keys(slotCounts).sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+            dataY = labelsX.map(slot => slotCounts[slot]);
+            chartLabel = t(`ถูกจอง (ช่องในตู้ ${barChartState.lockerId})`,`Times Booked (Slot in ${barChartState.lockerId})`);
+            barColor = '#f59e0b';
+        }
+
+        if (barChartInst) barChartInst.destroy();
+        barChartInst = new Chart(ctxLine, {
+            type: 'bar',
+            data: { 
+                labels: labelsX, 
+                datasets: [{
+                    label: chartLabel,
+                    data: dataY,
+                    backgroundColor: barColor,
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }] 
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: function(context) { return ` ${t('ถูกใช้งาน:','Used:')} ${context.parsed.y} ${t('ครั้ง','Times')}`; } } }
+                },
+                scales: { 
+                    y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 10 } }, grid: { borderDash: [2, 4], color: '#f3f4f6' } }, 
+                    x: { ticks: { font: { size: 10, weight: 'bold' } }, grid: { display: false } } 
+                },
+                onClick: (e, activeElements, chart) => {
+                    if (barChartState.mode === 'lockers' && activeElements.length > 0) {
+                        const index = activeElements[0].index;
+                        const clickedLockerId = chart.data.labels[index];
+                        
+                        barChartState.mode = 'slots';
+                        barChartState.lockerId = clickedLockerId;
+                        
+                        const backBtn = document.getElementById('btn-chart-back');
+                        if (backBtn) {
+                            backBtn.classList.remove('hidden');
+                            backBtn.style.display = 'block';
+                        }
+                        document.getElementById('lineChartTitle').innerText = t(`สถิติเจาะลึก: ตู้ ${clickedLockerId}`,`Drilldown: Locker ${clickedLockerId}`);
+                        
+                        loadAdminData();
+                    }
+                },
+                onHover: (event, chartElement) => {
+                    event.native.target.style.cursor = (chartElement.length && barChartState.mode === 'lockers') ? 'pointer' : 'default';
+                }
+            }
+        });
+    }
+
+    async function loadAdminData(isBackground = false) {
+          try {
+            const res = await fetch('/api/admin/dashboard', { background: isBackground });
+            const result = await res.json();
+            if (!result.success) return;
+            
+            allAdminData = result.data;
+            checkNotifications(allAdminData.bookings);
+
+            let filteredBookings = allAdminData.bookings;
+            const fStart = document.getElementById('filter-start');
+            const fEnd = document.getElementById('filter-end');
+
+            if (fStart && fEnd && fStart.value && fEnd.value) {
+                const sDate = new Date(fStart.value); const eDate = new Date(fEnd.value); eDate.setHours(23, 59, 59);
+                filteredBookings = allAdminData.bookings.filter(b => { const bDate = new Date(b.timestamp); return bDate >= sDate && bDate <= eDate; });
+            }
+            currentFilteredBookings = filteredBookings;
+            const active = filteredBookings.filter(b => b.status === 'booked' || b.status === 'return_pending').length;
+            document.getElementById('stat-total').innerText = filteredBookings.length;
+            document.getElementById('stat-active').innerText = active;
+            document.getElementById('stat-pending').innerText = filteredBookings.filter(b => b.status === 'pending' || b.status === 'return_pending').length;
+
+            if (typeof drawCharts === 'function') drawCharts(filteredBookings);
+            if (!document.getElementById('dash-calendar').classList.contains('hidden')) renderCalendar();
+
+            document.getElementById('admin-visual-lockers').innerHTML = allAdminData.lockers.map(l => {
+                const slotHTML = (l.slotsData || []).map(s => {
+                    if (s.condition === 'hidden') return `<div class="invisible"></div>`;
+                    let bg = 'bg-white border-primary text-primary hover:bg-teal-50'; let text = s.name; let onclick = ``;
+                    if (s.bookingInfo) {
+                        text = s.bookingInfo.studentId; onclick = `onclick="openSlotDetail('${s.bookingInfo.id}', '${s.keyNumber}')"`;
+                        if (s.bookingInfo.status === 'booked') bg = 'bg-blue-50 border-blue-500 text-blue-700 hover:bg-blue-100';
+                        else if (s.bookingInfo.status === 'pending') bg = 'bg-yellow-50 border-yellow-500 text-yellow-700 hover:bg-yellow-100';
+                        else if (s.bookingInfo.status === 'return_pending') bg = 'bg-red-50 border-red-500 text-red-700 animate-pulse';
+                    } else {
+                        if (s.condition === 'maintenance') bg = 'bg-gray-100 border-gray-400 text-gray-500 opacity-60 hover:bg-gray-200 hover:opacity-100';
+                        else if (s.condition === 'unavailable') bg = 'bg-gray-700 border-gray-900 text-white hover:bg-gray-600';
+                        onclick = `onclick="openQuickStatus('${l.id}', '${s.name}')"`;
+                    }
+                    return `<div ${onclick} class="${bg} border rounded-lg p-2 text-center text-[10px] font-bold cursor-pointer transition truncate" title="Key: ${s.keyNumber}">${text}</div>`;
+                }).join('');
+
+                const layout = l.layout || { cols: 3, rows: 4, direction: 'row' };
+                let gridStyle = `grid-template-columns: repeat(${layout.cols}, minmax(0, 1fr));`;
+                if (layout.direction === 'col') gridStyle += ` grid-auto-flow: column; grid-template-rows: repeat(${layout.rows}, minmax(0, 1fr));`;
+
+                return `
+                <div class="border border-gray-200 rounded-xl p-4 bg-white shadow-sm relative">
+                    <button onclick="openConfigLocker('${l.id}')" class="absolute top-3 right-3 text-gray-400 hover:text-primary text-[10px] bg-gray-50 px-2 py-1 rounded border">${t('ตั้งค่า/ลบ','Setup')}</button>
+                    <p class="font-bold text-gray-800 text-sm">${l.id} <span class="font-normal text-xs text-gray-500">(${l.name})</span></p>
+                    <p class="text-[9px] text-gray-400 font-mono">ASSET: ${l.assetNumber || '-'}</p>
+                    <p class="text-[9px] text-gray-500 mb-3 truncate">📍 ${l.location || '-'} ${l.mapLink ? `<a href="${l.mapLink}" target="_blank" class="text-primary underline ml-1 font-bold">Map</a>` : ''}</p>
+                    <div class="grid gap-2" style="${gridStyle}">${slotHTML}</div>
+                </div>`;
+            }).join('');
+
+            document.getElementById('admin-req-table').innerHTML = [...filteredBookings].reverse().map(b => {
+                let statusBadge = '', actionBtns = '';
+                
+                if (b.status === 'pending') {
+                    statusBadge = `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-[10px]">${t('รออนุมัติ','Pending')}</span>`;
+                    actionBtns = `
+                        <button onclick="openApproveModal('${b.id}')" class="bg-primary text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:opacity-80">${t('ตรวจ/อนุมัติ','Approve')}</button>
+                        <button onclick="executeAdminAction('${b.id}','rejected')" class="bg-red-500 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-red-600">${t('ปฏิเสธ','Reject')}</button>
+                    `;
+                } else if (b.status === 'booked') {
+                    statusBadge = `<span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-[10px]">${t('ใช้งานอยู่','In Use')}</span>`;
+                    actionBtns = `<button onclick="openReturnScheduleModal('${b.id}')" class="bg-yellow-500 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-yellow-600">${t('นัดคืนตู้','Set Return')}</button>`;
+                } else if (b.status === 'return_pending') {
+                    statusBadge = `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] animate-pulse">${t('รอรับคืน','Returning')}</span>`;
+                    actionBtns = `
+                        <button onclick="openReturnScheduleModal('${b.id}')" class="bg-yellow-500 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-yellow-600">${t('แก้นัดคืน','Edit Ret.')}</button>
+                        <button onclick="openReturnCompleteModal('${b.id}')" class="bg-gray-700 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-gray-800">${t('รับคืน (จบ)','Complete')}</button>
+                    `;
+                } else {
+                    statusBadge = `<span class="bg-gray-100 text-gray-500 px-2 py-1 rounded text-[10px] uppercase">${b.status}</span>`; 
+                }
+
+                return `<tr class="hover:bg-[#40b8b8]/10 transition-colors duration-200 cursor-default">
+                            <td class="p-3 text-xs font-mono text-gray-500">${escapeHTML(b.id)}</td>
+                            <td class="p-3">
+                                <div>
+                                    <p class="font-bold">${escapeHTML(b.name)}</p>
+                                    <p class="text-[10px] text-gray-400">${escapeHTML(b.studentId)}</p>
+                                </div>
+                            </td>
+                            <td class="p-3 font-bold text-gray-700">${escapeHTML(b.lockerId)}-${escapeHTML(b.slot)}</td>
+                            <td class="p-3 text-[10px] text-gray-500">${escapeHTML(b.startDate)} <br> ${escapeHTML(b.endDate)}</td>
+                            <td class="p-3">${statusBadge}</td>
+                            
+                            <td class="p-2 text-center align-middle min-w-[130px] w-[130px]">
+                                <div class="flex flex-col gap-1 w-full">
+                                    ${actionBtns}
+                                    <div class="flex space-x-1 w-full">
+                                        <button onclick="openRequestDetailModal('${b.id}')" class="bg-white border border-gray-300 text-gray-600 px-2 py-1.5 rounded text-[10px] flex-1 font-bold shadow-sm hover:bg-gray-50">🔍 ${t('ดู','View')}</button>
+                                        <button onclick="executeAdminAction('${b.id}','delete')" class="bg-white border border-red-300 text-red-500 px-2 py-1.5 rounded text-[10px] flex-1 font-bold shadow-sm hover:bg-red-50">🗑️ ${t('ลบ','Del')}</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`;
+            }).join('');
+        } catch (e) { console.error('Error loading admin data:', e); }
+    }
+
+    let qsCurrentLockerId = null, qsCurrentSlotName = null;
+    function openQuickStatus(lockerId, slotName) {
+        qsCurrentLockerId = lockerId; qsCurrentSlotName = slotName;
+        document.getElementById('qs-slot-name').innerText = `${lockerId}-${slotName}`;
+        showCustomModal('modal-quick-status');
+    }
+    async function saveQuickStatus(newCond) {
+        const locker = allAdminData.lockers.find(l => l.id === qsCurrentLockerId);
+        if (!locker) return;
+
+        const rawSlots = locker.slots || locker.slotsData;
+        const updatedSlots = rawSlots.map(s => ({
+            name: s.name,
+            keyNumber: s.keyNumber,
+            condition: s.name === qsCurrentSlotName ? newCond : s.condition
+        }));
+
+        const payload = {
+            action: 'save',
+            lockerId: locker.id,
+            name: locker.name,
+            assetNumber: locker.assetNumber || '',
+            location: locker.location || '',
+            mapLink: locker.mapLink || '',
+            layout: locker.layout || { cols: 3, rows: 4, direction: 'row' }, 
+            slots: updatedSlots
+        };
+
+        await fetch('/api/admin/lockers', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(payload) 
+        });
+
+        hideCustomModal('modal-quick-status'); 
+        loadAdminData();
+    }
+
+    let configEditingLockerId = null;
+    function openConfigLocker(lockerId) {
+        configEditingLockerId = lockerId;
+        const cont = document.getElementById('cfg-slots-container'); cont.innerHTML = '';
+        if (lockerId) {
+            const locker = allAdminData.lockers.find(l => l.id === lockerId);
+            document.getElementById('cfg-title').innerText = t(`ตั้งค่าตู้: ${locker.id}`, `Setup: ${locker.id}`);
+            document.getElementById('cfg-l-id').value = locker.id; document.getElementById('cfg-l-id').disabled = true; document.getElementById('cfg-l-id').classList.add('bg-gray-100');
+            document.getElementById('cfg-l-name').value = locker.name || ''; document.getElementById('cfg-l-asset').value = locker.assetNumber || '';
+            document.getElementById('cfg-l-location').value = locker.location || ''; document.getElementById('cfg-l-map').value = locker.mapLink || '';
+            const layout = locker.layout || { cols: 3, rows: 4, direction: 'row' };
+            document.getElementById('cfg-l-cols').value = layout.cols; document.getElementById('cfg-l-rows').value = layout.rows; document.getElementById('cfg-l-dir').value = layout.direction;
+            document.getElementById('btn-delete-locker').classList.remove('hidden');
+            (locker.slotsData || locker.slots).forEach(s => addConfigSlotRow(s));
+        } else {
+            document.getElementById('cfg-title').innerText = t('เพิ่มตู้ Locker ใหม่','Add New Locker');
+            document.getElementById('cfg-l-id').value = ''; document.getElementById('cfg-l-id').disabled = false; document.getElementById('cfg-l-id').classList.remove('bg-gray-100');
+            document.getElementById('cfg-l-name').value = ''; document.getElementById('cfg-l-asset').value = ''; document.getElementById('cfg-l-location').value = ''; document.getElementById('cfg-l-map').value = '';
+            document.getElementById('cfg-l-cols').value = 3; document.getElementById('cfg-l-rows').value = 4; document.getElementById('cfg-l-dir').value = 'row';
+            document.getElementById('btn-delete-locker').classList.add('hidden');
+            for (let i = 1; i <= 12; i++) addConfigSlotRow({ name: `A${i}`, keyNumber: '', condition: 'available' });
+        }
+        showCustomModal('modal-config-locker');
+    }
+
+    function addConfigSlotRow(data = { name: '', keyNumber: '', condition: 'available' }) {
+        const row = document.createElement('div'); row.className = 'cfg-slot-row flex space-x-2 items-center mb-2';
+        row.innerHTML = `<input type="text" placeholder="${t('ชื่อช่อง','Slot')}" value="${data.name}" class="cs-name input-field border bg-white p-1 w-1/4 text-xs"><input type="text" placeholder="${t('เลขกุญแจ','Key No.')}" value="${data.keyNumber}" class="cs-key input-field border bg-white p-1 w-2/4 text-xs"><select class="cs-cond input-field border bg-white p-1 w-1/4 text-xs"><option value="available" ${data.condition === 'available' ? 'selected' : ''}>${t('ว่าง','Avail')}</option><option value="maintenance" ${data.condition === 'maintenance' ? 'selected' : ''}>${t('ปรับปรุง','Maint')}</option><option value="unavailable" ${data.condition === 'unavailable' ? 'selected' : ''}>${t('ไม่ว่าง','Unavail')}</option><option value="hidden" ${data.condition === 'hidden' ? 'selected' : ''}>${t('ซ่อน','Hide')}</option></select><button type="button" onclick="this.parentElement.remove()" class="text-danger font-bold">X</button>`;
+        document.getElementById('cfg-slots-container').appendChild(row);
+    }
+
+    function setAllSlotsCond(cond) { document.querySelectorAll('.cs-cond').forEach(select => select.value = cond); }
+
+    async function saveLockerConfig() {
+        const id = document.getElementById('cfg-l-id').value.trim();
+        if (!id) return showAlert('Error', t('กรุณาระบุรหัสตู้ Locker','Please specify Locker ID'));
+        const layout = { cols: parseInt(document.getElementById('cfg-l-cols').value) || 3, rows: parseInt(document.getElementById('cfg-l-rows').value) || 4, direction: document.getElementById('cfg-l-dir').value };
+        const slots = [];
+        document.querySelectorAll('.cfg-slot-row').forEach(row => {
+            const n = row.querySelector('.cs-name').value.trim(); const k = row.querySelector('.cs-key').value.trim(); const c = row.querySelector('.cs-cond').value;
+            if (n) slots.push({ name: n, keyNumber: k, condition: c });
+        });
+        const payload = { action: 'save', lockerId: id, name: document.getElementById('cfg-l-name').value.trim(), assetNumber: document.getElementById('cfg-l-asset').value.trim(), location: document.getElementById('cfg-l-location').value.trim(), mapLink: document.getElementById('cfg-l-map').value.trim(), layout, slots };
+        await fetch('/api/admin/lockers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        hideCustomModal('modal-config-locker'); loadAdminData();
+    }
+
+    async function deleteLockerConfig() {
+        const id = document.getElementById('cfg-l-id').value;
+        if (!confirm(t(`⚠️ คุณต้องการลบตู้ ${id} อย่างถาวรใช่หรือไม่?`,`Permanently delete locker ${id}?`))) return;
+        await fetch('/api/admin/lockers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'delete', lockerId: id }) });
+        hideCustomModal('modal-config-locker'); loadAdminData();
+    }
+
+    function openSlotDetail(bookingId, keyNum) {
+        const b = allAdminData.bookings.find(x => x.id === bookingId); if (!b) return;
+        document.getElementById('bd-slot').innerText = `${b.lockerId}-${b.slot}`; document.getElementById('bd-stuId').innerText = b.studentId; document.getElementById('bd-name').innerText = b.name; document.getElementById('bd-phone').innerText = b.phone; document.getElementById('bd-period').innerText = `${b.startDate} to ${b.endDate}`; document.getElementById('bd-key').innerText = keyNum || '-';
+        showCustomModal('modal-booking-detail');
+    }
+
+    function applyFilter(type) {
+        const today = new Date(); 
+        const startInput = document.getElementById('filter-start'); 
+        const endInput = document.getElementById('filter-end');
+
+        const toLocalISO = (date) => {
+            const tzOffset = date.getTimezoneOffset() * 60000;
+            return new Date(date.getTime() - tzOffset).toISOString().split('T')[0];
+        };
+
+        if (type === 'all') { 
+            startInput.value = ''; 
+            endInput.value = ''; 
+        } 
+        else if (type === 'week') { 
+            const day = today.getDay() || 7; 
+            const firstDay = new Date(today);
+            firstDay.setDate(today.getDate() - day + 1);
+            const lastDay = new Date(firstDay);
+            lastDay.setDate(firstDay.getDate() + 6);
+
+            startInput.value = toLocalISO(firstDay); 
+            endInput.value = toLocalISO(lastDay); 
+        } 
+        else if (type === 'month') { 
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+            startInput.value = toLocalISO(firstDay); 
+            endInput.value = toLocalISO(lastDay); 
+        }
+        loadAdminData();
+    }
+
+    function openReturnScheduleModal(id) {
+        const b = allAdminData.bookings.find(x => x.id === id);
+        document.getElementById('rs-reqId').value = id; document.getElementById('rs-appointment').value = b.returnAppointment || ''; document.getElementById('rs-fine').value = b.returnFine || 0; document.getElementById('rs-remark').value = b.returnRemark || t('กรุณานำแม่กุญแจออกและทำความสะอาดตู้ก่อนคืน','Please remove padlock and clean before returning.');
+        showCustomModal('modal-return-schedule');
+    }
+
+    async function submitReturnSchedule() {
+        const payload = { id: document.getElementById('rs-reqId').value, action: 'return_pending', returnAppointment: document.getElementById('rs-appointment').value, returnFine: document.getElementById('rs-fine').value, returnRemark: document.getElementById('rs-remark').value };
+        if (!payload.returnAppointment) return showAlert('Error', t('กรุณาระบุวัน/เวลานัดหมายคืนตู้','Please set return appointment.'));
+        await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        hideCustomModal('modal-return-schedule'); showAlert('Success', t('ส่งอีเมลแจ้งเตือนให้นักศึกษาเรียบร้อยแล้ว','Email sent successfully.')); loadAdminData();
+    }
+
+    function openReturnCompleteModal(id) {
+        const b = allAdminData.bookings.find(x => x.id === id);
+        document.getElementById('rc-reqId').value = id; document.getElementById('rc-condition').value = b.lockerCondition || 'ปกติ'; document.getElementById('rc-fine').value = b.returnFine || 0; document.getElementById('rc-remark').value = b.finalRemark || '';
+        showCustomModal('modal-return-complete');
+    }
+
+    async function submitReturnComplete() {
+        const payload = { id: document.getElementById('rc-reqId').value, action: 'completed', lockerCondition: document.getElementById('rc-condition').value, finalFine: document.getElementById('rc-fine').value, finalRemark: document.getElementById('rc-remark').value };
+        await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        hideCustomModal('modal-return-complete'); showAlert('Success', t('บันทึกการรับคืนตู้เรียบร้อยแล้ว','Return completed.')); loadAdminData();
+    }
+
+    function openRequestDetailModal(id) {
+      const b = allAdminData.bookings.find(x => x.id === id);
+      if (!b) return;
+
+      document.getElementById('vd-reqId').innerText = b.id;
+
+      let html = `
+          <p><b>Status:</b> <span class="uppercase font-bold text-primary">${escapeHTML(b.status)}</span></p>
+          <p><b>Student:</b> ${escapeHTML(b.studentId)} - ${escapeHTML(b.name)}</p>
+          <p><b>Contact:</b> ${escapeHTML(b.email)} | ${escapeHTML(b.phone)}</p>
+          <p><b>Locker:</b> ${escapeHTML(b.lockerId)}-${escapeHTML(b.slot)}</p>
+          <p><b>Period:</b> ${escapeHTML(b.startDate)} to ${escapeHTML(b.endDate)}</p>
+          <p><b>Purpose:</b> <span class="text-blue-600 font-bold">${escapeHTML(b.purpose || '-')}</span></p>
+          <hr class="my-2 border-gray-300">
+          <p><b>Appt:</b> ${escapeHTML(b.appointment || '-')}</p>
+          <p><b>Remark:</b> ${escapeHTML(b.remark || '-')}</p>
+      `;
+
+      if (b.status === 'return_pending' || b.status === 'completed') {
+          html += `
+              <hr class="my-2 border-gray-300">
+              <p class="text-red-600 font-bold">Return Details</p>
+              <p><b>Return Appt:</b> ${escapeHTML(b.returnAppointment || '-')}</p>
+              <p><b>Est Fine:</b> ${escapeHTML(b.returnFine || '0')} THB</p>
+              <p><b>Note to Student:</b> ${escapeHTML(b.returnRemark || '-')}</p>
+          `;
+      }
+
+      if (b.status === 'completed') {
+          html += `
+              <hr class="my-2 border-gray-300">
+              <p class="text-green-600 font-bold">Return Complete</p>
+              <p><b>Condition:</b> ${escapeHTML(b.lockerCondition || '-')}</p>
+              <p><b>Final Fine:</b> <span class="text-red-500 font-bold">${escapeHTML(b.finalFine || '0')} THB</span></p>
+              <p><b>Internal Note:</b> ${escapeHTML(b.finalRemark || '-')}</p>
+          `;
+      }
+
+      document.getElementById('vd-content').innerHTML = html;
+      showCustomModal('modal-request-detail');
+  }
+
+    let apvCurrentReq = null;
+    function openApproveModal(reqId) {
+        apvCurrentReq = allAdminData.bookings.find(b => b.id === reqId);
+        document.getElementById('apv-reqId').value = reqId;
+        document.getElementById('apv-appointment').value = '';
+        document.getElementById('apv-remark').value = t('นักศึกษาต้องนำแม่กุญแจมาล็อกตู้ด้วยตนเอง','Bring your own padlock.');
+        document.getElementById('apv-purpose').innerText = apvCurrentReq.purpose || '-';
+        const lSelect = document.getElementById('apv-locker');
+        lSelect.innerHTML = allAdminData.lockers.map(l => `<option value="${l.id}" ${l.id === apvCurrentReq.lockerId ? 'selected' : ''}>${l.id}</option>`).join('');
+        apvUpdateSlots(); showCustomModal('modal-admin-approve');
+    }
+
+    function apvUpdateSlots() {
+        const lId = document.getElementById('apv-locker').value; const locker = allAdminData.lockers.find(l => l.id === lId);
+        document.getElementById('apv-slot').innerHTML = (locker.slotsData||locker.slots).map(s => { if (s.status === 'available' || (lId === apvCurrentReq.lockerId && s.name === apvCurrentReq.slot)) return `<option value="${s.name}" data-key="${s.keyNumber}" ${s.name === apvCurrentReq.slot ? 'selected' : ''}>${s.name}</option>`; return ''; }).join('');
+        apvUpdateKey();
+    }
+
+    function apvUpdateKey() {
+        const sSelect = document.getElementById('apv-slot'); const selectedOpt = sSelect.options[sSelect.selectedIndex];
+        document.getElementById('apv-key').innerText = selectedOpt ? selectedOpt.getAttribute('data-key') || '-' : '-';
+    }
+
+    async function submitAdminApprove() {
+        const payload = { id: document.getElementById('apv-reqId').value, action: 'booked', newLockerId: document.getElementById('apv-locker').value, newSlot: document.getElementById('apv-slot').value, appointment: document.getElementById('apv-appointment').value, remark: document.getElementById('apv-remark').value };
+        if (!payload.appointment) return showAlert('Error', t('กรุณาระบุนัดหมายวัน/เวลารับตู้','Enter appointment time.'));
+        await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        hideCustomModal('modal-admin-approve'); loadAdminData();
+    }
+
+    async function executeAdminAction(id, action) {
+        if (!confirm(t(`ยืนยันดำเนินการ (${action})?`,`Confirm action (${action})?`))) return;
+        await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action }) });
+        loadAdminData();
+    }
+
+    // admin/staff noti icon
+    let hasPlayedNotiSound = false;
+    let previousAlertCount = 0;
+    // sound
+    function playSoftBeep() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.5);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.5);
+        } catch (e) { console.log('Audio blocked by browser'); }
+    }
+
+    function toggleNotiPanel() {
+        const panel = document.getElementById('noti-panel');
+        panel.classList.toggle('hidden');
+    }
+
+    function saveSoundPref() {
+        if(!loggedInUser) return;
+        const isEnabled = document.getElementById('noti-sound-toggle').checked;
+        localStorage.setItem('noti_sound_' + loggedInUser.username, isEnabled);
+        if(isEnabled) playSoftBeep();
+    }
+
+    function checkNotifications(bookings) {
+        if (!loggedInUser) return;
+
+        const soundPref = localStorage.getItem('noti_sound_' + loggedInUser.username);
+        const isSoundEnabled = soundPref === null ? true : soundPref === 'true';
+        document.getElementById('noti-sound-toggle').checked = isSoundEnabled;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let alertItems = [];
+
+        const pendingBookings = bookings.filter(b => b.status === 'pending');
+        pendingBookings.forEach(b => {
+            const titleStr = b.lockerId ? `${b.lockerId}-${b.slot}` : t('รอระบุตู้','Pending');
+            alertItems.push(`
+                <div onclick="openApproveModal('${b.id}'); toggleNotiPanel();" class="border bg-blue-50 border-blue-200 p-3 rounded-xl cursor-pointer hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-1">
+                        <p class="font-bold text-gray-800 text-xs">${titleStr}</p>
+                        <span class="bg-blue-500 text-white px-2 py-0.5 rounded text-[9px] font-bold animate-pulse">New Req</span>
+                    </div>
+                    <p class="text-[10px] text-gray-600">${escapeHTML(b.name)}</p>
+                    <p class="text-[9px] text-gray-400 mt-1">Start: ${escapeHTML(b.startDate)}</p>
+                </div>
+            `);
+        });
+
+        const returnBookings = bookings.filter(b => b.status === 'return_pending');
+        returnBookings.forEach(b => {
+            alertItems.push(`
+                <div onclick="openReturnCompleteModal('${b.id}'); toggleNotiPanel();" class="border bg-orange-50 border-orange-200 p-3 rounded-xl cursor-pointer hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-1">
+                        <p class="font-bold text-gray-800 text-xs">${b.lockerId}-${b.slot}</p>
+                        <span class="bg-orange-500 text-white px-2 py-0.5 rounded text-[9px] font-bold animate-pulse">Returning</span>
+                    </div>
+                    <p class="text-[10px] text-gray-600">${escapeHTML(b.name)}</p>
+                    <p class="text-[9px] text-gray-400 mt-1">Appt: ${escapeHTML(b.returnAppointment || '-')}</p>
+                </div>
+            `);
+        });
+
+        const activeBookings = bookings.filter(b => b.status === 'booked' && b.endDate);
+        activeBookings.forEach(b => {
+            const end = new Date(b.endDate);
+            end.setHours(0, 0, 0, 0);
+            const diffDays = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
+
+            let badgeHtml = '';
+            let bgStyle = '';
+
+            if (diffDays < 0) {
+                badgeHtml = `<span class="bg-red-500 text-white px-2 py-0.5 rounded text-[9px] font-bold animate-pulse">Overdue ${Math.abs(diffDays)}d</span>`;
+                bgStyle = 'bg-red-50 border-red-200';
+            } else if (diffDays === 0) {
+                badgeHtml = `<span class="bg-red-500 text-white px-2 py-0.5 rounded text-[9px] font-bold">Exp Today</span>`;
+                bgStyle = 'bg-red-50 border-red-200';
+            } else if (diffDays <= 3) {
+                badgeHtml = `<span class="bg-yellow-500 text-white px-2 py-0.5 rounded text-[9px] font-bold">${diffDays}d left</span>`;
+                bgStyle = 'bg-yellow-50 border-yellow-200';
+            }
+
+            if (badgeHtml) {
+                alertItems.push(`
+                    <div onclick="openRequestDetailModal('${b.id}'); toggleNotiPanel();" class="border ${bgStyle} p-3 rounded-xl cursor-pointer hover:shadow-md transition">
+                        <div class="flex justify-between items-start mb-1">
+                            <p class="font-bold text-gray-800 text-xs">${b.lockerId}-${b.slot}</p>
+                            ${badgeHtml}
+                        </div>
+                        <p class="text-[10px] text-gray-600">${escapeHTML(b.name)}</p>
+                        <p class="text-[9px] text-gray-400 mt-1">End: ${escapeHTML(b.endDate)}</p>
+                    </div>
+                `);
+            }
+        });
+
+        const badge = document.getElementById('bell-badge');
+        const list = document.getElementById('noti-list');
+
+        if (alertItems.length > 0) {
+            badge.innerText = alertItems.length;
+            badge.classList.remove('hidden');
+            list.innerHTML = alertItems.join('');
+
+            if (isSoundEnabled && alertItems.length > previousAlertCount) {
+                playSoftBeep();
+            }
+            previousAlertCount = alertItems.length;
+        } else {
+            badge.classList.add('hidden');
+            list.innerHTML = `<div class="text-center text-gray-400 text-xs py-8 font-bold">✅ ${t('ไม่มีรายการแจ้งเตือน','All Caught Up')}</div>`;
+            previousAlertCount = 0;
+        }
+    }
+
+    window.onload = () => {
+        loggedInUser = null;
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        
+        document.getElementById('adminUser').value = '';
+        document.getElementById('adminPass').value = '';
+
+        navigate('view-home');
+    };
+
+    function exportData(type) {
+        if (!currentFilteredBookings || currentFilteredBookings.length === 0) {
+            return showAlert('Error', t('ไม่มีข้อมูลสำหรับส่งออก','No data to export'));
+        }
+
+        const timestamp = new Date().toISOString().split('T')[0];
+        const statusMap = {
+            'pending': 'Pending', 'booked': 'In Use', 'return_pending': 'Returning',
+            'completed': 'Done', 'cancelled': 'Canceled', 'rejected': 'Rejected'
+        };
+
+        const exportSource = [...currentFilteredBookings].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+        if (type === 'excel') {
+            const exportArr = exportSource.map(b => ({
+                "Req ID": b.id,
+                "Student ID": b.studentId,
+                "Name": b.name,
+                "Email": b.email,
+                "Phone": b.phone,
+                "Locker-Slot": `${b.lockerId}-${b.slot}`,
+                "Start": b.startDate,
+                "End": b.endDate,
+                "Status": statusMap[b.status] || b.status,
+                "Appt": b.appointment || '-',
+                "Return Appt": b.returnAppointment || '-',
+                "Final Fine": b.finalFine || '0',
+                "Remark": b.finalRemark || b.remark || '-'
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(exportArr);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Bookings");
+            XLSX.writeFile(wb, `Locker_Report_${timestamp}.xlsx`);
+
+        } else if (type === 'pdf') {
+            const tempDiv = document.createElement('div');
+            tempDiv.style.padding = '20px';
+            tempDiv.style.fontFamily = "'Prompt', sans-serif"; 
+            tempDiv.style.color = '#333';
+
+            let tableHtml = `
+            <h2 style="text-align: center; font-size: 20px; margin-bottom: 5px;">Locker Booking Report</h2>
+            <p style="font-size: 12px; margin-bottom: 20px; text-align: center;">Printed: ${new Date().toLocaleString('th-TH')}</p>
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px;" border="1">
+                <thead>
+                    <tr style="background-color: #f3f4f6;">
+                        <th style="padding: 8px; border: 1px solid #ddd;">Req ID</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Student</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Locker</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Period</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            exportSource.forEach(b => {
+                tableHtml += `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${b.id}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${b.name}<br><span style="font-size: 9px; color: #666;">${b.studentId}</span></td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">${b.lockerId}-${b.slot}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${b.startDate}<br>to ${b.endDate}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${statusMap[b.status] || b.status}</td>
+                    </tr>
+                `;
+            });
+            tableHtml += `</tbody></table>`;
+            tempDiv.innerHTML = tableHtml;
+
+            document.getElementById('loading-overlay').classList.remove('hidden');
+
+            const opt = {
+                margin:       0.5,
+                filename:     `Locker_Report_${timestamp}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(tempDiv).save().then(() => {
+                document.getElementById('loading-overlay').classList.add('hidden');
+            });
+        }
+    }
+    
+    async function sendAiMessage() {
+          const input = document.getElementById('ai-input');
+          const text = input.value.trim();
+          if (!text) return;
+          
+          appendAiMessage('user', text);
+          input.value = '';
+
+          appendAiMessage('system', t('กำลังวิเคราะห์ข้อมูล...','Analyzing...'));
+          const chatBox = document.getElementById('ai-chat-history');
+
+          try {
+              const res = await fetch('/api/admin/ai-chat', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                  body: JSON.stringify({ message: text }) 
+              });
+              const result = await res.json();
+              
+              chatBox.removeChild(chatBox.lastChild);
+              if (result.success) {
+                  let aiReply = result.reply;
+                  
+                  if (result.exportCommand) {
+                      executeAiExport(result.exportCommand);
+                      
+                      let reportDetail = "";
+                      if (result.exportCommand.report === 'lockers') {
+                          reportDetail = `(Filter: ${result.exportCommand.filter || 'all'})`;
+                      } else if (result.exportCommand.ids) {
+                          reportDetail = `(${result.exportCommand.ids.length} Items)`;
+                      }
+
+                      appendAiMessage('ai', `✅ สร้างไฟล์ ${result.exportCommand.type.toUpperCase()} ${reportDetail}`);
+                      if (aiReply) appendAiMessage('ai', aiReply);
+                  } else {
+                      appendAiMessage('ai', aiReply);
+                  }
+              } else {
+                  appendAiMessage('error', 'AI Error: ' + result.message);
+              }
+          } catch (e) {
+              if (chatBox.lastChild) chatBox.removeChild(chatBox.lastChild);
+              appendAiMessage('error', 'API Connect Error.');
+          }
+      }
+
+    function appendAiMessage(role, text) {
+        const chatBox = document.getElementById('ai-chat-history');
+        const wrapper = document.createElement('div');
+        wrapper.className = "flex flex-col " + (role === 'user' ? "items-end" : "items-start");
+        
+        let bubbleStyle = "";
+        if (role === 'user') bubbleStyle = "bg-primary text-white rounded-tr-none";
+        else if (role === 'system' || role === 'error') bubbleStyle = "bg-gray-200 text-gray-500 rounded-lg text-center text-[10px] mx-auto opacity-70";
+        else bubbleStyle = "bg-white border border-gray-200 text-gray-700 rounded-tl-none";
+
+        let processedText = text;
+        if (role === 'ai' && allAdminData && allAdminData.bookings) {
+            processedText = processedText.replace(/\[(REQ\d+)\]/g, (match, reqId) => {
+                const b = allAdminData.bookings.find(x => x.id === reqId);
+                if (b) {
+                    return `<span class="text-primary font-bold">${escapeHTML(b.name)} (${escapeHTML(b.studentId)})</span>`;
+                }
+                return match;
+            });
+        }
+
+        const safeText = processedText.replace(/\n/g, '<br>');
+        wrapper.innerHTML = `<div class="p-3 rounded-2xl text-xs max-w-[80%] shadow-sm ${bubbleStyle}">${safeText}</div>`;
+        chatBox.appendChild(wrapper);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function executeAiExport(cmd) {
+          if (cmd.report === 'lockers') {
+              exportLockersData(cmd.type || 'excel', cmd.filter || 'all');
+              return;
+          }
+
+          if (!cmd.ids || cmd.ids.length === 0) {
+              appendAiMessage('error', 'No items matched AI filter');
+              return;
+          }
+          const backupFiltered = currentFilteredBookings;
+          currentFilteredBookings = allAdminData.bookings.filter(b => cmd.ids.includes(b.id));
+          exportData(cmd.type);
+          currentFilteredBookings = backupFiltered;
+      }
+
+      function exportLockersData(type, filter) {
+        if (!allAdminData || !allAdminData.lockers) return showAlert('Error', 'No locker data');
+        
+        const timestamp = new Date().toISOString().split('T')[0];
+        let exportArr = [];
+        
+        allAdminData.lockers.forEach(l => {
+            const slots = l.slotsData || l.slots || [];
+            slots.forEach(s => {
+                if (s.condition === 'hidden') return;
+
+                let currentStatus = s.condition; 
+                let studentInfo = '-';
+
+                if (s.bookingInfo) {
+                    currentStatus = s.bookingInfo.status === 'booked' ? 'In Use' : 
+                                   (s.bookingInfo.status === 'return_pending' ? 'Returning' : 'Pending');
+                    studentInfo = `${s.bookingInfo.studentId} (${s.bookingInfo.name})`;
+                } else if (currentStatus === 'available') {
+                    currentStatus = 'Available';
+                } else if (currentStatus === 'maintenance') {
+                    currentStatus = 'Maintenance';
+                } else if (currentStatus === 'unavailable') {
+                    currentStatus = 'Unavailable';
+                }
+
+                if (filter === 'available' && currentStatus !== 'Available') return;
+                if (filter === 'maintenance' && currentStatus !== 'Maintenance') return;
+                if (filter === 'unavailable' && currentStatus !== 'Unavailable') return;
+                if (filter === 'booked' && currentStatus !== 'In Use') return;
+                if (filter === 'return_pending' && currentStatus !== 'Returning') return;
+                if (filter === 'pending' && currentStatus !== 'Pending') return;
+
+                exportArr.push({
+                    "Locker ID": l.id,
+                    "Name": l.name,
+                    "Location": l.location || '-',
+                    "Slot": s.name,
+                    "Key": s.keyNumber || '-',
+                    "Status": currentStatus,
+                    "User": studentInfo
+                });
+            });
+        });
+
+        if (exportArr.length === 0) return showAlert('Error', 'No data for this filter');
+
+        if (type === 'excel') {
+            const ws = XLSX.utils.json_to_sheet(exportArr);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Locker Status");
+            XLSX.writeFile(wb, `Locker_Assets_${filter}_${timestamp}.xlsx`);
+
+        } else if (type === 'pdf') {
+            const tempDiv = document.createElement('div');
+            tempDiv.style.padding = '20px';
+            tempDiv.style.fontFamily = "'Prompt', sans-serif"; 
+            tempDiv.style.color = '#333';
+
+            let tableHtml = `
+            <h2 style="text-align: center; font-size: 20px; margin-bottom: 5px;">Asset Status Report</h2>
+            <p style="font-size: 12px; margin-bottom: 20px; text-align: center;">Filter: ${filter.toUpperCase()} | Printed: ${new Date().toLocaleString('th-TH')}</p>
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px;" border="1">
+                <thead>
+                    <tr style="background-color: #f3f4f6;">
+                        <th style="padding: 8px; border: 1px solid #ddd;">Locker</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Key</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Location</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Status</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">User</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            exportArr.forEach(r => {
+                let statusColor = r["Status"] === 'Available' ? 'color: #10b981;' : 
+                                 (r["Status"].includes('Maint') ? 'color: #ef4444;' : 'color: #3b82f6;');
+                                 
+                tableHtml += `
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center; font-weight: bold;">${r["Locker ID"]}-${r["Slot"]}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; text-align: center; color: #d46c6c; font-weight: bold;">${r["Key"]}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${r["Location"]}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold; ${statusColor}">${r["Status"]}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${r["User"]}</td>
+                    </tr>
+                `;
+            });
+            tableHtml += `</tbody></table>`;
+            tempDiv.innerHTML = tableHtml;
+
+            document.getElementById('loading-overlay').classList.remove('hidden');
+
+            const opt = {
+                margin:       0.5,
+                filename:     `Locker_Assets_${filter}_${timestamp}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(tempDiv).save().then(() => {
+                document.getElementById('loading-overlay').classList.add('hidden');
+            });
+        }
+    }
+      
+    function renderCalendar() {
+        if (!allAdminData || !allAdminData.lockers) return;
+        
+        const calMonth = document.getElementById('cal-month-picker');
+        let selectedDate = new Date();
+        
+        if (calMonth && calMonth.value) {
+            selectedDate = new Date(calMonth.value);
+        } else if (calMonth) {
+            const tzOffset = selectedDate.getTimezoneOffset() * 60000;
+            calMonth.value = new Date(selectedDate.getTime() - tzOffset).toISOString().slice(0, 7);
+        }
+
+        const year = selectedDate.getFullYear();
+        const month = selectedDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        const activeBookings = allAdminData.bookings.filter(b => 
+            ['pending', 'booked', 'return_pending'].includes(b.status) && b.startDate && b.endDate
+        );
+
+        let html = '<table class="w-full text-left text-xs whitespace-nowrap border-collapse">';
+        html += '<thead class="bg-gray-50 text-gray-600 sticky top-0 z-20 shadow-sm">';
+        html += '<tr><th class="p-2 border-b border-r font-bold min-w-[80px] sticky left-0 bg-gray-50 z-30">Locker</th>';
+        
+        for (let i = 1; i <= daysInMonth; i++) {
+            html += `<th class="p-1 border-b border-r text-center font-normal text-[10px] min-w-[28px]">${i}</th>`;
+        }
+        html += '</tr></thead><tbody class="divide-y divide-gray-100 bg-white">';
+
+        allAdminData.lockers.forEach(locker => {
+            (locker.slotsData || locker.slots).forEach(slot => {
+                if (slot.condition === 'hidden') return;
+
+                html += `<tr><td class="p-2 border-r font-bold sticky left-0 bg-white z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] text-primary text-[11px]">${locker.id}-${slot.name}</td>`;
+                
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const currentDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    
+                    const booking = activeBookings.find(b => 
+                        b.lockerId === locker.id && b.slot === slot.name && 
+                        currentDateStr >= b.startDate && currentDateStr <= b.endDate
+                    );
+
+                    if (booking) {
+                        let bgClass = 'bg-blue-500';
+                        if (booking.status === 'pending') bgClass = 'bg-yellow-400';
+                        if (booking.status === 'return_pending') bgClass = 'bg-red-400';
+                        
+                        html += `<td class="border-r border-b border-gray-100 p-0 m-0"><div class="w-full h-5 ${bgClass} cursor-pointer hover:opacity-75 transition" title="${booking.name} (${currentDateStr})" onclick="openRequestDetailModal('${booking.id}')"></div></td>`;
+                    } else if (slot.condition === 'maintenance' || slot.condition === 'unavailable') {
+                        html += `<td class="border-r border-b border-gray-100 p-0 m-0 bg-gray-200 diagonal-stripes" title="Unavailable"></td>`;
+                    } else {
+                        html += `<td class="border-r border-b border-gray-100 p-0 m-0 hover:bg-gray-50 transition"></td>`;
+                    }
+                }
+                html += '</tr>';
+            });
+        });
+        
+        html += '</tbody></table>';
+        
+        const container = document.getElementById('calendar-container');
+        if(container) container.innerHTML = html;
+    }
+  </script>
+</body>
+
+</html>
