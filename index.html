@@ -1564,6 +1564,9 @@
             }).join('');
 
             document.getElementById('admin-req-table').innerHTML = [...filteredBookings].reverse().map(b => {
+              const lk = allAdminData.lockers.find(l => l.id === b.lockerId);
+              const sl = lk ? (lk.slotsData || lk.slots).find(s => s.name === b.slot) : null;
+              const keyNum = sl && sl.keyNumber ? sl.keyNumber : '-';
                 let statusBadge = '', actionBtns = '';
                 
                 if (b.status === 'pending') {
@@ -1593,7 +1596,10 @@
                                     <p class="text-[10px] text-gray-400">${escapeHTML(b.studentId)}</p>
                                 </div>
                             </td>
-                            <td class="p-3 font-bold text-gray-700">${escapeHTML(b.lockerId)}-${escapeHTML(b.slot)}</td>
+                            <td class="p-3">
+                            <span class="font-bold text-gray-700">${escapeHTML(b.lockerId)}-${escapeHTML(b.slot)}</span><br>
+                            <span class="text-[10px] text-danger">🔑 ${escapeHTML(keyNum)}</span>
+                            </td>
                             <td class="p-3 text-[10px] text-gray-500">${escapeHTML(b.startDate)} <br> ${escapeHTML(b.endDate)}</td>
                             <td class="p-3">${statusBadge}</td>
                             
@@ -1771,6 +1777,9 @@
     function openRequestDetailModal(id) {
       const b = allAdminData.bookings.find(x => x.id === id);
       if (!b) return;
+      const lk = allAdminData.lockers.find(l => l.id === b.lockerId);
+      const sl = lk ? (lk.slotsData || lk.slots).find(s => s.name === b.slot) : null;
+      const keyNum = sl && sl.keyNumber ? sl.keyNumber : '-';
 
       document.getElementById('vd-reqId').innerText = b.id;
 
@@ -1779,6 +1788,7 @@
           <p><b>Student:</b> ${escapeHTML(b.studentId)} - ${escapeHTML(b.name)}</p>
           <p><b>Contact:</b> ${escapeHTML(b.email)} | ${escapeHTML(b.phone)}</p>
           <p><b>Locker:</b> ${escapeHTML(b.lockerId)}-${escapeHTML(b.slot)}</p>
+          <p><b><span>Locker:</span></b> ${escapeHTML(b.lockerId)}-${escapeHTML(b.slot)} <span class="text-danger font-bold text-[10px] ml-1">(🔑 ${escapeHTML(keyNum)})</span></p>
           <p><b>Period:</b> ${escapeHTML(b.startDate)} to ${escapeHTML(b.endDate)}</p>
           <p><b>Purpose:</b> <span class="text-blue-600 font-bold">${escapeHTML(b.purpose || '-')}</span></p>
           <hr class="my-2 border-gray-300">
