@@ -269,8 +269,8 @@
           </h3>
         </div>
         <p class="text-xs text-gray-600 ml-11">
-          <span class="th-text">เลือกเมนู <b>"จอง LOCKER"</b> > เลือกตู้ที่ว่าง > เลือกช่อง > กรอกข้อมูลส่วนตัวและวันที่ต้องการจอง > ยืนยันด้วยรหัส OTP ทางอีเมล</span>
-          <span class="en-text">Click <b>"BOOK A LOCKER"</b> > Select an available locker > Select a slot > Fill in your details & dates > Verify with OTP via email.</span>
+          <span class="th-text">เลือก <b>"จอง LOCKER"</b> &gt; เลือกตู้และช่องว่าง &gt; กรอกข้อมูลและช่วงวันที่ &gt; อ่านและติ๊กยินยอมการใช้ข้อมูลส่วนบุคคล (PDPA) &gt; ยืนยันด้วย OTP ทางอีเมล ระบบจึงจะบันทึกคำขอและเอกสารยินยอม</span>
+          <span class="en-text">Click <b>"BOOK A LOCKER"</b> &gt; choose an available locker and slot &gt; enter your details and dates &gt; read and tick the PDPA consent box &gt; verify by email OTP. The request and consent document are then created.</span>
         </p>
       </div>
 
@@ -278,12 +278,12 @@
         <div class="flex items-center space-x-3 mb-2">
           <div class="w-8 h-8 rounded-full bg-blue-400 text-white flex items-center justify-center font-bold">2</div>
           <h3 class="font-bold text-gray-800">
-            <span class="th-text">การตรวจสอบสถานะ</span><span class="en-text">Checking Status</span>
+            <span class="th-text">ตรวจสอบสถานะและเอกสาร PDPA</span><span class="en-text">Check Status and PDPA Document</span>
           </h3>
         </div>
         <p class="text-xs text-gray-600 ml-11">
-          <span class="th-text">เลือกเมนู <b>"MY LOCKER"</b> > กรอกรหัสนักศึกษาและอีเมล > ระบบจะแสดงสถานะคำขอของคุณ (รออนุมัติ / ใช้งานอยู่ / รอคืน)</span>
-          <span class="en-text">Click <b>"MY LOCKER"</b> > Enter Student ID & Email > The system will show your request status (Pending / In Use / Returning).</span>
+          <span class="th-text">เลือก <b>"MY LOCKER"</b> &gt; กรอกรหัสนักศึกษาและอีเมล &gt; ดูสถานะคำขอ (รออนุมัติ / ใช้งานอยู่ / รอคืน) กด <b>"ดูเอกสารยินยอม PDPA"</b> เพื่อเปิดเอกสาร และกด <b>"พิมพ์ / บันทึก PDF"</b> หากต้องการเก็บสำเนา</span>
+          <span class="en-text">Click <b>"MY LOCKER"</b> &gt; enter your Student ID and email &gt; view your request status (Pending / In Use / Returning). Select <b>"View PDPA Consent Document"</b> to open it, then <b>"Print / Save PDF"</b> to keep a copy.</span>
         </p>
       </div>
 
@@ -291,12 +291,12 @@
         <div class="flex items-center space-x-3 mb-2">
           <div class="w-8 h-8 rounded-full bg-red-400 text-white flex items-center justify-center font-bold">3</div>
           <h3 class="font-bold text-gray-800">
-            <span class="th-text">การคืนตู้ล็อกเกอร์</span><span class="en-text">How to Return</span>
+            <span class="th-text">ยกเลิกหรือคืนตู้ล็อกเกอร์</span><span class="en-text">Cancel or Return a Locker</span>
           </h3>
         </div>
         <p class="text-xs text-gray-600 ml-11">
-          <span class="th-text">เข้าหน้า <b>"MY LOCKER"</b> > กดปุ่ม <b>"คืน LOCKER นี้"</b> > ยืนยันด้วย OTP > นำสิ่งของออกและปลดแม่กุญแจ > ติดต่อเจ้าหน้าที่เพื่อตรวจรับคืน</span>
-          <span class="en-text">Go to <b>"MY LOCKER"</b> > Click <b>"Return Locker"</b> > Verify with OTP > Empty the locker & remove padlock > Contact staff to complete the return.</span>
+          <span class="th-text">คำขอที่ยัง <b>รออนุมัติ</b> สามารถยกเลิกได้จาก My Locker ส่วนการคืนตู้ ให้กด <b>"คืน LOCKER นี้"</b> &gt; ยืนยัน OTP &gt; นำของออกและปลดแม่กุญแจ &gt; ติดต่อเจ้าหน้าที่เพื่อตรวจรับคืน</span>
+          <span class="en-text">A <b>Pending</b> request can be cancelled in My Locker. To return a locker, choose <b>"Return Locker"</b> &gt; verify by OTP &gt; remove your belongings and padlock &gt; contact staff for final inspection.</span>
         </p>
       </div>
 
@@ -425,6 +425,7 @@
         <button onclick="switchAdminTab('dash-manage', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">จัดการตู้ (Lockers)</span><span class="en-text">Lockers Setup</span></button>
         <button onclick="switchAdminTab('dash-calendar', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">ปฏิทินตู้ (Timeline)</span><span class="en-text">Timeline</span></button>
         <button onclick="switchAdminTab('dash-requests', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">คำขอ & อนุมัติ</span><span class="en-text">Requests</span></button>
+        <button id="tab-pdpa-menu" onclick="switchAdminTab('dash-pdpa', this); loadPdpaAdmin();" class="admin-tab p-4 whitespace-nowrap text-gray-500">PDPA</button>
         <button id="tab-ai-menu" onclick="switchAdminTab('dash-ai', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500">AI Assistant</button>
         <button id="tab-staff-menu" onclick="switchAdminTab('dash-staff', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 hidden"><span class="th-text">จัดการเจ้าหน้าที่</span><span class="en-text">Staff Management</span></button>
         <button onclick="switchAdminTab('dash-manual', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 font-bold">📖 คู่มือ (Manual)</button>
@@ -546,6 +547,16 @@
           </div>
         </div>
         
+        <div id="dash-pdpa" class="admin-sec hidden">
+          <div class="max-w-3xl mx-auto space-y-4">
+            <div class="flex justify-between items-center"><h2 class="text-lg font-bold text-gray-700">จัดการเอกสารยินยอม PDPA</h2><span class="text-[10px] bg-blue-50 text-blue-700 px-3 py-1 rounded-full">เก็บข้อมูลอย่างน้อย 60 วัน</span></div>
+            <p class="text-xs text-gray-500">ปรับโลโก้ หัวเรื่อง ย่อหน้า และลายเซ็นผู้ดูแลได้ที่นี่ เอกสารที่ออกไปแล้วจะคงเนื้อหาเดิมไว้</p>
+            <div class="grid md:grid-cols-2 gap-3 text-xs"><div><label>ชื่อผู้ดูแล/ผู้ลงนาม</label><input id="pdpa-admin-name" class="input-field border bg-white"></div><div><label>ตำแหน่ง</label><input id="pdpa-admin-position" class="input-field border bg-white"></div></div>
+            <div class="border rounded-xl p-3 bg-gray-50"><p class="text-xs font-bold text-primary">เนื้อหาเอกสารที่ใช้งานจริง</p><p class="text-[10px] text-gray-500 mt-1">แก้ไขโลโก้ หัวข้อ ย่อหน้า ตาราง และข้อความทั้งหมดใน HTML ด้านล่างได้โดยตรง เอกสารจะใช้โค้ดนี้เป็นแหล่งข้อมูลเดียว</p><p class="text-[10px] text-gray-500 mt-2">ตัวแปรอัตโนมัติ: {{REQUEST_NO}}, {{CONSENT_DATE_TH}}, {{CONSENT_DATE_EN}}, {{NAME}}, {{STUDENT_ID}}, {{PHONE}}, {{EMAIL}}, {{LOCKER}}, {{ADMIN_SIGNATURE}}, {{ADMIN_NAME}}, {{ADMIN_POSITION}}</p><label class="block text-xs font-bold mt-3">หน้า 1: ภาษาไทย</label><textarea id="pdpa-thai-html" class="w-full h-64 border rounded p-2 font-mono text-[10px] mt-1"></textarea><label class="block text-xs font-bold mt-3">Page 2: English</label><textarea id="pdpa-english-html" class="w-full h-64 border rounded p-2 font-mono text-[10px] mt-1"></textarea></div>
+            <div class="border rounded-xl p-3 bg-gray-50"><label class="text-xs font-bold">ลายเซ็นผู้ดูแล</label><canvas id="pdpa-admin-canvas" class="w-full h-28 bg-white border rounded-lg touch-none mt-2"></canvas><div class="flex justify-between mt-2"><span id="pdpa-admin-sign-state" class="text-[10px] text-gray-400">ลงลายมือชื่อด้วยเมาส์หรือนิ้ว</span><button onclick="clearSignature('pdpa-admin-canvas')" class="text-danger text-xs">ล้างลายเซ็น</button></div></div>
+            <button onclick="savePdpaAdmin()" class="btn-main max-w-sm">บันทึกแม่แบบ PDPA</button>
+          </div>
+        </div>
         <div id="dash-ai" class="admin-sec hidden">
           <h2 class="text-md font-bold text-gray-700 mb-4">AI Agent System Assist</h2>
           <div class="flex flex-col bg-white border border-gray-200 rounded-xl h-[450px] shadow-sm overflow-hidden">
@@ -564,56 +575,55 @@
           </div>
         </div>  
         <div id="dash-manual" class="admin-sec hidden">
-          <h2 class="text-lg font-bold text-gray-700 mb-6 border-b pb-2">📖 คู่มือการใช้งานสำหรับ Admin / Staff</h2>
+          <h2 class="text-lg font-bold text-gray-700 mb-6 border-b pb-2"><span class="th-text">📖 คู่มือผู้ดูแลระบบ / เจ้าหน้าที่</span><span class="en-text">📖 Administrator / Staff Manual</span></h2>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-[400px] overflow-y-auto pr-2 pb-6">
             
             <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
               <div class="flex items-center space-x-2 mb-3">
                 <span class="text-2xl">📦</span>
-                <h3 class="font-bold text-primary text-md">การจัดการตู้และช่อง (Lockers Setup)</h3>
+                <h3 class="font-bold text-primary text-md"><span class="th-text">การจัดการตู้และช่อง</span><span class="en-text">Locker and Slot Management</span></h3>
               </div>
               <ul class="list-disc pl-5 text-xs text-gray-600 space-y-2">
-                <li><b>เพิ่มตู้ใหม่:</b> กดปุ่ม "+ เพิ่มตู้ใหม่" กำหนดจำนวนแถว/คอลัมน์ ระบบจะสร้างช่องให้อัตโนมัติ</li>
-                <li><b>แก้ไข/ลบตู้:</b> กดปุ่ม "ตั้งค่า/ลบ" ที่มุมขวาบนของการ์ดตู้ล็อกเกอร์</li>
-                <li><b>ปรับสถานะด่วน:</b> คลิกที่ "ช่อง (Slot)" ที่ว่างอยู่ เพื่อเปลี่ยนสถานะเป็น ปรับปรุง(ซ่อม) หรือ ไม่ว่าง(สงวนสิทธิ์)</li>
-                <li><b>ช่องที่ซ่อน:</b> หากต้องการให้ช่องไหนหายไปจากหน้าจอ (เช่น ช่องพังถาวร) ให้ตั้งค่าช่องนั้นเป็น "ซ่อน (Hide)"</li>
+                <li><span class="th-text"><b>เพิ่มตู้:</b> กด “+ เพิ่มตู้ใหม่” กำหนดแถวและคอลัมน์ แล้วระบบจะสร้างช่องให้</span><span class="en-text"><b>Add a locker:</b> Select “+ Add Locker”, set the rows and columns, and the system creates its slots.</span></li>
+                <li><span class="th-text"><b>แก้ไข/ลบ:</b> ใช้ “ตั้งค่า/ลบ” ที่มุมขวาของการ์ดตู้</span><span class="en-text"><b>Edit/Delete:</b> Use “Settings/Delete” at the upper-right of a locker card.</span></li>
+                <li><span class="th-text"><b>สถานะช่อง:</b> คลิกช่องว่างเพื่อตั้งเป็นว่าง ซ่อมบำรุง ไม่ว่าง หรือซ่อน</span><span class="en-text"><b>Slot status:</b> Click an available slot to set it Available, Maintenance, Unavailable, or Hidden.</span></li>
               </ul>
             </div>
 
             <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
               <div class="flex items-center space-x-2 mb-3">
                 <span class="text-2xl">📝</span>
-                <h3 class="font-bold text-primary text-md">การอนุมัติคำขอจอง (Requests)</h3>
+                <h3 class="font-bold text-primary text-md"><span class="th-text">คำขอ การอนุมัติ และ PDPA</span><span class="en-text">Requests, Approval, and PDPA</span></h3>
               </div>
               <ul class="list-disc pl-5 text-xs text-gray-600 space-y-2">
-                <li>ไปที่แท็บ <b>คำขอ & อนุมัติ</b> จะเห็นรายการที่สถานะ "รออนุมัติ (Pending)"</li>
-                <li>กด <b>ตรวจ/อนุมัติ</b> ระบบจะให้ระบุ "เวลาที่นัดหมาย" ให้นักศึกษาเข้ามารับตู้และนำแม่กุญแจมาคล้อง</li>
-                <li>สามารถเปลี่ยนตู้หรือช่องให้นักศึกษาใหม่ได้ในหน้านี้ (เผื่อช่องเดิมมีปัญหา)</li>
-                <li>หากกด <b>ปฏิเสธ</b> คำขอจะถูกยกเลิกทันที</li>
+                <li><span class="th-text">แท็บ <b>คำขอ &amp; อนุมัติ</b> แสดงรายการรออนุมัติ กด <b>ตรวจ/อนุมัติ</b> เพื่อนัดรับตู้ หรือ <b>ปฏิเสธ</b> เพื่อยกเลิกคำขอ</span><span class="en-text">The <b>Requests &amp; Approval</b> tab lists pending requests. Select <b>Review/Approve</b> to set a collection time, or <b>Reject</b> to cancel the request.</span></li>
+                <li><span class="th-text">สามารถเปลี่ยนตู้หรือช่องได้ก่อนอนุมัติ หากช่องเดิมมีปัญหา</span><span class="en-text">A locker or slot may be changed before approval if the original one has an issue.</span></li>
+                <li><span class="th-text">ปุ่ม <b>PDPA</b> เปิดเอกสารยินยอมของคำขอนั้น ซึ่งผู้จองก็เปิดดูได้จาก My Locker</span><span class="en-text">The <b>PDPA</b> button opens that request’s consent document; the requester can also view it in My Locker.</span></li>
               </ul>
             </div>
 
             <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
               <div class="flex items-center space-x-2 mb-3">
                 <span class="text-2xl">🔄</span>
-                <h3 class="font-bold text-primary text-md">การรับตู้คืน (Return Process)</h3>
+                <h3 class="font-bold text-primary text-md"><span class="th-text">การเก็บรักษาและลบข้อมูล PDPA</span><span class="en-text">PDPA Retention and Deletion</span></h3>
               </div>
               <ul class="list-disc pl-5 text-xs text-gray-600 space-y-2">
-                <li>เมื่อนักศึกษากดคืนตู้ในระบบ สถานะจะเปลี่ยนเป็น "รอรับคืน (Returning)"</li>
-                <li><b>ขั้นตอนที่ 1 (นัดคืนตู้):</b> กดปุ่ม "นัดคืนตู้" เพื่อระบุเวลาและค่าปรับ(เบื้องต้น) ระบบจะส่งอีเมลแจ้งนักศึกษา</li>
-                <li><b>ขั้นตอนที่ 2 (รับคืนจบงาน):</b> เมื่อนักศึกษาเอาของออกและปลดกุญแจแล้ว ให้กดปุ่ม <b>"รับคืน (จบ)"</b> เพื่อประเมินสภาพตู้และปิดงาน (Completed) ช่องจะกลับมาเป็นสถานะ "ว่าง"</li>
+                <li><span class="th-text">ระบบเก็บข้อมูลคำขอและเอกสาร PDPA เป็นเวลา <b>60 วันนับจากวันที่ให้ความยินยอม</b></span><span class="en-text">The system retains the request data and PDPA document for <b>60 days from the consent date</b>.</span></li>
+                <li><span class="th-text">ป้ายในรายการคำขอบอกจำนวนวันที่เหลือก่อนลบได้ เมื่อครบกำหนด ผู้มีสิทธิ์จึงกดลบได้</span><span class="en-text">The request list shows the days remaining before deletion is allowed. Only after the retention period may an authorized user delete it.</span></li>
+                <li><span class="th-text">หน้าต่างยืนยันจะย้ำจำนวนวันและการลบเอกสาร PDF ที่เกี่ยวข้องออกจาก Google Drive</span><span class="en-text">The confirmation dialog repeats the remaining-day status and warns that the related PDF will be removed from Google Drive.</span></li>
               </ul>
             </div>
 
             <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
               <div class="flex items-center space-x-2 mb-3">
                 <span class="text-2xl">🤖</span>
-                <h3 class="font-bold text-primary text-md">ระบบ AI และ Export Data</h3>
+                <h3 class="font-bold text-primary text-md"><span class="th-text">ตั้งค่า PDPA การคืนตู้ และรายงาน</span><span class="en-text">PDPA Setup, Returns, and Reports</span></h3>
               </div>
               <ul class="list-disc pl-5 text-xs text-gray-600 space-y-2">
-                <li>สามารถใช้ปุ่ม Filter ด้านบน เพื่อกรองข้อมูลตามช่วงเวลา จากนั้นกดปุ่ม <b>Export Excel/PDF</b></li>
-                <li><b>AI Assistant:</b> สามารถพิมพ์สั่งงานเป็นภาษาธรรมชาติได้ เช่น <i>"สรุปข้อมูลคนค้างส่งตู้"</i> หรือ <i>"ปริ้น pdf รายชื่อคนที่จองตู้ L1 ให้หน่อย"</i> AI จะทำการ Filter และสร้างไฟล์ให้ทันที</li>
+                <li><span class="th-text"><b>ผู้ดูแลระบบ:</b> ไปที่แท็บ <b>PDPA</b> เพื่อแก้ไข HTML ของเอกสารหน้าไทย/อังกฤษและลงลายเซ็นเจ้าหน้าที่ กดบันทึกก่อนออกเอกสารใหม่</span><span class="en-text"><b>Administrators:</b> Open the <b>PDPA</b> tab to edit the Thai/English document HTML and save the staff signature before new documents are issued.</span></li>
+                <li><span class="th-text">คงตัวแปรในแม่แบบไว้ เช่น <code>{{REQUEST_NO}}</code>, <code>{{CONSENT_DATE_TH}}</code>, <code>{{CONSENT_DATE_EN}}</code>, <code>{{NAME}}</code>, <code>{{ADMIN_SIGNATURE}}</code> เพื่อให้ระบบใส่ข้อมูลอัตโนมัติ เอกสารเดิมจะคงตามข้อมูลขณะยินยอม</span><span class="en-text">Keep placeholders such as <code>{{REQUEST_NO}}</code>, <code>{{CONSENT_DATE_TH}}</code>, <code>{{CONSENT_DATE_EN}}</code>, <code>{{NAME}}</code>, and <code>{{ADMIN_SIGNATURE}}</code> so the system can fill them automatically. Existing documents remain as recorded at consent time.</span></li>
+                <li><span class="th-text">เมื่อผู้จองกดคืน สถานะเป็น “รอรับคืน”; นัดคืนตู้ แล้วกด <b>“รับคืน (จบ)”</b> หลังตรวจตู้ ระบบจะทำให้ช่องว่างอีกครั้ง ใช้ตัวกรองและ Export Excel/PDF เพื่อทำรายงาน</span><span class="en-text">When a requester returns a locker, the status becomes “Returning”; schedule the return, then select <b>“Complete Return”</b> after inspection. The slot becomes available again. Use filters and Export Excel/PDF for reports.</span></li>
               </ul>
             </div>
 
@@ -738,6 +748,21 @@
       </div>
     </div>
   </div>
+
+  <div id="modal-pdpa-sign" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[90] p-4">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-lg max-h-[95vh] flex flex-col shadow-2xl">
+      <h3 class="text-primary font-bold text-lg mb-2">ยินยอมให้ใช้และเก็บข้อมูลส่วนบุคคล</h3>
+      <p id="pdpa-sign-title" class="font-bold text-sm text-gray-700"></p>
+      <div id="pdpa-sign-paragraphs" class="overflow-y-auto text-xs text-gray-600 space-y-3 my-3 pr-2"></div>
+      <label class="flex gap-2 text-xs text-gray-700 mb-3"><input id="pdpa-sign-check" type="checkbox" class="mt-1"> ข้าพเจ้าได้อ่าน เข้าใจ และยินยอมตามข้อความข้างต้น</label>
+      <label class="text-xs font-bold">ลายมือชื่อผู้ให้ความยินยอม</label>
+      <canvas id="pdpa-student-canvas" class="w-full h-32 bg-white border rounded-xl touch-none mt-2"></canvas>
+      <div class="flex justify-between mt-2"><span id="pdpa-student-sign-state" class="text-[10px] text-gray-400">เซ็นชื่อด้วยเมาส์หรือนิ้ว</span><button onclick="clearSignature('pdpa-student-canvas')" class="text-danger text-xs">ล้างลายเซ็น</button></div>
+      <div class="flex gap-2 mt-5"><button onclick="confirmPdpaSignature()" class="btn-main py-2">ยืนยันและบันทึกคำขอ</button><button onclick="hideCustomModal('modal-pdpa-sign')" class="bg-gray-200 px-4 rounded-full text-sm">ยกเลิก</button></div>
+    </div>
+  </div>
+
+  <div id="modal-pdpa-document" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[90] p-4"><div class="bg-white rounded-2xl w-full max-w-3xl max-h-[95vh] flex flex-col overflow-hidden"><div class="p-4 border-b flex justify-between items-center"><b class="text-primary">เอกสารยินยอม PDPA</b><div class="flex gap-3"><button onclick="downloadPdpaPdf()" class="text-primary font-bold text-sm">พิมพ์ / บันทึก PDF</button><button onclick="hideCustomModal('modal-pdpa-document')" class="text-danger">ปิด</button></div></div><iframe id="pdpa-document-frame" class="w-full h-[75vh]"></iframe></div></div>
 
   <div id="custom-alert" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[80]">
     <div class="bg-white p-6 rounded-2xl w-80 text-center">
@@ -1185,13 +1210,39 @@
         }
     }
 
+    let pdpaSignatureData = '';
+    let pdpaTemplateCache = null;
+    function setupSignatureCanvas(id) {
+        const canvas = document.getElementById(id); if (!canvas || canvas.dataset.ready) return;
+        canvas.dataset.ready = '1'; canvas.style.touchAction = 'none';
+        const ctx = canvas.getContext('2d'); let drawing = false;
+        const point = e => { const r = canvas.getBoundingClientRect(); return { x: (e.clientX-r.left)*canvas.width/r.width, y: (e.clientY-r.top)*canvas.height/r.height }; };
+        canvas.addEventListener('pointerdown', e => { drawing=true; canvas.setPointerCapture(e.pointerId); const p=point(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); });
+        canvas.addEventListener('pointermove', e => { if (!drawing) return; const p=point(e); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#1f2937'; ctx.lineWidth=4; ctx.lineCap='round'; ctx.stroke(); e.preventDefault(); });
+        const stop = e => { drawing=false; if (canvas.hasPointerCapture && canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId); };
+        canvas.addEventListener('pointerup', stop); canvas.addEventListener('pointercancel', stop);
+    }
+    function resizeSignatureCanvas(id) { const c=document.getElementById(id); if (!c) return; const r=c.getBoundingClientRect(); c.width=Math.max(1, Math.round(r.width*2)); c.height=Math.max(1, Math.round(r.height*2)); }
+    function clearSignature(id) { const c=document.getElementById(id); c.getContext('2d').clearRect(0,0,c.width,c.height); }
+    function signatureHasInk(id) { const c=document.getElementById(id); const p=c.getContext('2d').getImageData(0,0,c.width,c.height).data; for(let i=3;i<p.length;i+=4) if(p[i]) return true; return false; }
+    async function openPdpaSignatureModal() {
+        try { const res=await fetch('/api/pdpa/template'); const data=await res.json(); if (!data.success) throw new Error(); pdpaTemplateCache=data.data; } catch(e) { return showAlert('Error','ไม่สามารถโหลดข้อความ PDPA ได้'); }
+        document.getElementById('pdpa-sign-title').innerText=pdpaTemplateCache.title || 'PDPA Consent';
+        document.getElementById('pdpa-sign-paragraphs').innerHTML=(pdpaTemplateCache.paragraphs||[]).map(x=>`<p>${escapeHTML(x)}</p>`).join('');
+        document.getElementById('pdpa-sign-check').checked=false; showCustomModal('modal-pdpa-sign'); setTimeout(()=>{resizeSignatureCanvas('pdpa-student-canvas'); setupSignatureCanvas('pdpa-student-canvas');},0);
+    }
+    function confirmPdpaSignature() {
+        if (!document.getElementById('pdpa-sign-check').checked || !signatureHasInk('pdpa-student-canvas')) return showAlert('PDPA','กรุณาติ๊กยินยอมและลงลายมือชื่อก่อนบันทึก');
+        pdpaSignatureData=document.getElementById('pdpa-student-canvas').toDataURL('image/png'); hideCustomModal('modal-pdpa-sign'); submitBooking();
+    }
     async function submitBooking() {
         const payload = {
             lockerId: bookingData.lockerId, slot: bookingData.slot,
             studentId: document.getElementById('b-stuId').value, name: document.getElementById('b-name').value,
             phone: document.getElementById('b-phone').value, email: document.getElementById('b-email').value,
             purpose: document.getElementById('b-purpose').value,
-            startDate: document.getElementById('b-start').value, endDate: document.getElementById('b-end').value
+            startDate: document.getElementById('b-start').value, endDate: document.getElementById('b-end').value,
+            pdpaConsent: document.getElementById('b-pdpa').checked
         };
         try {
             const res = await fetch('/api/book', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1301,7 +1352,55 @@
                 </div>`;
             }
             container.innerHTML += cardHtml;
+            if (record.pdpa) container.lastElementChild.insertAdjacentHTML('beforeend', `<button onclick="viewPdpaDocument('${record.id}')" class="w-full bg-primary text-white py-1.5 rounded-full font-bold text-[10px] hover:opacity-85 transition mt-2">ดูเอกสารยินยอม PDPA</button>`);
         });
+    }
+    async function viewPdpaDocument(id) {
+        const studentId=document.getElementById('ml-stuId').value, email=document.getElementById('ml-email').value;
+        try { const res=await fetch('/api/pdpa/document',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,studentId,email})}); const result=await res.json(); if(!result.success) return showAlert('PDPA',result.message); currentPdpaDocument=result.data; document.getElementById('pdpa-document-frame').srcdoc=buildPdpaDocumentHtml(result.data); showCustomModal('modal-pdpa-document'); } catch(e) { showAlert('PDPA','ไม่สามารถเปิดเอกสารได้'); }
+    }
+    function viewAdminPdpaDocument(id) {
+        const booking = allAdminData && allAdminData.bookings ? allAdminData.bookings.find(b => b.id === id) : null;
+        if (!booking || !booking.pdpa) return showAlert('PDPA', 'ไม่พบเอกสาร PDPA ของคำขอนี้');
+        currentPdpaDocument = booking.pdpa;
+        document.getElementById('pdpa-document-frame').srcdoc = buildPdpaDocumentHtml(booking.pdpa);
+        showCustomModal('modal-pdpa-document');
+    }
+    let currentPdpaDocument = null;
+    function buildPdpaDocumentHtml(r) {
+      const t=r.template||{}, esc=escapeHTML, dateTh=new Date(r.consentedAt).toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'}), dateEn=new Date(r.consentedAt).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+      if (t.thaiDocumentHtml && t.englishDocumentHtml) {
+        const tokens={'{{REQUEST_NO}}':esc(r.requestNo),'{{CONSENT_DATE_TH}}':esc(dateTh),'{{CONSENT_DATE_EN}}':esc(dateEn),'{{NAME}}':esc(r.studentName),'{{STUDENT_ID}}':esc(r.studentId),'{{PHONE}}':esc(r.phone||''),'{{EMAIL}}':esc(r.email||''),'{{LOCKER}}':esc(`${r.lockerId||'-'}-${r.slot||'-'}`),'{{ADMIN_SIGNATURE}}':r.adminSignatureUrl?`<img class="admin-signature" src="${esc(r.adminSignatureUrl)}">`:'','{{ADMIN_NAME}}':esc(t.adminName||''),'{{ADMIN_POSITION}}':esc(t.adminPosition||'')};
+        const fill=html=>Object.keys(tokens).reduce((out,key)=>out.split(key).join(tokens[key]),html).replace(/_{10,}/g,'');
+        return `<!doctype html><html><meta charset="utf-8"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;color:#222;font-family:Arial,sans-serif}.a4{width:210mm;height:297mm;padding:18mm 18mm 15mm;overflow:hidden;font-size:12px;line-height:1.55}.en{page-break-before:always}.a4 header{min-height:68px;border-bottom:2px solid #33c0ca;padding-bottom:8px}.a4 h1{font-size:17px;margin:0 0 5px}.a4 h3{font-size:13px;border-left:4px solid #33c0ca;padding-left:7px;margin:15px 0 8px}.a4 p{margin:7px 0}.logo{float:right;width:60px;height:60px;object-fit:contain}.right{text-align:right}.box{background:#f5f7f7;border:1px solid #ddd;border-radius:8px;padding:9px}.consent{background:#eefafa;border:1px solid #b7e8e8;padding:9px;border-radius:8px}.sign{display:flex;justify-content:space-between;text-align:center;margin-top:34px}.sign>div{width:44%}.admin-signature{height:45px;max-width:160px;object-fit:contain;display:block;margin:8px auto}</style><body><section class="a4">${fill(t.thaiDocumentHtml)}</section><section class="a4 en">${fill(t.englishDocumentHtml)}</section></body></html>`;
+      }
+      const logo=t.logoUrl?`<img src="${esc(t.logoUrl)}" class="logo">`:'';
+      const admin=`${r.adminSignatureUrl?`<img src="${esc(r.adminSignatureUrl)}" class="signature">`:''}<div>(${esc(t.adminName||'________________')})</div><small>${esc(t.adminPosition||'Data Controller Representative')}</small>`;
+      const extra=(t.paragraphs||[]).map(x=>`<p>${esc(x)}</p>`).join('');
+      const page=(lang,title,body,consent)=>`<section class="sheet ${lang==='en'?'new-page':''}"><header>${logo}<div><h1>${title}</h1><h2>College of Computing, Prince of Songkla University, Phuket Campus</h2><p>CoC - MyLocker Online Locker Management and Booking System</p></div></header><div class="meta"><b>${lang==='th'?'เลขที่คำขอ':'Request no.'}:</b> ${esc(r.requestNo)}<br><b>${lang==='th'?'วันที่ให้ความยินยอม':'Consent date'}:</b> ${esc(lang==='th'?dateTh:dateEn)}</div><h3>1. ${lang==='th'?'ข้อมูลผู้ให้ความยินยอม':'Consent provider details'}</h3><div class="data"><div><b>${lang==='th'?'ชื่อ - นามสกุล':'Full name'}:</b> ${esc(r.studentName)}</div><div><b>${lang==='th'?'รหัสนักศึกษา':'Student ID'}:</b> ${esc(r.studentId)}</div><div><b>${lang==='th'?'โทรศัพท์':'Telephone'}:</b> ${esc(r.phone||'-')}</div><div><b>Email:</b> ${esc(r.email||'-')}</div><div class="wide"><b>${lang==='th'?'คำขอใช้ตู้':'Locker request'}:</b> ${esc(r.lockerId||'-')}-${esc(r.slot||'-')}</div></div><h3>2. ${lang==='th'?'วัตถุประสงค์และเงื่อนไขการคุ้มครองข้อมูลส่วนบุคคล':'Purpose and personal data protection terms'}</h3>${body}<h3>3. ${lang==='th'?'การแสดงเจตนายินยอม':'Consent declaration'}</h3><div class="consent">☑ ${consent}</div><div class="signatures"><div><p>${lang==='th'?'ผู้ขอใช้บริการ / เจ้าของข้อมูล':'Service applicant / Data subject'}</p><div class="line"></div><b>${esc(r.studentName)}</b><small>${lang==='th'?'ยืนยันความยินยอมผ่านระบบ':'Consent confirmed through the system'}</small></div><div><p>${lang==='th'?'เจ้าหน้าที่ / ผู้ดูแลข้อมูล':'Officer / Data controller'}</p>${admin}</div></div><footer>${lang==='th'?'เอกสารฉบับนี้ออกโดยระบบ CoC - MyLocker เพื่อการจองตู้ล็อกเกอร์เท่านั้น.':'This document is generated by CoC - MyLocker solely for locker booking purposes.'}</footer></section>`;
+      const thaiBody=`<p>วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยสงขลานครินทร์ มีความจำเป็นต้องเก็บ รวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล ได้แก่ ชื่อ-นามสกุล รหัสนักศึกษา หมายเลขโทรศัพท์ และอีเมล เพื่อยืนยันสิทธิ์ จัดสรรตู้ ติดต่อแจ้งเตือน และบริหารจัดการทรัพยากรของหน่วยงาน</p><p><b>ระยะเวลาการเก็บรักษา:</b> ข้อมูลจะถูกเก็บไว้อย่างน้อย 60 วันนับจากวันที่ให้ความยินยอมหรือจนกว่าจะครบกำหนดตามกระบวนการของระบบ หลังจากนั้นจึงสามารถลบข้อมูลออกจากระบบได้ตามกระบวนการที่กำหนด</p><p><b>สิทธิของเจ้าของข้อมูล:</b> ท่านสามารถขอเข้าถึง ขอสำเนา ขอแก้ไข คัดค้าน ระงับการใช้ หรือขอลบข้อมูลได้ตามกฎหมายคุ้มครองข้อมูลส่วนบุคคล</p>${extra}`;
+      const englishBody=`<p>The College of Computing, Prince of Songkla University collects, uses and discloses personal data including your name, student ID, telephone number and email address to verify eligibility, allocate lockers, communicate booking notices and manage institutional resources.</p><p><b>Retention period:</b> Data is retained for at least 60 days from the consent date or until the system retention process is complete, after which it may be deleted.</p><p><b>Data subject rights:</b> You may request access, a copy, correction, objection, restriction of processing or erasure of your personal data as provided by applicable data-protection law.</p>`;
+      return `<!doctype html><html><meta charset="utf-8"><style>@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');*{box-sizing:border-box}body{font-family:Sarabun,Arial,sans-serif;color:#222;margin:0}.sheet{width:210mm;min-height:297mm;padding:16mm 17mm;margin:auto;font-size:12px;line-height:1.5}.new-page{page-break-before:always}header{display:flex;gap:14px;border-bottom:2px solid #33c0ca;padding-bottom:10px}header h1{font-size:17px;margin:0}header h2{font-size:11px;margin:3px 0}header p{font-size:10px;margin:0;color:#555}.logo{width:60px;height:60px;object-fit:contain}.meta{text-align:right;margin:14px 0;font-size:11px}h3{font-size:13px;border-left:4px solid #33c0ca;padding-left:7px;margin:16px 0 8px}.data{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f5f7f7;border:1px solid #ddd;border-radius:8px;padding:10px}.wide{grid-column:1/-1}.consent{background:#eefafa;border:1px solid #b7e8e8;padding:10px;border-radius:8px}.signatures{display:grid;grid-template-columns:1fr 1fr;gap:40px;text-align:center;margin-top:35px}.signature{height:45px;max-width:170px;object-fit:contain;display:block;margin:auto}.line{border-bottom:1px solid #555;margin:38px 0 4px}.signatures small{display:block;color:#666;margin-top:4px}footer{margin-top:35px;border-top:1px solid #ddd;padding-top:8px;text-align:center;font-size:9px;color:#777}@media print{.sheet{margin:0}}</style><body>${page('th','หนังสือให้ความยินยอมการเก็บ รวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล',thaiBody,'ข้าพเจ้าได้อ่านและเข้าใจรายละเอียดข้างต้น และยินยอมให้มีการประมวลผลข้อมูลส่วนบุคคลเพื่อใช้บริการจองตู้ล็อกเกอร์')}${page('en','PERSONAL DATA PROTECTION ACT (PDPA) CONSENT FORM',englishBody,'I have read and understood the information above and consent to the processing of my personal data for the locker booking service.')}</body></html>`;
+    }
+    async function inlinePdfImages(root) {
+      const images = [...root.querySelectorAll('img')];
+      await Promise.all(images.map(async img => {
+        try {
+          const response = await fetch('/api/pdpa/image', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: img.src }) });
+          const result = await response.json();
+          if (result.success && result.dataUrl) img.src = result.dataUrl;
+        } catch (_) { /* The PDF can still be generated if one image cannot be retrieved. */ }
+      }));
+    }
+    function downloadPdpaPdf() {
+      if (!currentPdpaDocument) return;
+      // Native browser printing preserves the CSS A4 pages exactly, unlike canvas conversion.
+      const printWindow = window.open('', '_blank', 'width=900,height=800');
+      if (!printWindow) return showAlert('PDPA','เบราว์เซอร์บล็อกหน้าต่างพิมพ์ กรุณาอนุญาต Pop-up แล้วลองใหม่');
+      printWindow.document.open();
+      printWindow.document.write(buildPdpaDocumentHtml(currentPdpaDocument));
+      printWindow.document.close();
+      printWindow.onload = () => setTimeout(() => { printWindow.focus(); printWindow.print(); }, 350);
     }
     function prepareCancel(id) {
         actionTargetIds = [id]; 
@@ -1371,6 +1470,8 @@
                 if (staffMenu) {
                     staffMenu.style.display = loggedInUser.role === 'admin' ? 'block' : 'none';
                 }
+                const pdpaMenu = document.getElementById('tab-pdpa-menu');
+                if (pdpaMenu) pdpaMenu.style.display = loggedInUser.role === 'admin' ? 'block' : 'none';
                 
                 loadAdminData(); 
                 startDashboardPolling();  
@@ -1623,6 +1724,12 @@
         });
     }
 
+    async function loadPdpaAdmin() {
+      try { const res=await fetch('/api/admin/pdpa'); const result=await res.json(); if(!result.success) return; const x=result.data; document.getElementById('pdpa-admin-name').value=x.adminName||''; document.getElementById('pdpa-admin-position').value=x.adminPosition||''; document.getElementById('pdpa-thai-html').value=x.thaiDocumentHtml||''; document.getElementById('pdpa-english-html').value=x.englishDocumentHtml||''; setTimeout(()=>{resizeSignatureCanvas('pdpa-admin-canvas'); setupSignatureCanvas('pdpa-admin-canvas');},0); } catch(e) { showAlert('PDPA','ไม่สามารถโหลดแม่แบบ PDPA ได้'); }
+    }
+    async function savePdpaAdmin() {
+      const canvas=document.getElementById('pdpa-admin-canvas'); const payload={adminName:document.getElementById('pdpa-admin-name').value.trim(),adminPosition:document.getElementById('pdpa-admin-position').value.trim(),thaiDocumentHtml:document.getElementById('pdpa-thai-html').value.trim(),englishDocumentHtml:document.getElementById('pdpa-english-html').value.trim()}; if(signatureHasInk('pdpa-admin-canvas')) payload.adminSignatureData=canvas.toDataURL('image/png'); if(!payload.thaiDocumentHtml || !payload.englishDocumentHtml) return showAlert('PDPA','กรุณาระบุ HTML ทั้งภาษาไทยและอังกฤษ'); const res=await fetch('/api/admin/pdpa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); const result=await res.json(); if(result.success) { clearSignature('pdpa-admin-canvas'); showAlert('PDPA','บันทึกแม่แบบ PDPA เรียบร้อย'); } else showAlert('PDPA',result.message||'บันทึกไม่สำเร็จ');
+    }
     async function loadAdminData(isBackground = false) {
           try {
             const res = await fetch('/api/admin/dashboard', { background: isBackground });
@@ -1723,9 +1830,11 @@
                             <td class="p-2 text-center align-middle min-w-[130px] w-[130px]">
                                 <div class="flex flex-col gap-1 w-full">
                                     ${actionBtns}
+                                    <span class="text-[9px] ${b.pdpaDeletionDaysLeft > 0 ? 'text-amber-600' : 'text-green-600'}">PDPA: ${b.pdpaDeletionDaysLeft > 0 ? `ลบได้ในอีก ${b.pdpaDeletionDaysLeft} วัน` : 'ลบได้แล้ว'}</span>
                                     <div class="flex space-x-1 w-full">
+                                        <button onclick="viewAdminPdpaDocument('${b.id}')" class="bg-teal-50 border border-primary text-primary px-2 py-1.5 rounded text-[10px] flex-1 font-bold shadow-sm hover:bg-teal-100">PDPA</button>
                                         <button onclick="openRequestDetailModal('${b.id}')" class="bg-white border border-gray-300 text-gray-600 px-2 py-1.5 rounded text-[10px] flex-1 font-bold shadow-sm hover:bg-gray-50">🔍 ${t('ดู','View')}</button>
-                                        <button onclick="executeAdminAction('${b.id}','delete')" class="bg-white border border-red-300 text-red-500 px-2 py-1.5 rounded text-[10px] flex-1 font-bold shadow-sm hover:bg-red-50">🗑️ ${t('ลบ','Del')}</button>
+                                        <button onclick="executeAdminAction('${b.id}','delete',${b.pdpaDeletionDaysLeft || 0})" class="bg-white border border-red-300 text-red-500 px-2 py-1.5 rounded text-[10px] flex-1 font-bold shadow-sm hover:bg-red-50 ${b.pdpaDeletionDaysLeft > 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${b.pdpaDeletionDaysLeft > 0 ? 'disabled' : ''}>🗑️ ${t('ลบ','Del')}</button>
                                     </div>
                                 </div>
                             </td>
@@ -1967,9 +2076,14 @@
         hideCustomModal('modal-admin-approve'); loadAdminData();
     }
 
-    async function executeAdminAction(id, action) {
-        if (!confirm(t(`ยืนยันดำเนินการ (${action})?`,`Confirm action (${action})?`))) return;
-        await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action }) });
+    async function executeAdminAction(id, action, daysLeft = 0) {
+        if (action === 'delete') {
+            if (daysLeft > 0) return showAlert('PDPA','ยังลบไม่ได้ ต้องเก็บข้อมูลไว้อีก ' + daysLeft + ' วัน');
+            if (!confirm('ยืนยันการลบคำขอ ' + id + ' หรือไม่? เอกสารและข้อมูล PDPA ครบกำหนด 60 วันแล้ว')) return;
+        } else if (!confirm(t(`ยืนยันดำเนินการ (${action})?`,`Confirm action (${action})?`))) return;
+        const response = await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action }) });
+        const result = await response.json();
+        if (!result.success) return showAlert('PDPA', result.message || 'ไม่สามารถดำเนินการได้');
         loadAdminData();
     }
 
