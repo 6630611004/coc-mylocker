@@ -1113,74 +1113,211 @@
 
     let otpSending = false; 
 
+    const ALLOWED_PSU_EMAIL_DOMAINS = [
+      'phuket.psu.ac.th',
+      'psu.ac.th',
+      'email.psu.ac.th'
+  ];
+  
+  function normalizePsuEmail(email) {
+      return String(email || '').trim().toLowerCase();
+  }
+  
+  function isAllowedPsuEmail(email) {
+      const normalizedEmail = normalizePsuEmail(email);
+  
+      if (!/^[^\s@]+@[^\s@]+$/.test(normalizedEmail)) {
+          return false;
+      }
+  
+      const domain = normalizedEmail.split('@')[1];
+      return ALLOWED_PSU_EMAIL_DOMAINS.includes(domain);
+  }
+    
     async function prepareOTP(flowType) {
         if (otpSending) return;
         otpSending = true;
-
+    
         try {
             if (flowType === 'book') {
-                const studentId = document.getElementById('b-stuId').value;
-                const email = document.getElementById('b-email').value;
+                const studentId = document.getElementById('b-stuId').value.trim();
+                const emailInput = document.getElementById('b-email');
+                const email = normalizePsuEmail(emailInput.value);
                 const start = document.getElementById('b-start').value;
                 const end = document.getElementById('b-end').value;
-
+    
+                // เก็บอีเมลกลับในรูปตัวพิมพ์เล็ก
+                emailInput.value = email;
+    
                 if (!document.getElementById('b-pdpa').checked) {
-                    showAlert(t('กรุณายอมรับนโยบาย','Please Accept Policy'), t('กรุณายอมรับนโยบาย PDPA ก่อนทำรายการ','Please accept the PDPA policy before proceeding.'));
+                    showAlert(
+                        t('กรุณายอมรับนโยบาย', 'Please Accept Policy'),
+                        t(
+                            'กรุณายอมรับนโยบาย PDPA ก่อนทำรายการ',
+                            'Please accept the PDPA policy before proceeding.'
+                        )
+                    );
                     return;
                 }
+    
                 if (!email || !start || !end) {
-                    showAlert(t('ข้อมูลไม่ครบ','Incomplete Data'), t('กรุณากรอกวันที่และอีเมลให้ครบถ้วน','Please fill out dates and email.'));
+                    showAlert(
+                        t('ข้อมูลไม่ครบ', 'Incomplete Data'),
+                        t(
+                            'กรุณากรอกวันที่และอีเมลให้ครบถ้วน',
+                            'Please fill out dates and email.'
+                        )
+                    );
                     return;
                 }
+    
+                if (!isAllowedPsuEmail(email)) {
+                    showAlert(
+                        t('โดเมนอีเมลไม่ถูกต้อง', 'Invalid Email Domain'),
+                        t(
+                            'กรุณาใช้อีเมล @phuket.psu.ac.th, @psu.ac.th หรือ @email.psu.ac.th เท่านั้น',
+                            'Please use an @phuket.psu.ac.th, @psu.ac.th, or @email.psu.ac.th email address.'
+                        )
+                    );
+                    return;
+                }
+    
                 if (!isValidCoCStudent(studentId)) {
-                    showAlert(t('รหัสนักศึกษาไม่ถูกต้อง','Invalid Student ID'), t('ระบบสงวนสิทธิ์เฉพาะนักศึกษา CoC','Service reserved for CoC students only.'));
+                    showAlert(
+                        t('รหัสนักศึกษาไม่ถูกต้อง', 'Invalid Student ID'),
+                        t(
+                            'ระบบสงวนสิทธิ์เฉพาะนักศึกษา CoC',
+                            'Service reserved for CoC students only.'
+                        )
+                    );
                     return;
                 }
-
-                const diffDays = (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24);
+    
+                const diffDays =
+                    (new Date(end) - new Date(start)) /
+                    (1000 * 60 * 60 * 24);
+    
                 if (diffDays > 7) {
-                    showAlert(t('ระยะเวลาเกินกำหนด','Exceeded Limit'), t('จองได้สูงสุดไม่เกิน 1 สัปดาห์','Max duration is 1 week.'));
+                    showAlert(
+                        t('ระยะเวลาเกินกำหนด', 'Exceeded Limit'),
+                        t(
+                            'จองได้สูงสุดไม่เกิน 1 สัปดาห์',
+                            'Max duration is 1 week.'
+                        )
+                    );
                     return;
                 }
+    
                 if (diffDays < 0) {
-                    showAlert(t('วันที่ไม่ถูกต้อง','Invalid Date'), t('วันที่เริ่มต้นต้องไม่มากกว่าสิ้นสุด','Start date cannot be after end date.'));
+                    showAlert(
+                        t('วันที่ไม่ถูกต้อง', 'Invalid Date'),
+                        t(
+                            'วันที่เริ่มต้นต้องไม่มากกว่าสิ้นสุด',
+                            'Start date cannot be after end date.'
+                        )
+                    );
                     return;
                 }
-
-                document.getElementById('otp-title').innerText = t('ยืนยันการจอง','Confirm Booking');
+    
+                document.getElementById('otp-title').innerText =
+                    t('ยืนยันการจอง', 'Confirm Booking');
+    
                 document.getElementById('otp-email-display').innerText = email;
-
+    
                 try {
-                    await fetch('/api/send-otp', { method: 'POST', body: JSON.stringify({ email }) });
-                } catch(e) {
-                    showAlert('Error', t('ไม่สามารถส่ง OTP ได้','Failed to send OTP.'));
+                    const response = await fetch('/api/send-otp', {
+                        method: 'POST',
+                        body: JSON.stringify({ email: email })
+                    });
+    
+                    const result = await response.json();
+    
+                    if (!result.success) {
+                        showAlert(
+                            t('ไม่สามารถส่ง OTP ได้', 'Failed to Send OTP'),
+                            result.message ||
+                            t(
+                                'กรุณาตรวจสอบอีเมลแล้วลองใหม่อีกครั้ง',
+                                'Please check your email and try again.'
+                            )
+                        );
+                        return;
+                    }
+                } catch (error) {
+                    showAlert(
+                        'Error',
+                        t(
+                            'ไม่สามารถส่ง OTP ได้',
+                            'Failed to send OTP.'
+                        )
+                    );
                     return;
                 }
-
-                document.getElementById('btn-otp-confirm').onclick = () => verifyAndSubmitOTP('book', email);
-                document.getElementById('btn-otp-back').onclick = () => navigate('view-form');
-
+    
+                document.getElementById('btn-otp-confirm').onclick =
+                    () => verifyAndSubmitOTP('book', email);
+    
+                document.getElementById('btn-otp-back').onclick =
+                    () => navigate('view-form');
+    
             } else if (flowType === 'return') {
-                const emailToUse = currentRecords[0].email;
-                document.getElementById('otp-title').innerText = actionTargetIds.length > 1
-                    ? t(`ยืนยันคืนตู้ (${actionTargetIds.length} ตู้)`, `Return (${actionTargetIds.length}) Lockers`)
-                    : t('ยืนยันการคืน Locker','Confirm Return');
-                document.getElementById('otp-email-display').innerText = emailToUse;
-
+                const emailToUse =
+                    normalizePsuEmail(currentRecords[0].email);
+    
+                document.getElementById('otp-title').innerText =
+                    actionTargetIds.length > 1
+                        ? t(
+                            `ยืนยันคืนตู้ (${actionTargetIds.length} ตู้)`,
+                            `Return (${actionTargetIds.length}) Lockers`
+                        )
+                        : t(
+                            'ยืนยันการคืน Locker',
+                            'Confirm Return'
+                        );
+    
+                document.getElementById('otp-email-display').innerText =
+                    emailToUse;
+    
                 try {
-                    await fetch('/api/send-otp', { method: 'POST', body: JSON.stringify({ email: emailToUse }) });
-                } catch(e) {
-                    showAlert('Error', t('ไม่สามารถส่ง OTP ได้','Failed to send OTP.'));
+                    const response = await fetch('/api/send-otp', {
+                        method: 'POST',
+                        body: JSON.stringify({ email: emailToUse })
+                    });
+    
+                    const result = await response.json();
+    
+                    if (!result.success) {
+                        showAlert(
+                            t('ไม่สามารถส่ง OTP ได้', 'Failed to Send OTP'),
+                            result.message ||
+                            t(
+                                'กรุณาตรวจสอบอีเมลแล้วลองใหม่อีกครั้ง',
+                                'Please check your email and try again.'
+                            )
+                        );
+                        return;
+                    }
+                } catch (error) {
+                    showAlert(
+                        'Error',
+                        t(
+                            'ไม่สามารถส่ง OTP ได้',
+                            'Failed to send OTP.'
+                        )
+                    );
                     return;
                 }
-
-                document.getElementById('btn-otp-confirm').onclick = () => verifyAndSubmitOTP('return', emailToUse);
-                document.getElementById('btn-otp-back').onclick = () => navigate('view-return-confirm');
+    
+                document.getElementById('btn-otp-confirm').onclick =
+                    () => verifyAndSubmitOTP('return', emailToUse);
+    
+                document.getElementById('btn-otp-back').onclick =
+                    () => navigate('view-return-confirm');
             }
-
+    
             document.getElementById('otp-input').value = '';
             navigate('view-otp');
-
+    
         } finally {
             otpSending = false;
         }
