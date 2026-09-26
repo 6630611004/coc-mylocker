@@ -183,6 +183,7 @@
       <span class="th-text">เลือกช่อง (Slot)</span><span class="en-text">Select a Slot</span>
     </h2>
     <p id="selected-locker-name" class="text-center text-gray-500 mb-4 text-xs font-bold"></p>
+    <div id="selected-locker-images" class="flex overflow-x-auto gap-2 mb-4 snap-x hide-scroll" style="display:none;"></div>
     <div class="flex flex-wrap justify-center gap-2 mb-6 text-[10px] text-gray-500">
       <span class="flex items-center"><div class="w-3 h-3 border border-primary rounded-sm mr-1"></div> <span class="th-text">ว่าง</span><span class="en-text">Available</span></span>
       <span class="flex items-center"><div class="w-3 h-3 bg-gray-200 border border-gray-400 rounded-sm mr-1"></div> <span class="th-text">ไม่ว่าง</span><span class="en-text">Unavailable</span></span>
@@ -220,14 +221,14 @@
     <h2 class="text-xl font-bold text-primary text-center mb-6">BOOKING FORM</h2>
     <div class="bg-yellow-50 border border-yellow-200 p-3 rounded-lg mb-6 text-center">
       <p class="text-[10px] text-yellow-700 font-bold">
-        <span class="th-text">⚠️ จองได้สูงสุดไม่เกิน 1 สัปดาห์ (7 วัน)</span>
-        <span class="en-text">⚠️ Maximum booking period is 1 week (7 days)</span>
+        <span id="b-max-days-warning-th" class="th-text">⚠️ จองได้สูงสุดไม่เกิน 1 สัปดาห์ (7 วัน)</span>
+        <span id="b-max-days-warning-en" class="en-text">⚠️ Maximum booking period is 1 week (7 days)</span>
       </p>
     </div>
     <div class="space-y-3 text-xs">
-      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">รหัสนักศึกษา</span><span class="en-text">Student ID</span></label><input type="text" id="b-stuId" class="input-field"></div>
+      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">รหัสนักศึกษา</span><span class="en-text">Student ID</span></label><input type="text" id="b-stuId" class="input-field" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"></div>
       <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">ชื่อ - สกุล</span><span class="en-text">Full Name</span></label><input type="text" id="b-name" class="input-field"></div>
-      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">เบอร์มือถือ</span><span class="en-text">Phone</span></label><input type="text" id="b-phone" class="input-field"></div>
+      <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">เบอร์มือถือ</span><span class="en-text">Phone</span></label><input type="text" id="b-phone" class="input-field" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10)"></div>
       <div><label class="block text-gray-500 mb-1 ml-2">Email</label><input type="email" id="b-email" class="input-field"></div>
       <div class="grid grid-cols-2 gap-2">
         <div><label class="block text-gray-500 mb-1 ml-2"><span class="th-text">เริ่มวันที่</span><span class="en-text">Start Date</span></label><input type="date" id="b-start" class="input-field px-3"></div>
@@ -426,6 +427,7 @@
         <button onclick="switchAdminTab('dash-calendar', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">ปฏิทินตู้ (Timeline)</span><span class="en-text">Timeline</span></button>
         <button onclick="switchAdminTab('dash-requests', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">คำขอ & อนุมัติ</span><span class="en-text">Requests</span></button>
         <button id="tab-pdpa-menu" onclick="switchAdminTab('dash-pdpa', this); loadPdpaAdmin();" class="admin-tab p-4 whitespace-nowrap text-gray-500">PDPA</button>
+        <button id="tab-settings-menu" onclick="switchAdminTab('dash-settings', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 hidden"><span class="th-text">ตั้งค่าระบบ</span><span class="en-text">Settings</span></button>
         <button id="tab-ai-menu" onclick="switchAdminTab('dash-ai', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500">AI Assistant</button>
         <button id="tab-staff-menu" onclick="switchAdminTab('dash-staff', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 hidden"><span class="th-text">จัดการเจ้าหน้าที่</span><span class="en-text">Staff Management</span></button>
         <button onclick="switchAdminTab('dash-manual', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 font-bold">📖 คู่มือ (Manual)</button>
@@ -547,6 +549,37 @@
           </div>
         </div>
         
+
+        <div id="dash-settings" class="admin-sec hidden">
+          <div class="max-w-2xl mx-auto bg-white border rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-bold text-gray-700 mb-6 border-b pb-2"><span class="th-text">⚙️ การตั้งค่าระบบ</span><span class="en-text">⚙️ System Settings</span></h2>
+            
+            <div class="space-y-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1"><span class="th-text">กำหนดวันจองสูงสุด (Max Booking Days)</span><span class="en-text">Max Booking Days</span></label>
+                <p class="text-xs text-gray-500 mb-2"><span class="th-text">ระยะเวลาที่อนุญาตให้นักศึกษาจองได้สูงสุด (ค่าเริ่มต้นคือ 7 วัน)</span><span class="en-text">Maximum days a student can book (default is 7).</span></p>
+                <input type="number" id="sys-max-days" class="input-field border bg-gray-50 w-full max-w-xs" min="1" value="7">
+              </div>
+
+              <div class="pt-4 border-t">
+                <label class="block text-sm font-bold text-gray-700 mb-1"><span class="th-text">ระบบแจ้งเตือนอัตโนมัติรายวัน (Daily Cron Trigger)</span><span class="en-text">Daily Auto-Notification Trigger</span></label>
+                <p class="text-xs text-gray-500 mb-3"><span class="th-text">เปิดให้ระบบรันส่งอีเมลแจ้งเตือนนักศึกษา (ครบกำหนด/เกินกำหนด) ทุกๆ 08.00 น. โดยอัตโนมัติ</span><span class="en-text">Enable automatic notification emails to students every day at 8:00 AM.</span></p>
+                
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <div class="relative">
+                    <input type="checkbox" id="sys-cron-toggle" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  </div>
+                  <span class="text-sm font-bold text-gray-700" id="sys-cron-label">ปิดใช้งาน (Disabled)</span>
+                </label>
+              </div>
+
+              <div class="pt-6">
+                <button onclick="saveSystemSettings()" class="btn-main max-w-xs py-2"><span class="th-text">บันทึกการตั้งค่า</span><span class="en-text">Save Settings</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="dash-pdpa" class="admin-sec hidden">
           <div class="max-w-3xl mx-auto space-y-4">
             <div class="flex justify-between items-center"><h2 class="text-lg font-bold text-gray-700">จัดการเอกสารยินยอม PDPA</h2><span class="text-[10px] bg-blue-50 text-blue-700 px-3 py-1 rounded-full">เก็บข้อมูลอย่างน้อย 60 วัน</span></div>
@@ -674,6 +707,7 @@
           <div><label class="block text-gray-500 mb-1"><span class="th-text">รหัสครุภัณฑ์</span><span class="en-text">Asset No.</span></label><input type="text" id="cfg-l-asset" class="input-field input-field-box border bg-white"></div>
           <div><label class="block text-gray-500 mb-1"><span class="th-text">สถานที่ตั้ง</span><span class="en-text">Location</span></label><input type="text" id="cfg-l-location" class="input-field input-field-box border bg-white"></div>
           <div class="col-span-2"><label class="block text-gray-500 mb-1">Google Maps Link</label><input type="text" id="cfg-l-map" class="input-field input-field-box border bg-white" placeholder="http://maps.google.com/..."></div>
+          <div class="col-span-2"><label class="block text-gray-500 mb-1"><span class="th-text">ลิงก์รูปภาพ (Google Drive - คั่นด้วยลูกน้ำ)</span><span class="en-text">Image Links (Comma separated)</span></label><input type="text" id="cfg-l-images" class="input-field input-field-box border bg-white" placeholder="https://drive.google.com/file/d/..., ..."></div>
         </div>
         <div class="col-span-2 bg-gray-50 p-3 rounded-lg border border-gray-200 mt-2">
           <label class="block text-gray-700 font-bold mb-2 text-xs"><span class="th-text">ตั้งค่าการแสดงผล Grid</span><span class="en-text">Grid Layout Setup</span></label>
@@ -1102,6 +1136,13 @@
         grid.style.gridTemplateColumns = `repeat(${layout.cols}, minmax(0, 1fr))`;
         grid.style.gridAutoFlow = layout.direction === 'col' ? 'column' : 'row';
         if (layout.direction === 'col') grid.style.gridTemplateRows = `repeat(${layout.rows}, minmax(0, 1fr))`;
+        const imgContainer = document.getElementById('selected-locker-images');
+        if (locker.images && locker.images.length > 0) {
+            imgContainer.innerHTML = locker.images.map(img => `<img src="${img}" class="h-32 w-auto object-cover rounded-lg border snap-center cursor-pointer" onclick="window.open('${img}')">`).join('');
+            imgContainer.style.display = 'flex';
+        } else {
+            imgContainer.style.display = 'none';
+        }
 
         navigate('view-slots');
     }
@@ -1196,13 +1237,14 @@
                 const diffDays =
                     (new Date(end) - new Date(start)) /
                     (1000 * 60 * 60 * 24);
-    
-                if (diffDays > 7) {
+                
+                const limitDays = window.globalMaxBookingDays || userMaxBookingDays; // ดึงตัวเลขมาจาก Settings
+                if (diffDays > limitDays) {
                     showAlert(
                         t('ระยะเวลาเกินกำหนด', 'Exceeded Limit'),
                         t(
-                            'จองได้สูงสุดไม่เกิน 1 สัปดาห์',
-                            'Max duration is 1 week.'
+                            `จองได้สูงสุดไม่เกิน ${limitDays} วัน`,
+                            `Max duration is ${limitDays} days.`
                         )
                     );
                     return;
@@ -1428,6 +1470,13 @@
         const email = document.getElementById('ml-email').value;
         if (!isValidCoCStudent(studentId)) return showAlert(t('รหัสนักศึกษาไม่ถูกต้อง','Invalid Student ID'), t('ระบบนี้สงวนสิทธิ์เฉพาะนักศึกษาวิทยาลัยการคอมพิวเตอร์เท่านั้น','Only for CoC Students.'));
         try {
+            if (currentLockers.length === 0) {
+                try {
+                    const lRes = await fetch('/api/lockers/status');
+                    const lResult = await lRes.json();
+                    if (lResult.success) currentLockers = lResult.data;
+                } catch(e) {}
+            }
             const res = await fetch('/api/mylocker', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ studentId, email }) });
             const result = await res.json();
             if (result.success) {
@@ -1446,17 +1495,46 @@
         document.getElementById('btn-return-all').style.display = activeBookings.length > 1 ? 'block' : 'none';
 
         currentRecords.forEach(record => {
+            const mapBtn = record.mapLink ? `<a href="${record.mapLink}" target="_blank" class="text-primary underline font-bold ml-1">📍 ${t('แผนที่','Map')}</a>` : '';
+            
+            const lockerInfo = currentLockers.find(l => l.id === record.lockerId);
+            let gridHtml = '';
+            if (lockerInfo) {
+                const layout = lockerInfo.layout || { cols: 3, rows: 4, direction: 'row' };
+                let gridStyle = `grid-template-columns: repeat(${layout.cols}, minmax(0, 1fr));`;
+                if (layout.direction === 'col') gridStyle += ` grid-auto-flow: column; grid-template-rows: repeat(${layout.rows}, minmax(0, 1fr));`;
+                
+                const slotsHtml = (lockerInfo.slotsData || lockerInfo.slots).map(s => {
+                    if (s.condition === 'hidden') return `<div class="invisible"></div>`;
+                    let bg = 'bg-gray-100 border-gray-200 text-gray-300'; 
+                    let isMine = (s.name === record.slot);
+                    if (isMine) {
+                        // ถ้าเป็นช่องของตัวเองและสถานะรออนุมัติ จะเป็นสีเหลือง, ถ้าใช้งานอยู่จะเป็นสีหลัก
+                        if (record.status === 'pending') bg = 'bg-yellow-400 border-yellow-500 text-white shadow-md scale-105';
+                        else bg = 'bg-primary border-primary text-white shadow-md scale-105';
+                    }
+                    return `<div class="${bg} border rounded-md p-1.5 text-center text-[10px] font-bold truncate flex items-center justify-center transition-transform">${s.name}</div>`;
+                }).join('');
+                
+                gridHtml = `<div class="mt-3 bg-gray-50 p-2.5 rounded-xl border border-gray-200 shadow-inner"><p class="text-[10px] text-gray-500 font-bold mb-2 text-center">${t('ช่องของท่าน (ไฮไลท์)','Your Slot (Highlighted)')}</p><div class="grid gap-1.5 w-full mx-auto" style="${gridStyle} max-width: 250px;">${slotsHtml}</div></div>`;
+            }
+
             let cardHtml = '';
             if (record.status === 'pending') {
                 cardHtml = `
                 <div class="border border-yellow-300 bg-yellow-50 rounded-xl p-4 text-xs text-gray-600 relative shadow-sm">
-                    <p class="mb-1">${t('คำขอเลขที่:','Req ID:')} <span class="font-bold text-gray-800">${record.id}</span></p>
-                    <p class="mb-2">${t('ตู้-ช่อง:','Locker-Slot:')} <span class="font-bold text-gray-800 text-sm">${record.lockerId}-${record.slot}</span></p>
-                    <p>Status: <span class="text-yellow-600 font-bold bg-yellow-100 px-2 py-0.5 rounded text-[10px]">${t('รอการอนุมัติ / รอรับตู้','Pending Approval')}</span></p>
-                    <button onclick="prepareCancel('${record.id}')" class="absolute top-4 right-4 text-danger font-bold text-[10px] underline">${t('ยกเลิกคำขอ','Cancel')}</button>
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="text-lg font-bold text-yellow-600">${record.lockerId} <span class="text-gray-400 text-sm mx-1">|</span> <span class="text-gray-800">${record.slot}</span></p>
+                            <p class="mb-1 text-[10px]">${t('คำขอเลขที่:','Req ID:')} <span class="font-bold text-gray-800">${record.id}</span></p>
+                        </div>
+                        <span class="text-yellow-600 font-bold bg-yellow-100 px-2 py-0.5 rounded text-[10px] border border-yellow-200">${t('รอการอนุมัติ','Pending Approval')}</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mb-3">${t('สถานที่:','Location:')} ${record.location || '-'} ${mapBtn}</p>
+                    ${gridHtml}
+                    <button onclick="prepareCancel('${record.id}')" class="w-full bg-white border border-danger text-danger py-1.5 rounded-full font-bold text-[10px] hover:bg-red-50 transition mt-4">${t('ยกเลิกคำขอ','Cancel Request')}</button>
                 </div>`;
             } else if (record.status === 'booked' || record.status === 'return_pending') {
-                const mapBtn = record.mapLink ? `<a href="${record.mapLink}" target="_blank" class="text-primary underline font-bold ml-1">📍 ${t('แผนที่','Map')}</a>` : '';
                 let returnAlertHtml = '';
                 if (record.returnAppointment) {
                     returnAlertHtml = `
@@ -1474,11 +1552,11 @@
                 cardHtml = `
                 <div class="border border-primary bg-white rounded-xl p-4 text-xs text-gray-600 relative shadow-sm">
                     <div class="flex justify-between items-start mb-2">
-                        <p class="text-lg font-bold text-primary">${record.lockerId} <span class="text-gray-400 text-sm mx-1">|</span> <span class="text-gray-800">${record.slot}</span></p>
-                        ${statusBadge}
+                        <p class="text-lg font-bold text-primary">${record.lockerId} <span class="text-gray-400 text-sm mx-1">|</span> <span class="text-gray-800">${record.slot}</span></p>${statusBadge}
                     </div>
                     <p class="text-[10px] text-gray-500 mb-3">${t('สถานที่:','Location:')} ${record.location || '-'} ${mapBtn}</p>
-                    <div class="bg-gray-50 p-2 rounded-lg border border-gray-200 mb-2">
+                    ${gridHtml} 
+                    <div class="bg-gray-50 p-2 rounded-lg border border-gray-200 mb-2 mt-3">
                         <p class="font-bold text-gray-700 text-[10px]">${t('เวลานัดหมายรับตู้:','Appt Time:')} <span class="text-primary">${record.appointment || '-'}</span></p>
                         ${record.remark ? `<p class="text-[9px] text-gray-500 italic mt-1">* ${record.remark}</p>` : ''}
                     </div>
@@ -1609,6 +1687,8 @@
                 }
                 const pdpaMenu = document.getElementById('tab-pdpa-menu');
                 if (pdpaMenu) pdpaMenu.style.display = loggedInUser.role === 'admin' ? 'block' : 'none';
+                const settingsMenu = document.getElementById('tab-settings-menu');
+                if (settingsMenu) settingsMenu.style.display = loggedInUser.role === 'admin' ? 'block' : 'none';
                 
                 loadAdminData(); 
                 startDashboardPolling();  
@@ -1777,7 +1857,7 @@
         pieChartInst = new Chart(ctxPie, {
             type: 'doughnut',
             data: {
-                labels: [t('รออนุมัติ','Pending'), t('ใช้งานอยู่','In Use'), t('ขอคืน','Return'), t('เสร็จสิ้น','Done'), t('ยกเลิก','Cancel'), t('ปฏิเสธ','Reject')],
+                labels: [t('รออนุมัติคำขอ','Pending'), t('ใช้งานตู้อยู่','In Use'), t('ขอคืนตู้','Return'), t('เสร็จสิ้นการดำเนินการ','Done'), t('ยกเลิกคำขอ','Cancel'), t('ปฏิเสธคำขอ','Reject')],
                 datasets: [{ 
                     data: [statuses.pending, statuses.booked, statuses.return_pending, statuses.completed, statuses.cancelled, statuses.rejected], 
                     backgroundColor: ['#f59e0b', '#3b82f6', '#ef4444', '#10b981', '#9ca3af', '#dc2626'],
@@ -1892,7 +1972,23 @@
 
             if (typeof drawCharts === 'function') drawCharts(filteredBookings);
             if (!document.getElementById('dash-calendar').classList.contains('hidden')) renderCalendar();
-
+            // อัปเดตหน้าตั้งค่า
+            if (allAdminData.settings) {
+                window.globalMaxBookingDays = allAdminData.settings.maxBookingDays || 7; // เก็บไว้เป็น Global ให้ฝั่งฟอร์มผู้ใช้งานเรียกใช้ได้
+                
+                const maxDaysInput = document.getElementById('sys-max-days');
+                const cronToggle = document.getElementById('sys-cron-toggle');
+                const cronLabel = document.getElementById('sys-cron-label');
+                
+                if (maxDaysInput) maxDaysInput.value = allAdminData.settings.maxBookingDays;
+                if (cronToggle) {
+                    cronToggle.checked = allAdminData.settings.triggerEnabled;
+                    cronLabel.innerText = cronToggle.checked ? t('เปิดใช้งาน (Active)', 'Enabled (Active)') : t('ปิดใช้งาน (Disabled)', 'Disabled');
+                    cronToggle.onchange = function() {
+                        cronLabel.innerText = this.checked ? t('เปิดใช้งาน (Active)', 'Enabled (Active)') : t('ปิดใช้งาน (Disabled)', 'Disabled');
+                    }
+                }
+            }
             document.getElementById('admin-visual-lockers').innerHTML = allAdminData.lockers.map(l => {
                 const slotHTML = (l.slotsData || []).map(s => {
                     if (s.condition === 'hidden') return `<div class="invisible"></div>`;
@@ -2028,6 +2124,7 @@
             document.getElementById('cfg-l-id').value = locker.id; document.getElementById('cfg-l-id').disabled = true; document.getElementById('cfg-l-id').classList.add('bg-gray-100');
             document.getElementById('cfg-l-name').value = locker.name || ''; document.getElementById('cfg-l-asset').value = locker.assetNumber || '';
             document.getElementById('cfg-l-location').value = locker.location || ''; document.getElementById('cfg-l-map').value = locker.mapLink || '';
+            document.getElementById('cfg-l-images').value = (locker.images || []).join(', ');
             const layout = locker.layout || { cols: 3, rows: 4, direction: 'row' };
             document.getElementById('cfg-l-cols').value = layout.cols; document.getElementById('cfg-l-rows').value = layout.rows; document.getElementById('cfg-l-dir').value = layout.direction;
             document.getElementById('btn-delete-locker').classList.remove('hidden');
@@ -2036,6 +2133,7 @@
             document.getElementById('cfg-title').innerText = t('เพิ่มตู้ Locker ใหม่','Add New Locker');
             document.getElementById('cfg-l-id').value = ''; document.getElementById('cfg-l-id').disabled = false; document.getElementById('cfg-l-id').classList.remove('bg-gray-100');
             document.getElementById('cfg-l-name').value = ''; document.getElementById('cfg-l-asset').value = ''; document.getElementById('cfg-l-location').value = ''; document.getElementById('cfg-l-map').value = '';
+            document.getElementById('cfg-l-images').value = '';
             document.getElementById('cfg-l-cols').value = 3; document.getElementById('cfg-l-rows').value = 4; document.getElementById('cfg-l-dir').value = 'row';
             document.getElementById('btn-delete-locker').classList.add('hidden');
             for (let i = 1; i <= 12; i++) addConfigSlotRow({ name: `A${i}`, keyNumber: '', condition: 'available' });
@@ -2051,6 +2149,12 @@
 
     function setAllSlotsCond(cond) { document.querySelectorAll('.cs-cond').forEach(select => select.value = cond); }
 
+    function convertDriveLinkToLh3(url) {
+        const match = url.match(/[-\w]{25,}/);
+        if (match) return `https://lh3.googleusercontent.com/d/${match[0]}=s0`;
+        return url.trim();
+    }
+
     async function saveLockerConfig() {
         const id = document.getElementById('cfg-l-id').value.trim();
         if (!id) return showAlert('Error', t('กรุณาระบุรหัสตู้ Locker','Please specify Locker ID'));
@@ -2060,7 +2164,11 @@
             const n = row.querySelector('.cs-name').value.trim(); const k = row.querySelector('.cs-key').value.trim(); const c = row.querySelector('.cs-cond').value;
             if (n) slots.push({ name: n, keyNumber: k, condition: c });
         });
-        const payload = { action: 'save', lockerId: id, name: document.getElementById('cfg-l-name').value.trim(), assetNumber: document.getElementById('cfg-l-asset').value.trim(), location: document.getElementById('cfg-l-location').value.trim(), mapLink: document.getElementById('cfg-l-map').value.trim(), layout, slots };
+        
+        const rawImages = document.getElementById('cfg-l-images').value.split(',').map(s => s.trim()).filter(s => s);
+        const images = rawImages.map(convertDriveLinkToLh3);
+
+        const payload = { action: 'save', lockerId: id, name: document.getElementById('cfg-l-name').value.trim(), assetNumber: document.getElementById('cfg-l-asset').value.trim(), location: document.getElementById('cfg-l-location').value.trim(), mapLink: document.getElementById('cfg-l-map').value.trim(), images: images, layout, slots };
         await fetch('/api/admin/lockers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         hideCustomModal('modal-config-locker'); loadAdminData();
     }
@@ -2710,6 +2818,68 @@
         
         const container = document.getElementById('calendar-container');
         if(container) container.innerHTML = html;
+    }
+    // โหลดตัวเลขมาจาก API ฝั่ง Users สำหรับหน้าบ้าน
+    let userMaxBookingDays = 7; 
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // แอบดึงตอนเปิดหน้าเว็บ
+        fetch('/api/lockers/status', { background: true }).then(res=>res.json()).then(r => {
+           if(r.success && r.settings && r.settings.maxBookingDays) {
+               userMaxBookingDays = r.settings.maxBookingDays;
+               
+               // เปลี่ยนคำเตือนหน้าฟอร์ม (แยกเปลี่ยนตามภาษา)
+               const warnTh = document.getElementById('b-max-days-warning-th');
+               const warnEn = document.getElementById('b-max-days-warning-en');
+               if(warnTh) warnTh.innerText = `⚠️ จองได้สูงสุดไม่เกิน ${userMaxBookingDays} วัน`;
+               if(warnEn) warnEn.innerText = `⚠️ Maximum booking period is ${userMaxBookingDays} days`;
+           }
+        }).catch(e=>{});
+
+        const todayStr = new Date().toISOString().split('T')[0];
+        const startInput = document.getElementById('b-start');
+        const endInput = document.getElementById('b-end');
+
+        startInput.min = todayStr;
+        endInput.min = todayStr;
+
+        startInput.addEventListener('change', function() {
+            const startDateStr = this.value || todayStr;
+            endInput.min = startDateStr;
+
+            if (this.value) {
+                const maxDate = new Date(this.value);
+                const limitDays = window.globalMaxBookingDays || userMaxBookingDays; // ดึงตัวเลขล่าสุด
+                maxDate.setDate(maxDate.getDate() + limitDays);
+                const maxDateStr = maxDate.toISOString().split('T')[0];
+                endInput.max = maxDateStr;
+
+                // เคลียร์ค่าทิ้งถ้าเกินกำหนด
+                if (endInput.value && new Date(endInput.value) > maxDate) {
+                    endInput.value = '';
+                }
+            } else {
+                endInput.removeAttribute('max');
+            }
+        });
+    });
+    async function saveSystemSettings() {
+        const payload = {
+            maxBookingDays: parseInt(document.getElementById('sys-max-days').value) || 7,
+            triggerEnabled: document.getElementById('sys-cron-toggle').checked
+        };
+        try {
+            const res = await fetch('/api/admin/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const result = await res.json();
+            if (result.success) {
+                showAlert('Success', t('บันทึกการตั้งค่าระบบเรียบร้อยแล้ว', 'System settings saved successfully.'));
+                loadAdminData(); 
+            } else {
+                showAlert('Error', result.message || 'Save failed');
+            }
+        } catch (e) {
+            showAlert('Error', 'Connection error');
+        }
     }
   </script>
 </body>
