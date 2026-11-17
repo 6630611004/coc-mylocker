@@ -2213,7 +2213,7 @@
                 } else if (b.status === 'return_pending') {
                     statusBadge = `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] animate-pulse">${t('รอรับคืน','Returning')}</span>`;
                     actionBtns = `
-                        <button onclick="openReturnScheduleModal('${b.id}')" class="bg-yellow-500 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-yellow-600">${t('แก้นัดคืน','Edit Ret.')}</button>
+                        <button onclick="openReturnScheduleModal('${b.id}')" class="bg-yellow-500 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-yellow-600">${t('แจ้งนัดหมาย','Edit Ret.')}</button>
                         <button onclick="openReturnCompleteModal('${b.id}')" class="bg-gray-700 text-white px-2 py-1.5 rounded text-[10px] w-full font-bold shadow-sm hover:bg-gray-800">${t('รับคืน (จบ)','Complete')}</button>
                     `;
                 } else {
