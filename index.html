@@ -142,6 +142,20 @@
       <p class="en-text">1. Students may reserve a locker for a maximum of 1 week at a time. Lockers are located at Building 6, Floor 1, near the CoC Office.</p>
       <p class="th-text">2. เมื่อนักศึกษาแจ้งข้อมูลการจองแล้วหากได้รับ การจัดสรร นักศึกษาจะได้รับการนัดหมายให้นำแม่กุญแจมาแสดงเพื่อให้เจ้าหน้าที่ปลดล็อคตู้เก็บของ</p>
       <p class="en-text">2. Once reserved and allocated, students will receive an appointment to bring their own padlock for the staff to unlock the unit.</p>
+      <p class="th-text">3. ตู้เก็บของทั้งหมดเป็นทรัพย์สินของ CoC</p>
+      <p class="en-text">3. All lockers are the property of CoC.</p>
+      <p class="th-text">4. นักศึกษาต้องดูแลรักษากุญแจและแม่กุญแจ</p>
+      <p class="en-text">4. Students must take care of their own padlock and keys.</p>
+      <p class="th-text">5. ห้ามเก็บสิ่งของอันตรายหรือผิดกฎหมายไว้ในตู้</p>
+      <p class="en-text">5. Storing dangerous or illegal items is strictly prohibited.</p>
+      <p class="th-text">6. ผู้ยืมจำเป็นต้องนำแม่กุญแจมาล็อกเอง</p>
+      <p class="en-text">6. The borrower must provide their own padlock.</p>
+      <p>
+        <button type="button" onclick="showCustomModal('modal-pdpa')" class="text-primary font-bold underline">
+          <span class="th-text">อ่านนโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)</span>
+          <span class="en-text">Read Privacy Notice (PDPA)</span>
+        </button>
+      </p>
     </div>
     <div class="border border-danger rounded-xl p-4 mb-8 text-center bg-red-50">
       <p class="text-danger font-semibold text-[11px] mb-2">
@@ -149,7 +163,7 @@
         <span class="en-text">These lockers are exclusively for CoC students<br>for storing personal belongings.</span>
       </p>
     </div>
-    <button onclick="navigate('view-action')" class="btn-main font-bold">SIGN IN</button>
+    <button onclick="navigate('view-action')" class="btn-main font-bold">AGREE</button>
   </div>
 
   <div id="view-action" class="view-section app-card no-border p-10 hidden flex flex-col justify-center min-h-[400px]">
@@ -251,7 +265,7 @@
       <button onclick="prepareOTP('book')" class="btn-main text-sm">
         <span class="th-text">รับรหัสยืนยัน (OTP)</span><span class="en-text">Get Verification Code (OTP)</span>
       </button>
-      <button onclick="navigate('view-tc')" class="text-danger font-medium block w-full text-center text-sm">
+      <button onclick="navigate('view-slots')" class="text-danger font-medium block w-full text-center text-sm">
         <span class="th-text">ย้อนกลับ</span><span class="en-text">Back</span>
       </button>
     </div>
@@ -489,7 +503,10 @@
               <span class="flex items-center"><div class="w-3 h-3 bg-gray-100 border border-gray-400 mr-1"></div> <span class="th-text">ปรับปรุง</span><span class="en-text">Maint</span></span>
               <span class="flex items-center"><div class="w-3 h-3 bg-gray-700 mr-1"></div> <span class="th-text">ไม่ว่าง</span><span class="en-text">Unavail</span></span>
             </div>
+            <div class="flex space-x-2">
+            <button onclick="openLabelModal()" class="bg-white border border-primary text-primary px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-teal-50">🏷️ <span class="th-text">พิมพ์ Label</span><span class="en-text">Print Labels</span></button>
             <button onclick="openConfigLocker(null)" class="bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold shadow hover:bg-teal-600">+ <span class="th-text">เพิ่มตู้ใหม่</span><span class="en-text">Add Locker</span></button>
+            </div>
           </div>
           <div id="admin-visual-lockers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[400px] overflow-y-auto pr-2 pb-10"></div>
         </div>
@@ -582,7 +599,7 @@
         </div>
         <div id="dash-pdpa" class="admin-sec hidden">
           <div class="max-w-3xl mx-auto space-y-4">
-            <div class="flex justify-between items-center"><h2 class="text-lg font-bold text-gray-700">จัดการเอกสารยินยอม PDPA</h2><span class="text-[10px] bg-blue-50 text-blue-700 px-3 py-1 rounded-full">เก็บข้อมูลอย่างน้อย 60 วัน</span></div>
+            <div class="flex justify-between items-center"><h2 class="text-lg font-bold text-gray-700">จัดการเอกสารยินยอม PDPA</h2><span class="text-[10px] bg-blue-50 text-blue-700 px-3 py-1 rounded-full">เก็บข้อมูลอย่างน้อย 90 วัน</span></div>
             <p class="text-xs text-gray-500">ปรับโลโก้ หัวเรื่อง ย่อหน้า และลายเซ็นผู้ดูแลได้ที่นี่ เอกสารที่ออกไปแล้วจะคงเนื้อหาเดิมไว้</p>
             <div class="grid md:grid-cols-2 gap-3 text-xs"><div><label>ชื่อผู้ดูแล/ผู้ลงนาม</label><input id="pdpa-admin-name" class="input-field border bg-white"></div><div><label>ตำแหน่ง</label><input id="pdpa-admin-position" class="input-field border bg-white"></div></div>
             <div class="border rounded-xl p-3 bg-gray-50"><p class="text-xs font-bold text-primary">เนื้อหาเอกสารที่ใช้งานจริง</p><p class="text-[10px] text-gray-500 mt-1">แก้ไขโลโก้ หัวข้อ ย่อหน้า ตาราง และข้อความทั้งหมดใน HTML ด้านล่างได้โดยตรง เอกสารจะใช้โค้ดนี้เป็นแหล่งข้อมูลเดียว</p><p class="text-[10px] text-gray-500 mt-2">ตัวแปรอัตโนมัติ: {{REQUEST_NO}}, {{CONSENT_DATE_TH}}, {{CONSENT_DATE_EN}}, {{NAME}}, {{STUDENT_ID}}, {{PHONE}}, {{EMAIL}}, {{LOCKER}}, {{ADMIN_SIGNATURE}}, {{ADMIN_NAME}}, {{ADMIN_POSITION}}</p><label class="block text-xs font-bold mt-3">หน้า 1: ภาษาไทย</label><textarea id="pdpa-thai-html" class="w-full h-64 border rounded p-2 font-mono text-[10px] mt-1"></textarea><label class="block text-xs font-bold mt-3">Page 2: English</label><textarea id="pdpa-english-html" class="w-full h-64 border rounded p-2 font-mono text-[10px] mt-1"></textarea></div>
@@ -642,7 +659,7 @@
                 <h3 class="font-bold text-primary text-md"><span class="th-text">การเก็บรักษาและลบข้อมูล PDPA</span><span class="en-text">PDPA Retention and Deletion</span></h3>
               </div>
               <ul class="list-disc pl-5 text-xs text-gray-600 space-y-2">
-                <li><span class="th-text">ระบบเก็บข้อมูลคำขอและเอกสาร PDPA เป็นเวลา <b>60 วันนับจากวันที่ให้ความยินยอม</b></span><span class="en-text">The system retains the request data and PDPA document for <b>60 days from the consent date</b>.</span></li>
+                <li><span class="th-text">ระบบเก็บข้อมูลคำขอและเอกสาร PDPA เป็นเวลา <b>90 วันนับจากวันที่ให้ความยินยอม</b></span><span class="en-text">The system retains the request data and PDPA document for <b>90 days from the consent date</b>.</span></li>
                 <li><span class="th-text">ป้ายในรายการคำขอบอกจำนวนวันที่เหลือก่อนลบได้ เมื่อครบกำหนด ผู้มีสิทธิ์จึงกดลบได้</span><span class="en-text">The request list shows the days remaining before deletion is allowed. Only after the retention period may an authorized user delete it.</span></li>
                 <li><span class="th-text">หน้าต่างยืนยันจะย้ำจำนวนวันและการลบเอกสาร PDF ที่เกี่ยวข้องออกจาก Google Drive</span><span class="en-text">The confirmation dialog repeats the remaining-day status and warns that the related PDF will be removed from Google Drive.</span></li>
               </ul>
@@ -708,6 +725,10 @@
           <div><label class="block text-gray-500 mb-1"><span class="th-text">สถานที่ตั้ง</span><span class="en-text">Location</span></label><input type="text" id="cfg-l-location" class="input-field input-field-box border bg-white"></div>
           <div class="col-span-2"><label class="block text-gray-500 mb-1">Google Maps Link</label><input type="text" id="cfg-l-map" class="input-field input-field-box border bg-white" placeholder="http://maps.google.com/..."></div>
           <div class="col-span-2"><label class="block text-gray-500 mb-1"><span class="th-text">ลิงก์รูปภาพ (Google Drive - คั่นด้วยลูกน้ำ)</span><span class="en-text">Image Links (Comma separated)</span></label><input type="text" id="cfg-l-images" class="input-field input-field-box border bg-white" placeholder="https://drive.google.com/file/d/..., ..."></div>
+          <div class="col-span-2 flex items-center space-x-3">
+            <label class="text-gray-500"><span class="th-text">สีตู้</span><span class="en-text">Locker Color</span></label>
+            <input type="color" id="cfg-l-color" value="#33c0ca" class="w-12 h-8 p-0 border rounded cursor-pointer">
+            </div>
         </div>
         <div class="col-span-2 bg-gray-50 p-3 rounded-lg border border-gray-200 mt-2">
           <label class="block text-gray-700 font-bold mb-2 text-xs"><span class="th-text">ตั้งค่าการแสดงผล Grid</span><span class="en-text">Grid Layout Setup</span></label>
@@ -832,7 +853,7 @@
         </div>
         <div>
           <p class="font-bold text-gray-800"><span class="th-text">3. ระยะเวลาการจัดเก็บ</span><span class="en-text">3. Retention Period</span></p>
-          <p class="mt-1"><span class="th-text">เราจะเก็บข้อมูลของคุณไว้ตลอดระยะเวลาที่คุณยังคงสถานะสมาชิก และจะลบข้อมูลออกจากระบบภายใน 60 วันหลังจากยินยอมและสิ้นสุดการจองหรือคืน Locker เรียบร้อยแล้ว</span><span class="en-text">Data is kept during membership and deleted 90 days after locker return.</span></p>
+          <p class="mt-1"><span class="th-text">เราจะเก็บข้อมูลของคุณไว้ตลอดระยะเวลาที่คุณยังคงสถานะสมาชิก และจะลบข้อมูลออกจากระบบภายใน 90 วันหลังจากยินยอมและสิ้นสุดการจองหรือคืน Locker เรียบร้อยแล้ว</span><span class="en-text">Data is kept during membership and deleted 90 days after locker return.</span></p>
         </div>
       </div>
       <div class="mt-6 flex-shrink-0">
@@ -911,6 +932,81 @@
       </div>
     </div>
   </div>
+  <div id="modal-label-print" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50 p-4">
+  <div class="bg-white p-6 rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl">
+    <h3 class="text-primary font-bold text-lg mb-4 flex-shrink-0">🏷️ <span class="th-text">พิมพ์ Label ติดตู้</span><span class="en-text">Print Locker Labels</span></h3>
+    <div class="flex-grow overflow-y-auto grid md:grid-cols-2 gap-4">
+      <div class="space-y-3 text-xs">
+        <div>
+            <label class="block text-gray-500 mb-1">
+                <span class="th-text">ตู้ที่ต้องการพิมพ์</span>
+                <span class="en-text">Locker</span></label><select id="lb-locker" onchange="lbLockerChanged()" class="input-field input-field-box border bg-white"></select>
+                <div>
+                    <label class="block text-gray-500 mb-1">โหมดป้าย / Mode</label>
+                    <select id="lb-mode" onchange="lbModeChanged()" class="input-field input-field-box border bg-white">
+                        <option value="slot">ป้ายช่อง (L1-A1)</option>
+                        <option value="student">ป้ายรหัสนักศึกษา</option>
+                    </select>
+                    </div>
+                    <div id="lb-edit-box" class="hidden border rounded-lg bg-gray-50 p-2">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-bold text-gray-600">แก้ไขข้อความรายช่อง</span>
+                        <div class="space-x-1">
+                        <button type="button" onclick="lbReloadStudents()" class="text-[10px] text-primary underline">ดึงรหัสใหม่</button>
+                        <button type="button" onclick="lbClearAll()" class="text-[10px] text-danger underline">ล้างทั้งหมด</button>
+                        </div>
+                    </div>
+                    <div id="lb-edit-list" class="max-h-48 overflow-y-auto space-y-1"></div>
+                    </div>
+            </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">ขนาดกระดาษ</span><span class="en-text">Paper</span></label>
+            <select id="lb-paper" onchange="lbPaperChanged()" class="input-field input-field-box border bg-white">
+              <option value="A4">A4</option><option value="A3">A3</option><option value="A5">A5</option><option value="Letter">Letter</option><option value="custom">กำหนดเอง (Custom)</option>
+            </select></div>
+          <div><label class="block text-gray-500 mb-1"><span class="th-text">แนวกระดาษ</span><span class="en-text">Orientation</span></label>
+            <select id="lb-orient" onchange="renderLabelPreview()" class="input-field input-field-box border bg-white">
+              <option value="portrait">แนวตั้ง (Portrait)</option><option value="landscape">แนวนอน (Landscape)</option>
+            </select></div>
+        </div>
+        <div id="lb-custom-box" class="grid grid-cols-2 gap-2 hidden">
+          <div><label class="block text-gray-500 mb-1">กว้าง (mm)</label><input type="number" id="lb-pw" value="210" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white"></div>
+          <div><label class="block text-gray-500 mb-1">สูง (mm)</label><input type="number" id="lb-ph" value="297" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white"></div>
+        </div>
+        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <div class="grid grid-cols-4 gap-2">
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">คอลัมน์</span><span class="en-text">Cols</span></label><input type="number" id="lb-cols" value="3" min="1" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">แถว</span><span class="en-text">Rows</span></label><input type="number" id="lb-rows" value="8" min="1" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ช่องกว้าง mm</span><span class="en-text">Cell W mm</span></label><input type="number" id="lb-lw" value="60" step="0.1" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ช่องสูง mm</span><span class="en-text">Cell H mm</span></label><input type="number" id="lb-lh" value="30" step="0.1" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+          </div>
+          <div class="grid grid-cols-4 gap-2 mt-2">
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ขอบบน-ล่าง</span><span class="en-text">Margin Y</span></label><input type="number" id="lb-mt" value="10" step="0.5" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ขอบซ้าย-ขวา</span><span class="en-text">Margin X</span></label><input type="number" id="lb-ml" value="10" step="0.5" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ระยะห่าง</span><span class="en-text">Gap</span></label><input type="number" id="lb-gap" value="2" step="0.5" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+            <div><label class="block text-gray-500 mb-1 text-[10px]"><span class="th-text">ขนาดอักษร pt</span><span class="en-text">Font pt</span></label><input type="number" id="lb-font" value="28" oninput="renderLabelPreview()" class="input-field input-field-box border bg-white py-1"></div>
+          </div>
+          <button type="button" onclick="lbAutoFit()" class="mt-3 text-[10px] bg-white border border-primary text-primary px-3 py-1 rounded shadow-sm hover:bg-teal-50 font-bold"><span class="th-text">↔ คำนวณขนาดช่องให้พอดีกระดาษ</span><span class="en-text">↔ Auto-fit cell size</span></button>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-gray-600">
+          <label class="flex items-center space-x-2"><input type="checkbox" id="lb-name" checked onchange="renderLabelPreview()"><span><span class="th-text">แสดงชื่อตู้</span><span class="en-text">Locker name</span></span></label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="lb-key" onchange="renderLabelPreview()"><span><span class="th-text">แสดงเลขกุญแจ</span><span class="en-text">Key no.</span></span></label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="lb-loc" onchange="renderLabelPreview()"><span><span class="th-text">แสดงสถานที่</span><span class="en-text">Location</span></span></label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="lb-bar" checked onchange="renderLabelPreview()"><span><span class="th-text">แถบสีตู้</span><span class="en-text">Color bar</span></span></label>
+          <label class="flex items-center space-x-2"><input type="checkbox" id="lb-guide" checked onchange="renderLabelPreview()"><span><span class="th-text">เส้นประสำหรับตัด</span><span class="en-text">Cut guide</span></span></label>
+        </div>
+        <p id="lb-warn" class="text-[10px] text-red-500 font-bold hidden"></p>
+      </div>
+      <div class="bg-gray-100 rounded-xl border border-gray-200 overflow-hidden min-h-[300px]">
+        <iframe id="lb-preview" class="w-full h-full min-h-[420px]"></iframe>
+      </div>
+    </div>
+    <div class="flex space-x-2 mt-4 flex-shrink-0">
+      <button onclick="printLabels()" class="btn-main py-2 flex-1">🖨️ <span class="th-text">พิมพ์ / บันทึก PDF</span><span class="en-text">Print / Save PDF</span></button>
+      <button onclick="hideCustomModal('modal-label-print')" class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full font-bold"><span class="th-text">ปิด</span><span class="en-text">Close</span></button>
+    </div>
+  </div>
+</div>
 
   <div id="modal-request-detail" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-[60]">
     <div class="bg-white p-6 rounded-2xl w-[90%] max-w-md max-h-[90vh] overflow-y-auto">
@@ -1103,15 +1199,17 @@
     function renderLockerGridUser(lockers) {
         const container = document.getElementById('grid-container');
         container.innerHTML = lockers.map(l => {
-            const availableCount = (l.slotsData || []).filter(s => s.status === 'available').length;
-            const isFull = availableCount === 0;
-            const bgClass = isFull ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'bg-primary cursor-pointer hover:opacity-90';
-            return `
-            <div onclick="${isFull ? '' : `selectLockerUser('${l.id}')`}" class="${bgClass} flex flex-col items-center justify-center py-6 border border-white relative text-center px-1">
-                <span class="text-2xl">${l.id.replace('L', '')}</span>
-                <span class="text-[10px] font-normal mt-1">${isFull ? t('เต็ม','Full') : t('ว่าง ','Avail ') + availableCount}</span>
-            </div>`;
-        }).join('');
+        const availableCount = (l.slotsData || []).filter(s => s.status === 'available').length;
+        const isFull = availableCount === 0;
+        const color = /^#[0-9a-fA-F]{6}$/.test(l.color || '') ? l.color : '#33c0ca';
+        const bgClass = isFull ? 'bg-gray-300 cursor-not-allowed opacity-70' : 'cursor-pointer hover:opacity-90';
+        const bgStyle = isFull ? '' : `style="background-color:${color}"`;
+        return `
+        <div onclick="${isFull ? '' : `selectLockerUser('${l.id}')`}" ${bgStyle} class="${bgClass} flex flex-col items-center justify-center py-6 border border-white relative text-center px-1">
+            <span class="text-2xl">${l.id.replace('L', '')}</span>
+            <span class="text-[10px] font-normal mt-1">${isFull ? t('เต็ม','Full') : t('ว่าง ','Avail ') + availableCount}</span>
+        </div>`;
+    }).join('');
     }
 
     function selectLockerUser(lockerId) {
@@ -1143,13 +1241,13 @@
         } else {
             imgContainer.style.display = 'none';
         }
-
+        document.getElementById('view-slots').style.setProperty('--color-primary', locker.color || '#33c0ca');
         navigate('view-slots');
     }
 
     function selectSlotUser(slotName) {
         bookingData.slot = slotName;
-        navigate('view-tc');
+        navigate('view-form');
     }
 
     let otpSending = false; 
@@ -1594,7 +1692,7 @@
       const extra=(t.paragraphs||[]).map(x=>`<p>${esc(x)}</p>`).join('');
       const page=(lang,title,body,consent)=>`<section class="sheet ${lang==='en'?'new-page':''}"><header>${logo}<div><h1>${title}</h1><h2>College of Computing, Prince of Songkla University, Phuket Campus</h2><p>CoC - MyLocker Online Locker Management and Booking System</p></div></header><div class="meta"><b>${lang==='th'?'เลขที่คำขอ':'Request no.'}:</b> ${esc(r.requestNo)}<br><b>${lang==='th'?'วันที่ให้ความยินยอม':'Consent date'}:</b> ${esc(lang==='th'?dateTh:dateEn)}</div><h3>1. ${lang==='th'?'ข้อมูลผู้ให้ความยินยอม':'Consent provider details'}</h3><div class="data"><div><b>${lang==='th'?'ชื่อ - นามสกุล':'Full name'}:</b> ${esc(r.studentName)}</div><div><b>${lang==='th'?'รหัสนักศึกษา':'Student ID'}:</b> ${esc(r.studentId)}</div><div><b>${lang==='th'?'โทรศัพท์':'Telephone'}:</b> ${esc(r.phone||'-')}</div><div><b>Email:</b> ${esc(r.email||'-')}</div><div class="wide"><b>${lang==='th'?'คำขอใช้ตู้':'Locker request'}:</b> ${esc(r.lockerId||'-')}-${esc(r.slot||'-')}</div></div><h3>2. ${lang==='th'?'วัตถุประสงค์และเงื่อนไขการคุ้มครองข้อมูลส่วนบุคคล':'Purpose and personal data protection terms'}</h3>${body}<h3>3. ${lang==='th'?'การแสดงเจตนายินยอม':'Consent declaration'}</h3><div class="consent">☑ ${consent}</div><div class="signatures"><div><p>${lang==='th'?'ผู้ขอใช้บริการ / เจ้าของข้อมูล':'Service applicant / Data subject'}</p><div class="line"></div><b>${esc(r.studentName)}</b><small>${lang==='th'?'ยืนยันความยินยอมผ่านระบบ':'Consent confirmed through the system'}</small></div><div><p>${lang==='th'?'เจ้าหน้าที่ / ผู้ดูแลข้อมูล':'Officer / Data controller'}</p>${admin}</div></div><footer>${lang==='th'?'เอกสารฉบับนี้ออกโดยระบบ CoC - MyLocker เพื่อการจองตู้ล็อกเกอร์เท่านั้น.':'This document is generated by CoC - MyLocker solely for locker booking purposes.'}</footer></section>`;
       const thaiBody=`<p>วิทยาลัยการคอมพิวเตอร์ มหาวิทยาลัยสงขลานครินทร์ มีความจำเป็นต้องเก็บ รวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล ได้แก่ ชื่อ-นามสกุล รหัสนักศึกษา หมายเลขโทรศัพท์ และอีเมล เพื่อยืนยันสิทธิ์ จัดสรรตู้ ติดต่อแจ้งเตือน และบริหารจัดการทรัพยากรของหน่วยงาน</p><p><b>ระยะเวลาการเก็บรักษา:</b> ข้อมูลจะถูกเก็บไว้อย่างน้อย 60 วันนับจากวันที่ให้ความยินยอมหรือจนกว่าจะครบกำหนดตามกระบวนการของระบบ หลังจากนั้นจึงสามารถลบข้อมูลออกจากระบบได้ตามกระบวนการที่กำหนด</p><p><b>สิทธิของเจ้าของข้อมูล:</b> ท่านสามารถขอเข้าถึง ขอสำเนา ขอแก้ไข คัดค้าน ระงับการใช้ หรือขอลบข้อมูลได้ตามกฎหมายคุ้มครองข้อมูลส่วนบุคคล</p>${extra}`;
-      const englishBody=`<p>The College of Computing, Prince of Songkla University collects, uses and discloses personal data including your name, student ID, telephone number and email address to verify eligibility, allocate lockers, communicate booking notices and manage institutional resources.</p><p><b>Retention period:</b> Data is retained for at least 60 days from the consent date or until the system retention process is complete, after which it may be deleted.</p><p><b>Data subject rights:</b> You may request access, a copy, correction, objection, restriction of processing or erasure of your personal data as provided by applicable data-protection law.</p>`;
+      const englishBody=`<p>The College of Computing, Prince of Songkla University collects, uses and discloses personal data including your name, student ID, telephone number and email address to verify eligibility, allocate lockers, communicate booking notices and manage institutional resources.</p><p><b>Retention period:</b> Data is retained for at least 90 days from the consent date or until the system retention process is complete, after which it may be deleted.</p><p><b>Data subject rights:</b> You may request access, a copy, correction, objection, restriction of processing or erasure of your personal data as provided by applicable data-protection law.</p>`;
       return `<!doctype html><html><meta charset="utf-8"><style>@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');*{box-sizing:border-box}body{font-family:Sarabun,Arial,sans-serif;color:#222;margin:0}.sheet{width:210mm;min-height:297mm;padding:16mm 17mm;margin:auto;font-size:12px;line-height:1.5}.new-page{page-break-before:always}header{display:flex;gap:14px;border-bottom:2px solid #33c0ca;padding-bottom:10px}header h1{font-size:17px;margin:0}header h2{font-size:11px;margin:3px 0}header p{font-size:10px;margin:0;color:#555}.logo{width:60px;height:60px;object-fit:contain}.meta{text-align:right;margin:14px 0;font-size:11px}h3{font-size:13px;border-left:4px solid #33c0ca;padding-left:7px;margin:16px 0 8px}.data{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f5f7f7;border:1px solid #ddd;border-radius:8px;padding:10px}.wide{grid-column:1/-1}.consent{background:#eefafa;border:1px solid #b7e8e8;padding:10px;border-radius:8px}.signatures{display:grid;grid-template-columns:1fr 1fr;gap:40px;text-align:center;margin-top:35px}.signature{height:45px;max-width:170px;object-fit:contain;display:block;margin:auto}.line{border-bottom:1px solid #555;margin:38px 0 4px}.signatures small{display:block;color:#666;margin-top:4px}footer{margin-top:35px;border-top:1px solid #ddd;padding-top:8px;text-align:center;font-size:9px;color:#777}@media print{.sheet{margin:0}}</style><body>${page('th','หนังสือให้ความยินยอมการเก็บ รวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล',thaiBody,'ข้าพเจ้าได้อ่านและเข้าใจรายละเอียดข้างต้น และยินยอมให้มีการประมวลผลข้อมูลส่วนบุคคลเพื่อใช้บริการจองตู้ล็อกเกอร์')}${page('en','PERSONAL DATA PROTECTION ACT (PDPA) CONSENT FORM',englishBody,'I have read and understood the information above and consent to the processing of my personal data for the locker booking service.')}</body></html>`;
     }
     async function inlinePdfImages(root) {
@@ -2011,7 +2109,7 @@
                 if (layout.direction === 'col') gridStyle += ` grid-auto-flow: column; grid-template-rows: repeat(${layout.rows}, minmax(0, 1fr));`;
 
                 return `
-                <div class="border border-gray-200 rounded-xl p-4 bg-white shadow-sm relative">
+                <div class="border border-gray-200 rounded-xl p-4 bg-white shadow-sm relative" style="border-left:6px solid ${l.color || '#33c0ca'}">
                     <button onclick="openConfigLocker('${l.id}')" class="absolute top-3 right-3 text-gray-400 hover:text-primary text-[10px] bg-gray-50 px-2 py-1 rounded border">${t('ตั้งค่า/ลบ','Setup')}</button>
                     <p class="font-bold text-gray-800 text-sm">${l.id} <span class="font-normal text-xs text-gray-500">(${l.name})</span></p>
                     <p class="text-[9px] text-gray-400 font-mono">ASSET: ${l.assetNumber || '-'}</p>
@@ -2100,7 +2198,9 @@
             assetNumber: locker.assetNumber || '',
             location: locker.location || '',
             mapLink: locker.mapLink || '',
-            layout: locker.layout || { cols: 3, rows: 4, direction: 'row' }, 
+            layout: locker.layout || { cols: 3, rows: 4, direction: 'row' },
+            images: locker.images || [],
+            color: locker.color || '#33c0ca', 
             slots: updatedSlots
         };
 
@@ -2129,6 +2229,7 @@
             document.getElementById('cfg-l-cols').value = layout.cols; document.getElementById('cfg-l-rows').value = layout.rows; document.getElementById('cfg-l-dir').value = layout.direction;
             document.getElementById('btn-delete-locker').classList.remove('hidden');
             (locker.slotsData || locker.slots).forEach(s => addConfigSlotRow(s));
+            document.getElementById('cfg-l-color').value = locker.color || '#33c0ca';
         } else {
             document.getElementById('cfg-title').innerText = t('เพิ่มตู้ Locker ใหม่','Add New Locker');
             document.getElementById('cfg-l-id').value = ''; document.getElementById('cfg-l-id').disabled = false; document.getElementById('cfg-l-id').classList.remove('bg-gray-100');
@@ -2137,6 +2238,7 @@
             document.getElementById('cfg-l-cols').value = 3; document.getElementById('cfg-l-rows').value = 4; document.getElementById('cfg-l-dir').value = 'row';
             document.getElementById('btn-delete-locker').classList.add('hidden');
             for (let i = 1; i <= 12; i++) addConfigSlotRow({ name: `A${i}`, keyNumber: '', condition: 'available' });
+            document.getElementById('cfg-l-color').value = '#33c0ca';
         }
         showCustomModal('modal-config-locker');
     }
@@ -2168,7 +2270,7 @@
         const rawImages = document.getElementById('cfg-l-images').value.split(',').map(s => s.trim()).filter(s => s);
         const images = rawImages.map(convertDriveLinkToLh3);
 
-        const payload = { action: 'save', lockerId: id, name: document.getElementById('cfg-l-name').value.trim(), assetNumber: document.getElementById('cfg-l-asset').value.trim(), location: document.getElementById('cfg-l-location').value.trim(), mapLink: document.getElementById('cfg-l-map').value.trim(), images: images, layout, slots };
+        const payload = { action: 'save', lockerId: id, name: document.getElementById('cfg-l-name').value.trim(), assetNumber: document.getElementById('cfg-l-asset').value.trim(), location: document.getElementById('cfg-l-location').value.trim(), color: document.getElementById('cfg-l-color').value,mapLink: document.getElementById('cfg-l-map').value.trim(), images: images, layout, slots };
         await fetch('/api/admin/lockers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         hideCustomModal('modal-config-locker'); loadAdminData();
     }
@@ -2324,7 +2426,7 @@
     async function executeAdminAction(id, action, daysLeft = 0) {
         if (action === 'delete') {
             if (daysLeft > 0) return showAlert('PDPA','ยังลบไม่ได้ ต้องเก็บข้อมูลไว้อีก ' + daysLeft + ' วัน');
-            if (!confirm('ยืนยันการลบคำขอ ' + id + ' หรือไม่? เอกสารและข้อมูล PDPA ครบกำหนด 60 วันแล้ว')) return;
+            if (!confirm('ยืนยันการลบคำขอ ' + id + ' หรือไม่? เอกสารและข้อมูล PDPA ครบกำหนด 90 วันแล้ว')) return;
         } else if (!confirm(t(`ยืนยันดำเนินการ (${action})?`,`Confirm action (${action})?`))) return;
         const response = await fetch('/api/admin/request/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action }) });
         const result = await response.json();
@@ -2881,6 +2983,190 @@
             showAlert('Error', 'Connection error');
         }
     }
+    // ================= LABEL PRINT =================
+const LABEL_PAPERS = { A4: [210, 297], A3: [297, 420], A5: [148, 210], Letter: [215.9, 279.4] };
+const LABEL_NUM = ['pw', 'ph', 'cols', 'rows', 'lw', 'lh', 'mt', 'ml', 'gap', 'font'];
+const LABEL_SEL = ['paper', 'orient'];
+const LABEL_CHK = ['name', 'key', 'loc', 'bar', 'guide'];
+const lb = id => document.getElementById('lb-' + id);
+
+function openLabelModal() {
+    if (!allAdminData || !allAdminData.lockers) return;
+    lb('locker').innerHTML = `<option value="all">${t('ทุกตู้', 'All lockers')}</option>` +
+        allAdminData.lockers.map(l => `<option value="${escapeHTML(l.id)}">${escapeHTML(l.id)} (${escapeHTML(l.name || '')})</option>`).join('');
+    try {
+        const saved = JSON.parse(localStorage.getItem('label_settings') || 'null');
+        if (saved) {
+            [...LABEL_NUM, ...LABEL_SEL].forEach(k => { if (saved[k] !== undefined) lb(k).value = saved[k]; });
+            LABEL_CHK.forEach(k => { if (saved[k] !== undefined) lb(k).checked = saved[k]; });
+        }
+    } catch (e) {}
+    lb('mode').value = 'slot';
+    lb('edit-box').classList.add('hidden');
+    lbPaperChanged();
+    showCustomModal('modal-label-print');
+}
+
+function lbPaperChanged() {
+    lb('custom-box').classList.toggle('hidden', lb('paper').value !== 'custom');
+    renderLabelPreview();
+}
+
+function getLabelSettings() {
+    const s = { locker: lb('locker').value };
+    LABEL_SEL.forEach(k => s[k] = lb(k).value);
+    LABEL_NUM.forEach(k => s[k] = parseFloat(lb(k).value) || 0);
+    LABEL_CHK.forEach(k => s[k] = lb(k).checked);
+    s.cols = Math.max(1, Math.round(s.cols));
+    s.rows = Math.max(1, Math.round(s.rows));
+    let [w, h] = s.paper === 'custom' ? [s.pw, s.ph] : LABEL_PAPERS[s.paper];
+    if (s.orient === 'landscape') [w, h] = [h, w];
+    s.W = w; s.H = h;
+    return s;
+}
+
+function lbAutoFit() {
+    const s = getLabelSettings();
+    lb('lw').value = Math.max(1, (s.W - 2 * s.ml - s.gap * (s.cols - 1)) / s.cols).toFixed(1);
+    lb('lh').value = Math.max(1, (s.H - 2 * s.mt - s.gap * (s.rows - 1)) / s.rows).toFixed(1);
+    renderLabelPreview();
+}
+
+function buildLabelsHtml(s, preview) {
+    const isStudentMode = lb('mode') && lb('mode').value === 'student';
+    let cells = [];
+
+    if (isStudentMode) {
+        cells = lbSlotItems()
+            .filter(({ l, sl }) => {
+                const c = lbCustom[`${l.id}-${sl.name}`];
+                return c && c.print && String(c.text || '').trim();
+            })
+            .map(({ l, sl }) => {
+                const c = lbCustom[`${l.id}-${sl.name}`];
+                const color = /^#[0-9a-fA-F]{6}$/.test(l.color || '') ? l.color : '#33c0ca';
+                return `<div class="lb">
+                    ${s.bar ? `<div class="bar" style="background:${color}"></div>` : ''}
+                    <div class="id">${escapeHTML(c.text)}</div>
+                    <div class="sub">${escapeHTML(l.id)}-${escapeHTML(sl.name)}</div>
+                </div>`;
+            });
+    } else {
+        const items = [];
+        allAdminData.lockers.filter(l => s.locker === 'all' || l.id === s.locker).forEach(l => {
+            (l.slotsData || l.slots || []).forEach(sl => { if (sl.condition !== 'hidden') items.push({ l, sl }); });
+        });
+
+        cells = items.map(({ l, sl }) => {
+            const color = /^#[0-9a-fA-F]{6}$/.test(l.color || '') ? l.color : '#33c0ca';
+            return `<div class="lb">
+                ${s.bar ? `<div class="bar" style="background:${color}"></div>` : ''}
+                <div class="id">${escapeHTML(l.id)}-${escapeHTML(sl.name)}</div>
+                ${s.name && l.name ? `<div class="sub">${escapeHTML(l.name)}</div>` : ''}
+                ${s.key && sl.keyNumber ? `<div class="sub">Key: ${escapeHTML(sl.keyNumber)}</div>` : ''}
+                ${s.loc && l.location ? `<div class="sub">${escapeHTML(l.location)}</div>` : ''}
+            </div>`;
+        });
+    }
+
+    const perPage = s.cols * s.rows;
+    let pages = '';
+    for (let i = 0; i < cells.length; i += perPage) {
+        pages += `<div class="page">${cells.slice(i, i + perPage).join('')}</div>`;
+    }
+    if (!pages) pages = '<div class="page"></div>';
+
+    const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
+    @page{size:${s.W}mm ${s.H}mm;margin:0}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Prompt',Arial,sans-serif;color:#222;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .page{width:${s.W}mm;height:${s.H}mm;padding:${s.mt}mm ${s.ml}mm;display:grid;grid-template-columns:repeat(${s.cols},${s.lw}mm);grid-auto-rows:${s.lh}mm;gap:${s.gap}mm;align-content:start;page-break-after:always;overflow:hidden;background:#fff}
+    .page:last-child{page-break-after:auto}
+    .lb{width:${s.lw}mm;height:${s.lh}mm;${s.guide ? 'border:0.3mm dashed #999;' : ''}display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;position:relative;padding:0 1mm}
+    .bar{position:absolute;top:0;left:0;right:0;height:3mm}
+    .id{font-weight:700;font-size:${s.font}pt;line-height:1.1;max-width:100%;overflow-wrap:anywhere}
+    .sub{font-size:${(s.font * 0.45).toFixed(1)}pt;color:#444;line-height:1.3}
+    ${preview ? 'body{background:#d1d5db;zoom:.45;padding:8px}.page{margin:0 auto 12px;box-shadow:0 2px 8px rgba(0,0,0,.3)}' : ''}`;
+
+    return `<!doctype html><html><head><meta charset="utf-8"><style>${css}</style></head><body>${pages}</body></html>`;
+}
+
+function renderLabelPreview() {
+    if (!allAdminData) return;
+    const s = getLabelSettings();
+    const needW = 2 * s.ml + s.cols * s.lw + s.gap * (s.cols - 1);
+    const needH = 2 * s.mt + s.rows * s.lh + s.gap * (s.rows - 1);
+    const warn = lb('warn');
+    if (needW > s.W + 0.1 || needH > s.H + 0.1) {
+        warn.innerText = t(
+            `⚠️ ขนาดรวม ${needW.toFixed(0)}×${needH.toFixed(0)} mm เกินกระดาษ ${s.W}×${s.H} mm ลองกดคำนวณขนาดช่องอัตโนมัติ`,
+            `⚠️ Layout ${needW.toFixed(0)}×${needH.toFixed(0)} mm exceeds paper ${s.W}×${s.H} mm. Try Auto-fit.`);
+        warn.classList.remove('hidden');
+    } else warn.classList.add('hidden');
+    lb('preview').srcdoc = buildLabelsHtml(s, true);
+}
+
+function printLabels() {
+    const s = getLabelSettings();
+    try { localStorage.setItem('label_settings', JSON.stringify(s)); } catch (e) {}
+    const w = window.open('', '_blank', 'width=900,height=800');
+    if (!w) return showAlert('Label', t('เบราว์เซอร์บล็อกหน้าต่างพิมพ์ กรุณาอนุญาต Pop-up แล้วลองใหม่', 'Pop-up blocked. Please allow pop-ups and try again.'));
+    w.document.open();
+    w.document.write(buildLabelsHtml(s, false));
+    w.document.close();
+    w.onload = () => setTimeout(() => { w.focus(); w.print(); }, 600);
+}
+let lbCustom = {}; // key: "L1-A1" -> {text, print}
+
+function lbModeChanged() {
+    lb('edit-box').classList.toggle('hidden', lb('mode').value !== 'student');
+    if (lb('mode').value === 'student') lbReloadStudents();
+    else renderLabelPreview();
+}
+
+function lbSlotItems() {
+    const out = [];
+    const sel = lb('locker').value;
+    allAdminData.lockers.filter(l => sel === 'all' || l.id === sel).forEach(l => {
+        (l.slotsData || l.slots || []).forEach(sl => {
+            if (sl.condition !== 'hidden') out.push({ l, sl });
+        });
+    });
+    return out;
+}
+
+function lbReloadStudents() {
+    lbCustom = {};
+    lbSlotItems().forEach(({ l, sl }) => {
+        const key = `${l.id}-${sl.name}`;
+        const sid = sl.bookingInfo ? sl.bookingInfo.studentId : '';
+        lbCustom[key] = { text: sid, print: !!sid };
+    });
+    lbRenderEditList();
+    renderLabelPreview();
+}
+
+function lbClearAll() {
+    Object.keys(lbCustom).forEach(k => lbCustom[k] = { text: '', print: false });
+    lbRenderEditList();
+    renderLabelPreview();
+}
+
+function lbRenderEditList() {
+    lb('edit-list').innerHTML = Object.keys(lbCustom).map(k => `
+        <div class="flex items-center space-x-2">
+            <input type="checkbox" ${lbCustom[k].print ? 'checked' : ''} onchange="lbCustom['${k}'].print=this.checked; renderLabelPreview()">
+            <span class="text-[10px] font-bold w-14 shrink-0">${escapeHTML(k)}</span>
+            <input type="text" value="${escapeHTML(lbCustom[k].text)}" placeholder="พิมพ์เอง / รหัส นศ."
+                oninput="lbCustom['${k}'].text=this.value; lbCustom['${k}'].print=!!this.value.trim(); renderLabelPreview()"
+                class="input-field input-field-box border bg-white py-1 text-xs flex-1">
+        </div>`).join('');
+}
+function lbLockerChanged() {
+    if (lb('mode').value === 'student') lbReloadStudents();
+    else renderLabelPreview();
+}
   </script>
 </body>
 
