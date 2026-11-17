@@ -444,6 +444,7 @@
         <button id="tab-settings-menu" onclick="switchAdminTab('dash-settings', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 hidden"><span class="th-text">ตั้งค่าระบบ</span><span class="en-text">Settings</span></button>
         <button id="tab-ai-menu" onclick="switchAdminTab('dash-ai', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500">AI Assistant</button>
         <button id="tab-staff-menu" onclick="switchAdminTab('dash-staff', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 hidden"><span class="th-text">จัดการเจ้าหน้าที่</span><span class="en-text">Staff Management</span></button>
+        <button onclick="switchAdminTab('dash-profile', this); loadMyProfile();" class="admin-tab p-4 whitespace-nowrap text-gray-500"><span class="th-text">👤 โปรไฟล์ของฉัน</span><span class="en-text">👤 My Profile</span></button>
         <button onclick="switchAdminTab('dash-manual', this)" class="admin-tab p-4 whitespace-nowrap text-gray-500 font-bold">📖 คู่มือ (Manual)</button>
         <button onclick="adminLogout()" class="p-4 ml-auto text-danger whitespace-nowrap font-bold">Log out</button>
       </div>
@@ -624,6 +625,27 @@
             </div>
           </div>
         </div>  
+        <div id="dash-profile" class="admin-sec hidden">
+          <div class="max-w-xl mx-auto bg-white border rounded-xl p-6 shadow-sm">
+            <h2 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2">👤 <span class="th-text">โปรไฟล์ของฉัน</span><span class="en-text">My Profile</span></h2>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="col-span-2"><label class="block text-gray-500 mb-1">Username</label><input id="pf-username" class="input-field border bg-gray-100" disabled></div>
+              <div><label class="block text-gray-500 mb-1"><span class="th-text">ชื่อ</span><span class="en-text">First Name</span></label><input id="pf-name" class="input-field border bg-white"></div>
+              <div><label class="block text-gray-500 mb-1"><span class="th-text">นามสกุล</span><span class="en-text">Last Name</span></label><input id="pf-surname" class="input-field border bg-white"></div>
+              <div><label class="block text-gray-500 mb-1"><span class="th-text">ตำแหน่ง</span><span class="en-text">Position</span></label><input id="pf-position" class="input-field border bg-white"></div>
+              <div><label class="block text-gray-500 mb-1"><span class="th-text">สังกัด</span><span class="en-text">Dept.</span></label><input id="pf-department" class="input-field border bg-white"></div>
+              <div class="col-span-2"><label class="block text-gray-500 mb-1">Email</label><input type="email" id="pf-email" class="input-field border bg-white"></div>
+              <label class="col-span-2 flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="pf-notify" class="w-4 h-4"><span class="font-bold"><span class="th-text">รับอีเมลแจ้งเตือนเมื่อมีคำขอใหม่</span><span class="en-text">Receive email notifications</span></span></label>
+            </div>
+            <div class="mt-5 pt-4 border-t text-xs space-y-3">
+              <p class="font-bold text-gray-700"><span class="th-text">เปลี่ยนรหัสผ่าน (เว้นว่างไว้ถ้าไม่เปลี่ยน)</span><span class="en-text">Change password (leave blank to keep)</span></p>
+              <input type="password" id="pf-old" class="input-field border bg-white" placeholder="รหัสผ่านเดิม / Current" autocomplete="current-password">
+              <input type="password" id="pf-new" class="input-field border bg-white" placeholder="รหัสผ่านใหม่ (≥ 8 ตัว) / New" autocomplete="new-password">
+              <input type="password" id="pf-new2" class="input-field border bg-white" placeholder="ยืนยันรหัสผ่านใหม่ / Confirm" autocomplete="new-password">
+            </div>
+            <button onclick="saveMyProfile()" class="btn-main max-w-xs py-2 mt-6"><span class="th-text">บันทึกโปรไฟล์</span><span class="en-text">Save Profile</span></button>
+          </div>
+        </div>
         <div id="dash-manual" class="admin-sec hidden">
           <h2 class="text-lg font-bold text-gray-700 mb-6 border-b pb-2"><span class="th-text">📖 คู่มือผู้ดูแลระบบ / เจ้าหน้าที่</span><span class="en-text">📖 Administrator / Staff Manual</span></h2>
           
@@ -869,7 +891,14 @@
       <div class="space-y-3 text-xs mb-6">
         <div class="grid grid-cols-2 gap-3">
           <div><label class="block text-gray-500 mb-1">Username <span class="text-red-500">*</span></label><input type="text" id="sf-username" class="input-field border bg-white"></div>
-          <div><label class="block text-gray-500 mb-1">Password <span class="text-red-500">*</span></label><input type="text" id="sf-password" class="input-field border bg-white"></div>
+          <div>
+            <label class="block text-gray-500 mb-1">Password <span id="sf-pass-req" class="text-red-500">*</span></label>
+            <input type="password" id="sf-password" class="input-field border bg-white" autocomplete="new-password" placeholder="••••••••">
+          </div>
+          <div id="sf-old-wrap" class="col-span-2 hidden">
+            <label class="block text-gray-500 mb-1"><span class="th-text">รหัสผ่านเดิม (ต้องกรอกถ้าเปลี่ยนรหัส)</span><span class="en-text">Current password (required to change)</span></label>
+            <input type="password" id="sf-old-password" class="input-field border bg-white" autocomplete="current-password">
+          </div>
           <div><label class="block text-gray-500 mb-1"><span class="th-text">ชื่อ</span><span class="en-text">First Name</span> <span class="text-red-500">*</span></label><input type="text" id="sf-name" class="input-field border bg-white"></div>
           <div><label class="block text-gray-500 mb-1"><span class="th-text">นามสกุล</span><span class="en-text">Last Name</span> <span class="text-red-500">*</span></label><input type="text" id="sf-surname" class="input-field border bg-white"></div>
           <div><label class="block text-gray-500 mb-1"><span class="th-text">ตำแหน่ง</span><span class="en-text">Position</span></label><input type="text" id="sf-position" class="input-field border bg-white"></div>
@@ -1853,7 +1882,8 @@
         
         if (u) {
             document.getElementById('sf-username').value = u.username || '';
-            document.getElementById('sf-password').value = u.password || '';
+            document.getElementById('sf-password').value = '';
+            document.getElementById('sf-password').placeholder = t('เว้นว่างไว้ = ไม่เปลี่ยนรหัสผ่าน', 'Leave blank to keep current');
             document.getElementById('sf-name').value = u.name || '';
             document.getElementById('sf-surname').value = u.surname || '';
             document.getElementById('sf-position').value = u.position || '';
@@ -1864,6 +1894,7 @@
         } else {
             document.getElementById('sf-username').value = '';
             document.getElementById('sf-password').value = '';
+            document.getElementById('sf-password').placeholder = '••••••••';
             document.getElementById('sf-name').value = '';
             document.getElementById('sf-surname').value = '';
             document.getElementById('sf-position').value = '';
@@ -1872,6 +1903,9 @@
             document.getElementById('sf-notify').checked = false;
             document.getElementById('sf-role').value = 'staff';
         }
+        const isSelf = u && loggedInUser && u.id === loggedInUser.id;
+        document.getElementById('sf-old-wrap').classList.toggle('hidden', !isSelf);
+        document.getElementById('sf-old-password').value = '';
         showCustomModal('modal-staff');
     }
 
@@ -1882,6 +1916,7 @@
             id: id,
             username: document.getElementById('sf-username').value.trim(), 
             password: document.getElementById('sf-password').value.trim(),
+            oldPassword: document.getElementById('sf-old-password').value,
             name: document.getElementById('sf-name').value.trim(), 
             surname: document.getElementById('sf-surname').value.trim(),
             position: document.getElementById('sf-position').value.trim(), 
@@ -1891,12 +1926,54 @@
             receiveNotifications: document.getElementById('sf-notify').checked
         };
         
-        if (!payload.username || !payload.password || !payload.name) return showAlert(t('ข้อมูลไม่ครบ','Incomplete Data'), t('กรุณากรอกข้อมูลให้ครบถ้วน','Please fill out all required fields.'));
-        
+        if (!payload.username || !payload.name || (!id && !payload.password))
+            return showAlert(t('ข้อมูลไม่ครบ','Incomplete Data'), t('กรุณากรอกข้อมูลให้ครบถ้วน','Please fill out all required fields.'));        
         const res = await fetch('/api/admin/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         const result = await res.json();
         if (result.success) { hideCustomModal('modal-staff'); loadStaffData(); } 
         else showAlert('Error', result.message);
+    }
+    async function loadMyProfile() {
+        const res = await fetch('/api/admin/profile');
+        const r = await res.json();
+        if (!r.success) return;
+        const u = r.data;
+        document.getElementById('pf-username').value = u.username || '';
+        document.getElementById('pf-name').value = u.name || '';
+        document.getElementById('pf-surname').value = u.surname || '';
+        document.getElementById('pf-position').value = u.position || '';
+        document.getElementById('pf-department').value = u.department || '';
+        document.getElementById('pf-email').value = u.email || '';
+        document.getElementById('pf-notify').checked = !!u.receiveNotifications;
+        ['pf-old', 'pf-new', 'pf-new2'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    async function saveMyProfile() {
+        const newPw = document.getElementById('pf-new').value;
+        if (!document.getElementById('pf-name').value.trim())
+            return showAlert(t('ข้อมูลไม่ครบ','Incomplete Data'), t('กรุณากรอกชื่อ','Please enter your name.'));
+        if (newPw) {
+            if (newPw.length < 8) return showAlert('Error', t('รหัสผ่านใหม่ต้องยาวอย่างน้อย 8 ตัวอักษร','New password must be at least 8 characters.'));
+            if (newPw !== document.getElementById('pf-new2').value) return showAlert('Error', t('ยืนยันรหัสผ่านไม่ตรงกัน','Passwords do not match.'));
+        }
+        const payload = {
+            name: document.getElementById('pf-name').value.trim(),
+            surname: document.getElementById('pf-surname').value.trim(),
+            position: document.getElementById('pf-position').value.trim(),
+            department: document.getElementById('pf-department').value.trim(),
+            email: document.getElementById('pf-email').value.trim(),
+            receiveNotifications: document.getElementById('pf-notify').checked,
+            oldPassword: document.getElementById('pf-old').value,
+            newPassword: newPw
+        };
+        const res = await fetch('/api/admin/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const r = await res.json();
+        if (r.success) {
+            loggedInUser.name = payload.name;
+            localStorage.setItem('admin_user', JSON.stringify(loggedInUser));
+            ['pf-old', 'pf-new', 'pf-new2'].forEach(id => document.getElementById(id).value = '');
+            showAlert('Success', t('บันทึกโปรไฟล์เรียบร้อยแล้ว','Profile saved.'));
+        } else showAlert('Error', r.message || 'Save failed');
     }
 
     function switchAdminTab(tabId, el) {
