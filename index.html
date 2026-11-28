@@ -1865,7 +1865,7 @@
               else showStatus('return-success');
           } else {
               showAlert(t("ทำรายการไม่ได้","Action Failed"), result.message || t("สถานะคำขอมีการเปลี่ยนแปลง กรุณาตรวจสอบใหม่","Request status has changed."));
-              await checkMyLocker(); // รีเฟรชหน้า MyLocker ให้เห็นสถานะล่าสุด (เช่น อนุมัติแล้ว)
+              await checkMyLocker();
           }
       } catch (e) { showAlert("Error", t("เกิดข้อผิดพลาดในการเชื่อมต่อ","Connection error")); }
   }
